@@ -79,14 +79,14 @@ $console
 The <info>doctrine:database:drop</info> command drops the default connections
 database:
 
-<info>php app/console doctrine:database:drop</info>
+<info>php console doctrine:database:drop</info>
 
 The --force parameter has to be used to actually drop the database.
 
 You can also optionally specify the name of a connection to drop the database
 for:
 
-<info>php app/console doctrine:database:drop --connection=default</info>
+<info>php console doctrine:database:drop --connection=default</info>
 
 <error>Be careful: All data in a given database will be lost when executing
 this command.</error>
@@ -137,12 +137,12 @@ $console
 The <info>doctrine:database:create</info> command creates the default
 connections database:
 
-<info>php app/console doctrine:database:create</info>
+<info>php console doctrine:database:create</info>
 
 You can also optionally specify the name of a connection to create the
 database for:
 
-<info>php app/console doctrine:database:create --connection=default</info>
+<info>php console doctrine:database:create --connection=default</info>
 EOT
     )
     ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
