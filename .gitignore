@@ -1,3 +1,11 @@
+# IDE files and folders
+.idea
+.settings
+
+.project
+.buildpath
+
+
 # Configuration files
 resources/config/dev.php
 resources/config/prod.php
