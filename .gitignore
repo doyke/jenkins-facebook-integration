@@ -18,5 +18,5 @@ web/assets/*
 
 # Composer
 composer.lock
-
+composer.phar
 
