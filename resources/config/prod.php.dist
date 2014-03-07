@@ -32,17 +32,16 @@ $app['assetic.input.path_to_js']        = array(
 $app['assetic.output.path_to_js']       = 'js/scripts.js';
 
 // Doctrine (db)
-$app['db.options'] = array(
-    'driver'   => 'pdo_mysql',
-    'host'     => 'localhost',
-    'dbname'   => 'silex_kitchen',
-    'user'     => 'root',
-    'password' => '',
-);
+$dbDriver = 'pdo_mysql';
+$dbHost = '';
+$dbName = '';
+$dbUser = '';
+$dbPassword = '';
 
-// User
-$app['security.users'] = array('username' => array('ROLE_USER', 'password'));
+// Full path to the SVNPlot sqlite database
+$app['svnplot.db'] = '';
 
 $app['facebook.appId'] = '';
 $app['facebook.secret'] = '';
+
 

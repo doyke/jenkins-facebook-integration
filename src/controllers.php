@@ -14,7 +14,7 @@ $app->match('/', function() use ($app) {
     return $app['twig']->render('index.html.twig');
 })->bind('homepage');
 
-$app->match('/login', function(Request $request) use ($app) {
+/*$app->match('/login', function(Request $request) use ($app) {
     $form = $app['form.factory']->createBuilder('form')
         ->add('username', 'text', array('label' => 'Username', 'data' => $app['session']->get('_security.last_username')))
         ->add('password', 'password', array('label' => 'Password'))
@@ -25,7 +25,7 @@ $app->match('/login', function(Request $request) use ($app) {
         'form'  => $form->createView(),
         'error' => $app['security.last_error']($request),
     ));
-})->bind('login');
+})->bind('login');*/
 
 $app->match('/doctrine', function() use ($app) {
     return $app['twig']->render(

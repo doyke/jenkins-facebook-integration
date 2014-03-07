@@ -1,7 +1,7 @@
 <?php
 
+use Silex\Provider\DoctrineServiceProvider;
 use Silex\Provider\FormServiceProvider;
-use Silex\Provider\HttpCacheServiceProvider;
 use Silex\Provider\MonologServiceProvider;
 use Silex\Provider\SecurityServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
@@ -16,6 +16,8 @@ use Symfony\Component\Security\Core\Encoder\PlaintextPasswordEncoder;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
 use FHJ\ServiceProviders\FacebookServiceProvider;
 use FHJ\UserProviders\FacebookUserProvider;
+use FHJ\Repositories\DbRepository;
+use FHJ\Repositories\SVNPlotRepository;
 
 $app->register(new SessionServiceProvider());
 $app->register(new ValidatorServiceProvider());
@@ -115,8 +117,27 @@ if (isset($app['assetic.enabled']) && $app['assetic.enabled']) {
 
 }
 
-$app->register(new Silex\Provider\DoctrineServiceProvider());
+$app->register(new DoctrineServiceProvider(), array(
+	'dbs.options' => array (
+		'db' => array(
+			'driver'    => $dbDriver,
+			'host'      => $dbHost,
+			'dbname'    => $dbName,
+			'user'      => $dbUser,
+			'password'  => $dbPassword,
+			'charset'   => 'utf8',
+		),
+		'svnplot' => array(
+			'driver'    => 'pdo_sqlite',
+			'path'      => __DIR__.'/app.db',
+		),
+	),
+));
 
+unset($dbDriver, $dbHost, $dbName, $dbUser, $dbPassword);
+
+$app['repository.db'] = new DbRepository($app['dbs']['db'], $app['monolog']);
+$app['repository.svnplot'] = new SVNPlotRepository($app['dbs']['svnplot'], $app['monolog']);
 
 $app->register(new FacebookServiceProvider(), array(
 	'facebook.config' => array(
