@@ -22,8 +22,8 @@
         "symfony/yaml"          : "~2.3",
         "twig/twig"             : "~1.10",
         "silex/web-profiler"    : "~1.0.1",
-        "twitter/bootstrap"     : "2.3.2",
-        "pitpit/faceboo"        : "2.0.*@dev"
+        "twitter/bootstrap"     : "~2.3.0",
+        "friendsofsymfony/facebook-bundle": "~1.1"
     },
     "require-dev": {
         "symfony/browser-kit"   : "~2.3",

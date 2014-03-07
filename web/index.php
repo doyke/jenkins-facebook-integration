@@ -13,4 +13,4 @@ require __DIR__.'/../src/app.php';
 
 require __DIR__.'/../src/controllers.php';
 
-$app['http_cache']->run();
+$app->run();

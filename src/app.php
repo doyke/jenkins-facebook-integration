@@ -14,8 +14,8 @@ use Silex\Provider\WebProfilerServiceProvider;
 use SilexAssetic\AsseticServiceProvider;
 use Symfony\Component\Security\Core\Encoder\PlaintextPasswordEncoder;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
-
-$app->register(new HttpCacheServiceProvider());
+use FHJ\ServiceProviders\FacebookServiceProvider;
+use FHJ\UserProviders\FacebookUserProvider;
 
 $app->register(new SessionServiceProvider());
 $app->register(new ValidatorServiceProvider());
@@ -24,16 +24,20 @@ $app->register(new UrlGeneratorServiceProvider());
 
 $app->register(new SecurityServiceProvider(), array(
     'security.firewalls' => array(
+	    'public' => array(
+		    'pattern' => '^/',
+		    'anonymous' => true,
+	    ),
         'admin' => array(
-            'pattern' => '^/',
-            'form'    => array(
-                'login_path'         => '/login',
-                'username_parameter' => 'form[username]',
-                'password_parameter' => 'form[password]',
-            ),
+            'pattern' => '^/settings',
+	        'facebook' => array(
+		        'check_path' => '/login_check',
+		        'login_path' => '/login',
+	        ),
             'logout'    => true,
-            'anonymous' => true,
-            'users'     => $app['security.users'],
+	        'users' => $app->share(function () use ($app) {
+				return new FacebookUserProvider($app['repository.db']);
+	        }),
         ),
     ),
 ));
@@ -45,7 +49,6 @@ $app['security.encoder.digest'] = $app->share(function ($app) {
 $app->register(new TranslationServiceProvider());
 $app['translator'] = $app->share($app->extend('translator', function($translator, $app) {
     $translator->addLoader('yaml', new YamlFileLoader());
-
     $translator->addResource('yaml', __DIR__.'/../resources/locales/en.yml', 'en');
 
     return $translator;
@@ -113,5 +116,15 @@ if (isset($app['assetic.enabled']) && $app['assetic.enabled']) {
 }
 
 $app->register(new Silex\Provider\DoctrineServiceProvider());
+
+
+$app->register(new FacebookServiceProvider(), array(
+	'facebook.config' => array(
+		'appId'      => $app['facebook.appId'],
+		'secret'     => $app['facebook.secret'],
+		'fileUpload' => false, // optional
+	),
+	'facebook.permissions' => array('email', 'basic_info', 'user_groups', 'publish_actions'),
+));
 
 return $app;

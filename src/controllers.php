@@ -6,10 +6,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints as Assert;
 
 $app->match('/', function() use ($app) {
-    $app['session']->getFlashBag()->add('warning', 'Warning flash message');
-    $app['session']->getFlashBag()->add('info', 'Info flash message');
-    $app['session']->getFlashBag()->add('success', 'Success flash message');
-    $app['session']->getFlashBag()->add('error', 'Error flash message');
+//    $app['session']->getFlashBag()->add('warning', 'Warning flash message');
+//    $app['session']->getFlashBag()->add('info', 'Info flash message');
+//    $app['session']->getFlashBag()->add('success', 'Success flash message');
+//    $app['session']->getFlashBag()->add('error', 'Error flash message');
 
     return $app['twig']->render('index.html.twig');
 })->bind('homepage');
@@ -123,7 +123,7 @@ $app->match('/form', function(Request $request) use ($app) {
     }
 
     return $app['twig']->render('form.html.twig', array('form' => $form->createView()));
-})->bind('form');
+})->bind('settings');
 
 $app->match('/logout', function() use ($app) {
     $app['session']->clear();
