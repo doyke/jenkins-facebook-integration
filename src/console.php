@@ -8,7 +8,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
-$console = new Application('Silex - Kitchen Edition', '0.1');
+$console = new Application('Jenkins Facebook Integration', '1.0');
 
 $app->boot();
 
