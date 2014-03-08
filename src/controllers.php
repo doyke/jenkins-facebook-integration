@@ -27,15 +27,6 @@ $app->match('/', function() use ($app) {
     ));
 })->bind('login');*/
 
-$app->match('/doctrine', function() use ($app) {
-    return $app['twig']->render(
-        'doctrine.html.twig',
-        array(
-            'posts' => $app['db']->fetchAll('SELECT * FROM post')
-        )
-    );
-})->bind('doctrine');
-
 $app->match('/form', function(Request $request) use ($app) {
 
     $builder = $app['form.factory']->createBuilder('form');
@@ -130,13 +121,6 @@ $app->match('/logout', function() use ($app) {
 
     return $app->redirect($app['url_generator']->generate('homepage'));
 })->bind('logout');
-
-$app->get('/page-with-cache', function() use ($app) {
-    $response = new Response($app['twig']->render('page-with-cache.html.twig', array('date' => date('Y-M-d h:i:s'))));
-    $response->setTtl(10);
-
-    return $response;
-})->bind('page_with_cache');
 
 $app->error(function (\Exception $e, $code) use ($app) {
     if ($app['debug']) {

@@ -129,7 +129,7 @@ $app->register(new DoctrineServiceProvider(), array(
 		),
 		'svnplot' => array(
 			'driver'    => 'pdo_sqlite',
-			'path'      => __DIR__.'/app.db',
+			'path'      => $app['svnplot.db'],
 		),
 	),
 ));
@@ -143,9 +143,21 @@ $app->register(new FacebookServiceProvider(), array(
 	'facebook.config' => array(
 		'appId'      => $app['facebook.appId'],
 		'secret'     => $app['facebook.secret'],
-		'fileUpload' => false, // optional
+		'appName'    => 'http://apps.facebook.com/' . $app['facebook.appNamespace'] . '/',
+		// the $app->share function is resolved when the server_url is needed
+		// at that time, $app['url_generator'] is already known by the system
+		// (which is not the case at the moment)
+		'server_url' => $app->share(function($app) {
+				return $app['url_generator']->generate('homepage');
+			}),
+		'fileUpload' => false
 	),
-	'facebook.permissions' => array('email', 'basic_info', 'user_groups', 'publish_actions'),
+	'facebook.permissions' => array(
+		'email',
+		'basic_info',
+		'user_groups',
+		'publish_actions'
+	)
 ));
 
 return $app;

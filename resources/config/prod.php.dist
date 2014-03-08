@@ -42,6 +42,7 @@ $dbPassword = '';
 $app['svnplot.db'] = '';
 
 $app['facebook.appId'] = '';
+$app['facebook.appName'] = '';
 $app['facebook.secret'] = '';
 
 
