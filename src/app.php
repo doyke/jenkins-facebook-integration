@@ -46,17 +46,17 @@ $app->register(new FacebookServiceProvider(), array(
 
 $app->register(new SecurityServiceProvider(), array(
     'security.firewalls' => array(
-	    'public' => array(
-		    'pattern' => '^/',
-		    'anonymous' => true,
-	    ),
-        'admin' => array(
-            'pattern' => '^/settings',
+//	    'public' => array(
+//		    'pattern' => '^/',
+//		    'anonymous' => false,
+//	    ),
+        'secured_area' => array(
+	        'anonymous' => false,
+            'pattern' => '^/',
 	        'facebook' => array(
-		        'check_path' => '/login_check',
-		        'login_path' => '/login',
+		        'check_path' => '/login_check'
 	        ),
-            'logout'    => true,
+            'logout' => true,
 	        'users' => $app->share(function () use ($app) {
 				return new FacebookUserProvider($app['repository.users']);
 	        }),
