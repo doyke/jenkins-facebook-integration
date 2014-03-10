@@ -28,6 +28,9 @@
                         {% if is_granted('ROLE_USER') %}
                         <li {% if 'settings' == active %}class="active"{% endif %}><a href="{{ path('settings') }}">{{ 'Settings'|trans }}</a></li>
                         {% endif %}
+
+                    </ul>
+                    <ul class="nav pull-right">
                         <li class="dropdown{% if 'account' == active %} active{% endif %}">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 Account <b class="caret"></b>
