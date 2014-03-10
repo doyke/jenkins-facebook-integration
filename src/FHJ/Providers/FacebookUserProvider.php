@@ -1,6 +1,6 @@
 <?php
 
-namespace FHJ\UserProviders;
+namespace FHJ\Providers;
 
 use FOS\FacebookBundle\Security\User\UserManagerInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;

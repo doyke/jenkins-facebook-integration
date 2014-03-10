@@ -14,8 +14,8 @@ use Silex\Provider\WebProfilerServiceProvider;
 use SilexAssetic\AsseticServiceProvider;
 use Symfony\Component\Security\Core\Encoder\PlaintextPasswordEncoder;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
-use FHJ\ServiceProviders\FacebookServiceProvider;
-use FHJ\UserProviders\FacebookUserProvider;
+use Silex\Provider\FacebookServiceProvider;
+use FHJ\Providers\FacebookUserProvider;
 use FHJ\Repositories\DbRepository;
 use FHJ\Repositories\SVNPlotRepository;
 
