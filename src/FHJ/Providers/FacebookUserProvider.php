@@ -6,7 +6,7 @@ use FOS\FacebookBundle\Security\User\UserManagerInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
-use FHJ\Repositories\DbRepositoryInterface;
+use FHJ\Repositories\UserDbRepositoryInterface;
 
 /**
  * FacebookUserProvider
@@ -14,11 +14,11 @@ use FHJ\Repositories\DbRepositoryInterface;
 class FacebookUserProvider implements UserManagerInterface
 {
 	/**
-	 * @var DbRepositoryInterface
+	 * @var UserDbRepositoryInterface
 	 */
 	private $dbRepository;
 
-	public function __construct(DbRepositoryInterface $dbRepository)
+	public function __construct(UserDbRepositoryInterface $dbRepository)
 	{
 		$this->dbRepository = $dbRepository;
 	}

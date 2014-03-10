@@ -12,17 +12,37 @@ use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use Silex\Provider\WebProfilerServiceProvider;
 use SilexAssetic\AsseticServiceProvider;
-use Symfony\Component\Security\Core\Encoder\PlaintextPasswordEncoder;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
 use Silex\Provider\FacebookServiceProvider;
 use FHJ\Providers\FacebookUserProvider;
-use FHJ\Repositories\DbRepository;
-use FHJ\Repositories\SVNPlotRepository;
+use FHJ\Repositories\UserDbRepository;
+use FHJ\Repositories\ProjectDbRepository;
 
 $app->register(new SessionServiceProvider());
 $app->register(new ValidatorServiceProvider());
 $app->register(new FormServiceProvider());
 $app->register(new UrlGeneratorServiceProvider());
+
+$app->register(new FacebookServiceProvider(), array(
+	'facebook.config' => array(
+		'appId'      => $app['facebook.appId'],
+		'secret'     => $app['facebook.secret'],
+		'appName'    => 'https://apps.facebook.com/' . $app['facebook.appNamespace'] . '/',
+		// the $app->share function is resolved when the server_url is needed
+		// at that time, $app['url_generator'] is already known by the system
+		// (which is not the case at the moment)
+		'server_url' => $app->share(function($app) {
+				return $app['url_generator']->generate('homepage');
+			}),
+		'fileUpload' => false
+	),
+	'facebook.permissions' => array(
+		'email',
+		'basic_info',
+		'user_groups',
+		'publish_actions'
+	)
+));
 
 $app->register(new SecurityServiceProvider(), array(
     'security.firewalls' => array(
@@ -38,15 +58,11 @@ $app->register(new SecurityServiceProvider(), array(
 	        ),
             'logout'    => true,
 	        'users' => $app->share(function () use ($app) {
-				return new FacebookUserProvider($app['repository.db']);
+				return new FacebookUserProvider($app['repository.users']);
 	        }),
         ),
     ),
 ));
-
-$app['security.encoder.digest'] = $app->share(function ($app) {
-    return new PlaintextPasswordEncoder();
-});
 
 $app->register(new TranslationServiceProvider());
 $app['translator'] = $app->share($app->extend('translator', function($translator, $app) {
@@ -129,35 +145,14 @@ $app->register(new DoctrineServiceProvider(), array(
 		),
 		'svnplot' => array(
 			'driver'    => 'pdo_sqlite',
-			'path'      => $app['svnplot.db'],
+			'path'      => ''
 		),
 	),
 ));
 
 unset($dbDriver, $dbHost, $dbName, $dbUser, $dbPassword);
 
-$app['repository.db'] = new DbRepository($app['dbs']['db'], $app['monolog']);
-$app['repository.svnplot'] = new SVNPlotRepository($app['dbs']['svnplot'], $app['monolog']);
-
-$app->register(new FacebookServiceProvider(), array(
-	'facebook.config' => array(
-		'appId'      => $app['facebook.appId'],
-		'secret'     => $app['facebook.secret'],
-		'appName'    => 'http://apps.facebook.com/' . $app['facebook.appNamespace'] . '/',
-		// the $app->share function is resolved when the server_url is needed
-		// at that time, $app['url_generator'] is already known by the system
-		// (which is not the case at the moment)
-		'server_url' => $app->share(function($app) {
-				return $app['url_generator']->generate('homepage');
-			}),
-		'fileUpload' => false
-	),
-	'facebook.permissions' => array(
-		'email',
-		'basic_info',
-		'user_groups',
-		'publish_actions'
-	)
-));
+$app['repository.users'] = new UserDbRepository($app['dbs']['db'], $app['monolog']);
+$app['repository.projects'] = new ProjectDbRepository($app['dbs']['db'], $app['monolog']);
 
 return $app;

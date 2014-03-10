@@ -4,7 +4,11 @@ namespace FHJ\Repositories;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class DbRepository extends BaseRepository implements DbRepositoryInterface {
+/**
+ * UserDbRepository
+ * @package FHJ\Repositories
+ */
+class UserDbRepository extends BaseRepository implements UserDbRepositoryInterface {
 
 	/**
 	 * @param $facebookUserId Facebook user id

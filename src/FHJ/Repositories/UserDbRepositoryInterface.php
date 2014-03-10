@@ -4,7 +4,7 @@ namespace FHJ\Repositories;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 
-interface DbRepositoryInterface {
+interface UserDbRepositoryInterface {
 
 	/**
 	 * @param $facebookUserId Facebook user id

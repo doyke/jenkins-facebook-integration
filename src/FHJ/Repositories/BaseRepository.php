@@ -25,16 +25,14 @@ class BaseRepository {
 	/**
 	 * @return \Doctrine\DBAL\Connection
 	 */
-	protected function getConnection()
-	{
+	protected function getConnection() {
 		return $this->connection;
 	}
 
 	/**
 	 * @return \Monolog\Logger
 	 */
-	protected function getLogger()
-	{
+	protected function getLogger() {
 		return $this->logger;
 	}
 
