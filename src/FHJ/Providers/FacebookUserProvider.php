@@ -23,6 +23,13 @@ class FacebookUserProvider implements UserManagerInterface
 		$this->dbRepository = $dbRepository;
 	}
 
+    /**
+     * Creates an user.
+     * 
+     * @param string $uid The user id.
+     * 
+     * @return UserInterface
+     */ 
 	public function createUserFromUid($uid)
 	{
 		// TODO: Implement createUserFromUid() method.
