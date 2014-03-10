@@ -5,14 +5,16 @@ namespace FHJ\Repositories;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 interface DbRepositoryInterface {
+
+	/**
+	 * @param $facebookUserId Facebook user id
+	 *
+	 * @return UserInterface The created user
+	 */
+    public function createUser($facebookUserId);
     
-    /**
-     * @return UserInterface The created user
-     */
-    public createUser($facebookUserId);
+    public function findUserByFacebookUserId($facebookUserId);
     
-    public findUserByFacebookUserId($facebookUserId);
-    
-    public updateUser(UserInterface $user);
+    public function updateUser(UserInterface $user);
 
 } 

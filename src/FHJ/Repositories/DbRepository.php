@@ -6,9 +6,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class DbRepository extends BaseRepository implements DbRepositoryInterface {
 
-    /**
-     * @return UserInterface The created user
-     */
+	/**
+	 * @param $facebookUserId Facebook user id
+	 *
+	 * @return UserInterface The created user
+	 */
     public function createUser($facebookUserId) {
         
         
