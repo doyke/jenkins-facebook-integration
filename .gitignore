@@ -11,12 +11,12 @@ resources/config/dev.php
 resources/config/prod.php
 
 # Silex directories
-vendor/*
 */log/*
 */cache/*
 web/assets/*
 
 # Composer
+vendor
 composer.lock
 composer.phar
 
