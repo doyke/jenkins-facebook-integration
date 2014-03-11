@@ -36,4 +36,7 @@ class BaseRepository {
 		return $this->logger;
 	}
 
+    protected function convertBoolToInt($value) {
+        return $value ? 1 : 0;
+    }
 }

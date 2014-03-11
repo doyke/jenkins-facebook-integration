@@ -33,24 +33,22 @@ class FacebookUserProvider implements AdvancedUserInterface {
      */ 
     private $admin;
     
-    public function __construct() {
-        
-        
+    public function __construct($id, $facebookUserId, $email = '', $realname = '', $loginAllowed = false,
+            $admin = false) {
+        $this->setId($id);
+        $this->setFacebookUserId($facebookUserId);
+        $this->setEmail($email);
+        $this->setRealname($realname);
+        $this->setLoginAllowed($loginAllowed);
+        $this->setAdmin($admin);
     }
     
-    public function __construct($username, $password, array $roles = array(), $enabled = true, $userNonExpired = true, $credentialsNonExpired = true, $userNonLocked = true)
-    {
-        if (empty($username)) {
-            throw new \InvalidArgumentException('The username cannot be empty.');
+    private function setId($id) {
+        if (!is_int($id)) {
+            throw new InvalidArgumentException('The id must be an integer');
         }
-
-        $this->username = $username;
-        $this->password = $password;
-        $this->enabled = $enabled;
-        $this->accountNonExpired = $userNonExpired;
-        $this->credentialsNonExpired = $credentialsNonExpired;
-        $this->accountNonLocked = $userNonLocked;
-        $this->roles = $roles;
+        
+        $this->id = $id;
     }
     
     public function getId() {
@@ -164,7 +162,7 @@ class FacebookUserProvider implements AdvancedUserInterface {
      * @return string The username
      */
     public function getUsername() {
-        return $this->facebookUserId;
+        return $this->getFacebookUserId();
     }
 
     /**

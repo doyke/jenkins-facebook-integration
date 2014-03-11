@@ -4,13 +4,13 @@ $schema = new \Doctrine\DBAL\Schema\Schema();
 
 $users = $schema->createTable('users');
 $users->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
-$users->addColumn('facebook_id', 'string', array('length' => 30));
+$users->addColumn('facebook_id', 'string', array('length' => 30, 'notnull' => true));
 $users->addColumn('email', 'string', array('length' => 60));
 $users->addColumn('realname', 'string', array('length' => 60));
 $users->addColumn('is_login_allowed', 'boolean', array('default' => 0));
 $users->addColumn('is_admin', 'boolean', array('default' => 0));
 $users->setPrimaryKey(array('id'));
-$users->addIndex(array('facebook_id'));
+$users->addUniqueIndex(array('facebook_id'));
 
 $projects = $schema->createTable('projects');
 $projects->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
