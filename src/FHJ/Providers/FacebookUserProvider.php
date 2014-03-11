@@ -6,20 +6,20 @@ use FOS\FacebookBundle\Security\User\UserManagerInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
+use FHJ\Entities\User;
 use FHJ\Repositories\UserDbRepositoryInterface;
 
 /**
  * FacebookUserProvider
  */
-class FacebookUserProvider implements UserManagerInterface
-{
+class FacebookUserProvider implements UserManagerInterface {
+    
 	/**
 	 * @var UserDbRepositoryInterface
 	 */
 	private $dbRepository;
 
-	public function __construct(UserDbRepositoryInterface $dbRepository)
-	{
+	public function __construct(UserDbRepositoryInterface $dbRepository) {
 		$this->dbRepository = $dbRepository;
 	}
 
@@ -30,9 +30,8 @@ class FacebookUserProvider implements UserManagerInterface
      * 
      * @return UserInterface
      */ 
-	public function createUserFromUid($uid)
-	{
-		// TODO: Implement createUserFromUid() method.
+	public function createUserFromUid($uid) {
+		return $this->dbRepository->createUser($uid);
 	}
 
 	/**
@@ -46,9 +45,13 @@ class FacebookUserProvider implements UserManagerInterface
 	 * @see UsernameNotFoundException
 	 * @throws UsernameNotFoundException if the user is not found
 	 */
-	public function loadUserByUsername($uid)
-	{
-		// TODO: Implement loadUserByUsername() method.
+	public function loadUserByUsername($uid) {
+		$user = $this->dbRepository->findUserByFacebookUserId(uid);
+		if ($user === null) {
+		    throw new UsernameNotFoundException();
+		}
+		
+		return $user;
 	}
 
 	/**
@@ -63,25 +66,23 @@ class FacebookUserProvider implements UserManagerInterface
 	 * @return UserInterface
 	 * @throws UnsupportedUserException if the account is not supported
 	 */
-	public function refreshUser(UserInterface $user)
-	{
-		if ( !$user instanceof User )
-		{
-			throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_class($user)));
+	public function refreshUser(UserInterface $user) {
+		if (!$user instanceof User) {
+			throw new UnsupportedUserException(sprintf('instances of "%s" are not supported',
+			    get_class($user)));
 		}
 
 		return $this->loadUserByUsername($user->getUsername());
 	}
 
 	/**
-	 * Whether this provider supports the given user class
+	 * Whether this provider supports the given user class.
 	 *
 	 * @param string $class
 	 *
 	 * @return Boolean
 	 */
-	public function supportsClass($class)
-	{
-		return $class === 'Symfony\Component\Security\Core\User\User';
+	public function supportsClass($class) {
+		return $class === 'FHJ\Entities\User';
 	}
 }

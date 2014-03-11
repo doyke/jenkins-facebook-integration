@@ -25,7 +25,7 @@ class UserDbRepository extends BaseRepository implements UserDbRepositoryInterfa
         $connection->beginTransaction();
         try {
             $connection->insert($this->table, array(
-                'facebook_id' => $connection->quote($facebookUserId, \PDO::PARAM_STR),
+                'facebook_id' => $facebookUserId,
                 'email' => '',
                 'realname' => ''
             ));
