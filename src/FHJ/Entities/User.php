@@ -8,7 +8,7 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
  * User
  * @package FHJ\Entities
  */
-class FacebookUserProvider implements AdvancedUserInterface {
+class User implements AdvancedUserInterface {
     
     /**
      * @var int
@@ -35,7 +35,7 @@ class FacebookUserProvider implements AdvancedUserInterface {
     private $admin;
     
     public function __construct($id, $facebookUserId, $email = '', $realname = '', $loginAllowed = false,
-            $admin = false) {
+                                $admin = false) {
         $this->setId($id);
         $this->setFacebookUserId($facebookUserId);
         $this->setEmail($email);
@@ -46,7 +46,7 @@ class FacebookUserProvider implements AdvancedUserInterface {
     
     private function setId($id) {
         if (!is_int($id)) {
-            throw new InvalidArgumentException('The id must be an integer');
+            throw new \InvalidArgumentException('The id must be an integer');
         }
         
         $this->id = $id;
@@ -58,7 +58,7 @@ class FacebookUserProvider implements AdvancedUserInterface {
     
     public function setFacebookUserId($facebookUserId) {
         if (empty($facebookUserId)) {
-            throw new InvalidArgumentException('The facebookUserId cannot be empty');
+            throw new \InvalidArgumentException('The facebookUserId cannot be empty');
         }
         
         $this->facebookUserId = $facebookUserId;
@@ -70,8 +70,7 @@ class FacebookUserProvider implements AdvancedUserInterface {
     
     public function setEmail($email) {
         if (!empty($email) && !filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
-            throw new InvalidArgumentException(
-                'Field "email" must contain a valid email or an empty string');
+            throw new \InvalidArgumentException('Field "email" must contain a valid email or an empty string');
         }
         
         $this->email = $email;
@@ -91,7 +90,7 @@ class FacebookUserProvider implements AdvancedUserInterface {
     
     public function setLoginAllowed($isLoginAllowed) {
         $this->checkBoolean($isLoginAllowed, 'isLoginAllowed');
-        $this->isLoginAllowed = $isLoginAllowed;
+        $this->loginAllowed = $isLoginAllowed;
     }
     
     public function isLoginAllowed() {
@@ -100,7 +99,7 @@ class FacebookUserProvider implements AdvancedUserInterface {
     
     public function setAdmin($isAdmin) {
         $this->checkBoolean($isAdmin, 'isAdmin');
-        $this->isAdmin = $isAdmin;
+        $this->admin = $isAdmin;
     }
     
     public function isAdmin() {
@@ -109,8 +108,7 @@ class FacebookUserProvider implements AdvancedUserInterface {
     
     private function checkBoolean($value, $fieldName) {
         if (!is_bool($value)) {
-            throw new InvalidArgumentException(sprintf('The field "%s" must be of type bool',
-                $fieldName));
+            throw new \InvalidArgumentException(sprintf('The field "%s" must be of type bool', $fieldName));
         }
     }
     

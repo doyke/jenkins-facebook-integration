@@ -8,7 +8,7 @@ use FHJ\Entities\User;
 interface UserDbRepositoryInterface {
 
 	/**
-	 * @param $facebookUserId Facebook user id
+	 * @param $facebookUserId string Facebook user id
 	 *
 	 * @return UserInterface The created user
 	 */
