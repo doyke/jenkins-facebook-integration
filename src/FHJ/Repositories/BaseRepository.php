@@ -35,6 +35,29 @@ class BaseRepository {
 	protected function getLogger() {
 		return $this->logger;
 	}
+	
+	protected function fetchEntityById($table, $idValue) {
+	    $sql = sprintf('SELECT * FROM %s WHERE id = ?', $table);
+        $statement = $this->connection->executeQuery($sql, array(
+            $connection->quote($id, \PDO::PARAM_INT)), \PDO::PARAM_INT);
+            
+        if ($statement->rowCount() === 0) {
+            return null;
+        } else if ($statement->rowCount() > 1) {
+            throw new \RuntimeException(sprintf('more than one result found for id "%d"', $id));
+        }
+            
+        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        $statement->closeCursor();
+        
+        return $result;
+	}
+	
+	protected function deleteEntity($table, $idValue) {
+	    $this->connection->transactional(function(Connection $connection) use ($table, $idValue) {
+	        $connection->delete($table, array('id' => $idValue), array(\PDO::PARAM_INT));
+	    });
+	}
 
     protected function convertBoolToInt($value) {
         return $value ? 1 : 0;

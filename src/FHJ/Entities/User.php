@@ -6,6 +6,7 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
 /**
  * User
+ * @package FHJ\Entities
  */
 class FacebookUserProvider implements AdvancedUserInterface {
     

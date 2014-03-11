@@ -11,6 +11,7 @@ use FHJ\Repositories\UserDbRepositoryInterface;
 
 /**
  * FacebookUserProvider
+ * @package FHJ\Providers
  */
 class FacebookUserProvider implements UserManagerInterface {
     

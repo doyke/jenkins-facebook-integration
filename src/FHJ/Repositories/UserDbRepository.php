@@ -20,10 +20,13 @@ class UserDbRepository extends BaseRepository implements UserDbRepositoryInterfa
 	 * @return UserInterface The created user
 	 */
     public function createUser($facebookUserId) {
-        $this->getLogger()->addInfo('creating new user from facebook id', array('facebook_id' => $facebookUserId));
+        $this->getLogger()->addInfo('creating new user from facebook id',
+            array('facebook_id' => $facebookUserId));
         
         $connection = $this->getConnection();
         $connection->beginTransaction();
+        
+        $user = null;
         try {
             $connection->insert($this->table, array(
                 'facebook_id' => $connection->quote($facebookUserId, \PDO::PARAM_STR),
@@ -34,21 +37,27 @@ class UserDbRepository extends BaseRepository implements UserDbRepositoryInterfa
                 \PDO::PARAM_STR,
                 \PDO::PARAM_STR
             ));
+
+            $insertId = $connection->lastInsertId();
+            $user = new User($insertId, $facebookUserId);
         
             $connection->commit();
         }  catch (Exception $e) {
             $connection->rollback();
             throw $e;
         }
+        
+        return $user;
     }
     
     public function findUserByFacebookUserId($facebookUserId) {
-	    $this->getLogger()->addInfo('looking up user by facebook id', array('facebook_id' => $facebookUserId));
+	    $this->getLogger()->addInfo('looking up user by facebook id',
+	        array('facebook_id' => $facebookUserId));
 
         $connection = $this->getConnection();
         $sql = sprintf('SELECT * FROM %s WHERE facebook_id = ?', $this->table);
         $statement = $connection->executeQuery($sql, array(
-            $connection->quote($facebookUserId, \PDO::PARAM_STR)));
+            $connection->quote($facebookUserId, \PDO::PARAM_STR)), array(\PDO::PARAM_STR));
             
         if ($statement->rowCount() === 0) {
             return null;
@@ -58,6 +67,19 @@ class UserDbRepository extends BaseRepository implements UserDbRepositoryInterfa
         }
             
         $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        $statement->closeCursor();
+        
+        return $this->fillUserEntity($result);
+    }
+    
+    public function findUserById($id) {
+        $this->getLogger()->addInfo('looking up user by id', array('id' => $id));
+
+        $result = $this->fetchEntityById($this->table, $id);
+        if ($result === null) {
+            return null;
+        }
+        
         return $this->fillUserEntity($result);
     }
     
@@ -91,6 +113,12 @@ class UserDbRepository extends BaseRepository implements UserDbRepositoryInterfa
         }
     }
     
+    public function deleteUser(User $user) {
+        $this->getLogger()->addInfo('deleting user', array('id' => $user->getId()));
+
+        $this->deleteEntity($this->table, $user->getId());
+    }
+    
     /**
      * Fills a new User entity by using a result set. 
      *
@@ -99,7 +127,8 @@ class UserDbRepository extends BaseRepository implements UserDbRepositoryInterfa
      * @return User
      */
     private function fillUserEntity(array $resultSet) {
-        
+        return new User($resultSet['id'], $resultSet['facebook_id'], $resultSet['email'],
+            $resultSet['realname'], $resultSet['is_login_allowed'], $resultSet['is_admin']);
     }
 
 }

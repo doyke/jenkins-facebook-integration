@@ -3,6 +3,7 @@
 namespace FHJ\Repositories;
 
 use Symfony\Component\Security\Core\User\UserInterface;
+use FHJ\Entities\User;
 
 interface UserDbRepositoryInterface {
 
@@ -15,6 +16,10 @@ interface UserDbRepositoryInterface {
     
     public function findUserByFacebookUserId($facebookUserId);
     
-    public function updateUser(UserInterface $user);
+    public function findUserById($id);
+    
+    public function updateUser(User $user);
+    
+    public function deleteUser(User $user);
 
 } 
