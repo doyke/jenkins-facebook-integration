@@ -15,8 +15,9 @@ class UserDbRepository extends BaseRepository implements UserDbRepositoryInterfa
     private $table = 'users';
 
 	/**
-	 * @param $facebookUserId Facebook user id
+	 * @param $facebookUserId string Facebook user id
 	 *
+	 * @throws \Exception
 	 * @return UserInterface The created user
 	 */
     public function createUser($facebookUserId) {
@@ -42,7 +43,7 @@ class UserDbRepository extends BaseRepository implements UserDbRepositoryInterfa
             $user = new User($insertId, $facebookUserId);
         
             $connection->commit();
-        }  catch (Exception $e) {
+        }  catch (\Exception $e) {
             $connection->rollback();
             throw $e;
         }
@@ -93,21 +94,21 @@ class UserDbRepository extends BaseRepository implements UserDbRepositoryInterfa
                 'facebook_id' => $connection->quote($user->getFacebookUserId(), \PDO::PARAM_STR),
                 'email' => $connection->quote($user->getEmail(), \PDO::PARAM_STR),
                 'realname' => $connection->quote($user->getRealname(), \PDO::PARAM_STR),
-                'is_login_allowed' => $this->convertBoolToInt($user->isLoginAllowed()),
-                'is_admin' => $this->convertBoolToInt($user->isAdmin()),
+                'is_login_allowed' => $user->isLoginAllowed(),
+                'is_admin' => $user->isAdmin(),
             ), array(
                 'id' => intval($user->getId())
             ), array(
                 \PDO::PARAM_STR,
                 \PDO::PARAM_STR,
                 \PDO::PARAM_STR,
-                \PDO::PARAM_INT,
-                \PDO::PARAM_INT,
+                'boolean',
+                'boolean',
                 \PDO::PARAM_INT
             ));
         
             $connection->commit();
-        }  catch (Exception $e) {
+        }  catch (\Exception $e) {
             $connection->rollback();
             throw $e;
         }
@@ -128,7 +129,11 @@ class UserDbRepository extends BaseRepository implements UserDbRepositoryInterfa
      */
     private function fillUserEntity(array $resultSet) {
         return new User($resultSet['id'], $resultSet['facebook_id'], $resultSet['email'],
-            $resultSet['realname'], $resultSet['is_login_allowed'], $resultSet['is_admin']);
+            $resultSet['realname'],
+	        // The values in the database are integers, the User class only accepts booleans
+	        $resultSet['is_login_allowed'] ? true : false,
+	        $resultSet['is_admin'] ? true : false
+        );
     }
 
 }

@@ -22,6 +22,7 @@ $app->register(new SessionServiceProvider());
 $app->register(new ValidatorServiceProvider());
 $app->register(new FormServiceProvider());
 $app->register(new UrlGeneratorServiceProvider());
+$app->register(new ServiceControllerServiceProvider());
 
 $app->register(new FacebookServiceProvider(), array(
 	'facebook.config' => array(
@@ -88,7 +89,6 @@ $app->register(new TwigServiceProvider(), array(
 ));
 
 if ($app['debug'] && isset($app['cache.path'])) {
-    $app->register(new ServiceControllerServiceProvider());
     $app->register(new WebProfilerServiceProvider(), array(
         'profiler.cache_dir' => $app['cache.path'].'/profiler',
     ));
