@@ -80,35 +80,35 @@ class Project {
     }
     
     public function setSecretKey($secretKey) {
-        
+        $this->secretKey = $secretKey;
     }
     
     public function getSecretKey() {
-        
+        return $this->secretKey;
     }
     
     public function setSvnplotDbPath($svnplotDbPath) {
-        
+        $this->svnplotDbPath = $svnplotDbPath;
     }
     
     public function getSvnplotDbPath() {
-        
+        return $this->svnplotDbPath;
     }
     
     public function setTitle($title) {
-        
+        $this->title = $title;
     }
     
     public function getTitle() {
-        
+        return $this->title;
     }
     
     public function setDescription($description) {
-        
+        $this->description = $description;
     }
     
     public function getDescription() {
-        
+        return $this->description;
     }
     
     private function checkBoolean($value, $fieldName) {
