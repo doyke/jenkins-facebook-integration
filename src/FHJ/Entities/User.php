@@ -91,7 +91,7 @@ class FacebookUserProvider implements AdvancedUserInterface {
     
     public function setLoginAllowed($isLoginAllowed) {
         $this->checkBoolean($isLoginAllowed, 'isLoginAllowed');
-        $this->isLoginAllowed = $isLoginAllowed;
+        $this->loginAllowed = $isLoginAllowed;
     }
     
     public function isLoginAllowed() {
@@ -100,7 +100,7 @@ class FacebookUserProvider implements AdvancedUserInterface {
     
     public function setAdmin($isAdmin) {
         $this->checkBoolean($isAdmin, 'isAdmin');
-        $this->isAdmin = $isAdmin;
+        $this->admin = $isAdmin;
     }
     
     public function isAdmin() {
@@ -229,7 +229,7 @@ class FacebookUserProvider implements AdvancedUserInterface {
      * @see DisabledException
      */
     public function isEnabled() {
-         return !!$this->loginAllowed; // !! = double negate to cast to bool
+         return $this->loginAllowed;
     }
     
 }
