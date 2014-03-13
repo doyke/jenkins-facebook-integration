@@ -1,5 +1,6 @@
 <?php
 
+use Silex\Application;
 use Silex\Provider\DoctrineServiceProvider;
 use Silex\Provider\FormServiceProvider;
 use Silex\Provider\MonologServiceProvider;
@@ -17,6 +18,7 @@ use Silex\Provider\FacebookServiceProvider;
 use FHJ\Providers\FacebookUserProvider;
 use FHJ\Repositories\UserDbRepository;
 use FHJ\Repositories\ProjectDbRepository;
+use FHJ\Controllers\HomepageController;
 use FHJ\Controllers\UserListController;
 use FHJ\Controllers\UserDeleteController;
 use FHJ\Controllers\UserEditController;
@@ -161,6 +163,10 @@ unset($dbDriver, $dbHost, $dbName, $dbUser, $dbPassword);
 $app['repository.users'] = new UserDbRepository($app['dbs']['db'], $app['monolog']);
 $app['repository.projects'] = new ProjectDbRepository($app['dbs']['db'], $app['monolog']);
 
+$app['controller.homepage'] = $app->share(function(Application $app) {
+	return new HomepageController($app);
+});
+
 $app['controller.userList'] = $app->share(function(Application $app) {
     return new UserListController($app);
 });
@@ -174,7 +180,7 @@ $app['controller.userEdit'] = $app->share(function(Application $app) {
 });
 
 $app['controller.projectList'] = $app->share(function(Application $app) {
-    return new ProjectListOwnController($app);
+    return new ProjectListController($app);
 });
 
 $app['controller.projectDelete'] = $app->share(function(Application $app) {

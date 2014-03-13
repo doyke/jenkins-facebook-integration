@@ -5,14 +5,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints as Assert;
 
-$app->match('/', function() use ($app) {
-//    $app['session']->getFlashBag()->add('warning', 'Warning flash message');
-//    $app['session']->getFlashBag()->add('info', 'Info flash message');
-//    $app['session']->getFlashBag()->add('success', 'Success flash message');
-//    $app['session']->getFlashBag()->add('error', 'Error flash message');
-
-    return $app['twig']->render('index.html.twig');
-})->bind('homepage');
+$app->match('/',                            'controller.homepage:indexAction')
+	->bind('homepage');
 
 $app->match('/projects',                    'controller.projectList:listOwnAction')
     ->bind('projects')
