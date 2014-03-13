@@ -14,6 +14,24 @@ $app->match('/', function() use ($app) {
     return $app['twig']->render('index.html.twig');
 })->bind('homepage');
 
+$app->match('/projects',                    'controller.projectList:listOwnAction')
+    ->bind('projects');
+$app->match('/projects/all',                'controller.projectList:listAllAction')
+    ->bind('projectsAll');
+$app->match('/projects/{projectId}/delete', 'controller.projectDelete:deleteAction')
+    ->bind('projectDelete');
+$app->match('/projects/{projectId}/edit',   'controller.projectEdit:editAction')
+    ->bind('projectEdit');
+$app->match('/projects/new',                'controller.projectEdit:newAction')
+    ->bind('projectNew');
+
+$app->match('/users',                       'controller.userList:listAllAction')
+    ->bind('users');
+$app->match('/users/{userId}/delete',       'controller.userDelete:deleteAction')
+    ->bind('userDelete');
+$app->match('/users/{userId}/edit',         'controller.userEdit:editAction')
+    ->bind('userEdit');
+
 $app->match('/login', function(Request $request) use ($app) {
     $form = $app['form.factory']->createBuilder('form')
         ->add('username', 'text', array('label' => 'Username', 'data' => $app['session']->get('_security.last_username')))

@@ -4,6 +4,7 @@ namespace FHJ\Controllers;
 
 use Silex\Application;
 use Monolog\Logger;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 use FHJ\Repositories\UserDbRepositoryInterface;
 use FHJ\Repositories\ProjectDbRepositoryInterface;
 
@@ -38,6 +39,13 @@ class BaseController {
 	 */
 	protected function getProjectRepository() {
 		return $this->application['repository.projects'];
+	}
+	
+	/**
+	 * @return SecurityContextInterface
+	 */ 
+	protected function getSecurity() {
+	    return $this->application['security'];
 	}
 
 }

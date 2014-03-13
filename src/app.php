@@ -17,6 +17,12 @@ use Silex\Provider\FacebookServiceProvider;
 use FHJ\Providers\FacebookUserProvider;
 use FHJ\Repositories\UserDbRepository;
 use FHJ\Repositories\ProjectDbRepository;
+use FHJ\Controllers\UserListController;
+use FHJ\Controllers\UserDeleteController;
+use FHJ\Controllers\UserEditController;
+use FHJ\Controllers\ProjectListController;
+use FHJ\Controllers\ProjectDeleteController;
+use FHJ\Controllers\ProjectEditController;
 
 $app->register(new SessionServiceProvider());
 $app->register(new ValidatorServiceProvider());
@@ -154,5 +160,31 @@ unset($dbDriver, $dbHost, $dbName, $dbUser, $dbPassword);
 
 $app['repository.users'] = new UserDbRepository($app['dbs']['db'], $app['monolog']);
 $app['repository.projects'] = new ProjectDbRepository($app['dbs']['db'], $app['monolog']);
+
+$app['controller.userList'] = $app->share(function(Application $app) {
+    return new UserListController($app);
+});
+
+$app['controller.userDelete'] = $app->share(function(Application $app) {
+    return new UserDeleteController($app);
+});
+
+$app['controller.userEdit'] = $app->share(function(Application $app) {
+    return new UserEditController($app);
+});
+
+$app['controller.projectList'] = $app->share(function(Application $app) {
+    return new ProjectListOwnController($app);
+});
+
+$app['controller.projectDelete'] = $app->share(function(Application $app) {
+    return new ProjectDeleteController($app);
+});
+
+$app['controller.projectEdit'] = $app->share(function(Application $app) {
+    return new ProjectEditController($app);
+});
+
+
 
 return $app;
