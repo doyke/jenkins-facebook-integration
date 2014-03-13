@@ -2,7 +2,6 @@
 
 namespace FHJ\Repositories;
 
-use Doctrine\DBAL\Connection;
 use Symfony\Component\Security\Core\User\UserInterface;
 use FHJ\Entities\User;
 

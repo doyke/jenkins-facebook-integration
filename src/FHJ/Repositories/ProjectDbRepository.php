@@ -21,8 +21,7 @@ class ProjectDbRepository extends BaseRepository implements ProjectDbRepositoryI
         
         $connection = $this->getConnection();
         $connection->beginTransaction();
-        
-        $user = null;
+
         try {
             $connection->insert($this->table, array(
                 'user_id' => intval($user->getId()),
@@ -59,13 +58,13 @@ class ProjectDbRepository extends BaseRepository implements ProjectDbRepositoryI
             $connection->update($this->table, array(
                 'user_id' => intval($project->getUserId()),
                 'is_enabled' => $project->isEnabled(),
-                'facebook_group_id' => $connection->quote($facebookGroupId, \PDO::PARAM_STR),
-                'secret_key' => $connection->quote($user->getSecretKey(), \PDO::PARAM_STR),
-                'svnplot_db_path' => $connection->quote($user->getSvnplotDbPath(), \PDO::PARAM_STR),
-                'title' => $connection->quote($user->getTitle(), \PDO::PARAM_STR),
-                'description' => $connection->quote($user->getDescription(), \PDO::PARAM_STR),
+                'facebook_group_id' => $connection->quote($project->getFacebookGroupId(), \PDO::PARAM_STR),
+                'secret_key' => $connection->quote($project->getSecretKey(), \PDO::PARAM_STR),
+                'svnplot_db_path' => $connection->quote($project->getSvnplotDbPath(), \PDO::PARAM_STR),
+                'title' => $connection->quote($project->getTitle(), \PDO::PARAM_STR),
+                'description' => $connection->quote($project->getDescription(), \PDO::PARAM_STR),
             ), array(
-                'id' => intval($user->getId())
+                'id' => intval($project->getId())
             ), array(
                 \PDO::PARAM_INT,
                 'boolean',
