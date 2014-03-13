@@ -18,10 +18,10 @@ $projects->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' 
 $projects->addColumn('user_id', 'integer', array('unsigned' => true));
 $projects->addColumn('is_enabled', 'boolean');
 $projects->addColumn('facebook_group_id', 'string', array('length' => 30));
-$projects->addColumn('secret_key', 'string', array('length' => 60));
-$projects->addColumn('svnplot_db_path', 'string', array('length' => 255));
+$projects->addColumn('secret_key', 'string', array('length' => 60, 'default' => ''));
+$projects->addColumn('svnplot_db_path', 'string', array('length' => 255, 'default' => ''));
 $projects->addColumn('title', 'string', array('length' => 100));
-$projects->addColumn('description', 'string', array('length' => 600));
+$projects->addColumn('description', 'string', array('length' => 600, 'default' => ''));
 $projects->setPrimaryKey(array('id'));
 $projects->addForeignKeyConstraint($users, array('user_id'), array('id'));
 

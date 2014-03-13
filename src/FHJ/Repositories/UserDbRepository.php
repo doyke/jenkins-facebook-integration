@@ -23,6 +23,7 @@ class UserDbRepository extends BaseRepository implements UserDbRepositoryInterfa
     public function createUser($facebookUserId) {
         $this->getLogger()->addInfo('creating new user from facebook id',
             array('facebook_id' => $facebookUserId));
+        $this->checkNotEmpty($facebookUserId, 'facebookUserId');
         
         $connection = $this->getConnection();
         $connection->beginTransaction();
@@ -38,7 +39,7 @@ class UserDbRepository extends BaseRepository implements UserDbRepositoryInterfa
             ));
 
             $insertId = $connection->lastInsertId();
-            $user = new User($insertId, $facebookUserId);
+            $user = new User(intval($insertId), $facebookUserId);
         
             $connection->commit();
         }  catch (\Exception $e) {
@@ -47,39 +48,6 @@ class UserDbRepository extends BaseRepository implements UserDbRepositoryInterfa
         }
         
         return $user;
-    }
-    
-    public function findUserByFacebookUserId($facebookUserId) {
-	    $this->getLogger()->addInfo('looking up user by facebook id',
-	        array('facebook_id' => $facebookUserId));
-
-        $connection = $this->getConnection();
-        $sql = sprintf('SELECT * FROM %s WHERE facebook_id = ?', $this->table);
-        $statement = $connection->executeQuery($sql, array(
-            $connection->quote($facebookUserId, \PDO::PARAM_STR)), array(\PDO::PARAM_STR));
-            
-        if ($statement->rowCount() === 0) {
-            return null;
-        } else if ($statement->rowCount() > 1) {
-            throw new \RuntimeException(sprintf('more than one result found for facebook_id "%s"',
-                $facebookUserId));
-        }
-            
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
-        $statement->closeCursor();
-        
-        return $this->fillUserEntity($result);
-    }
-    
-    public function findUserById($id) {
-        $this->getLogger()->addInfo('looking up user by id', array('id' => $id));
-
-        $result = $this->fetchEntityById($this->table, $id);
-        if ($result === null) {
-            return null;
-        }
-        
-        return $this->fillUserEntity($result);
     }
     
     public function updateUser(User $user) {
@@ -120,6 +88,44 @@ class UserDbRepository extends BaseRepository implements UserDbRepositoryInterfa
         $this->deleteEntity($this->table, $user->getId());
     }
     
+    public function findAllUsers() {
+        $this->getLogger()->addInfo('looking up all users');
+        
+        $sql = sprintf('SELECT * FROM %s', $this->table);
+        $statement = $this->getConnection()->executeQuery($sql);
+        
+        return $this->fetchManyEntitiesBySql($statement);
+    }
+    
+    public function findUserByFacebookUserId($facebookUserId) {
+	    $this->getLogger()->addInfo('looking up user by facebook id',
+	        array('facebook_id' => $facebookUserId));
+
+        $connection = $this->getConnection();
+        $sql = sprintf('SELECT * FROM %s WHERE facebook_id = ?', $this->table);
+        $statement = $connection->executeQuery($sql, array(
+            $connection->quote($facebookUserId, \PDO::PARAM_STR)), array(\PDO::PARAM_STR));
+            
+        $result = $this->fetchEntityBySql($statement);
+        if ($result === null) {
+            return null;
+        }
+        
+        return $this->fillUserEntity($result);
+    }
+    
+    public function findUserById($id) {
+        $this->checkInt($id, 'id');
+        $this->getLogger()->addInfo('looking up user by id', array('id' => $id));
+
+        $result = $this->fetchEntityById($this->table, $id);
+        if ($result === null) {
+            return null;
+        }
+        
+        return $this->fillUserEntity($result);
+    }
+    
     /**
      * Fills a new User entity by using a result set. 
      *
@@ -135,7 +141,7 @@ class UserDbRepository extends BaseRepository implements UserDbRepositoryInterfa
         }
         
         return new User(intval($resultSet['id']), $resultSet['facebook_id'], $resultSet['email'],
-            $resultSet['facebook_access_token'], $expirationDate
+            $resultSet['facebook_access_token'], $expirationDate,
 	        // The values in the database are integers, the User class only accepts booleans
 	        $resultSet['is_login_allowed'] ? true : false,
 	        $resultSet['is_admin'] ? true : false

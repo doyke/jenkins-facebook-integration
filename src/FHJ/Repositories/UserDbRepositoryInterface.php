@@ -14,12 +14,14 @@ interface UserDbRepositoryInterface {
 	 */
     public function createUser($facebookUserId);
     
-    public function findUserByFacebookUserId($facebookUserId);
-    
-    public function findUserById($id);
-    
     public function updateUser(User $user);
     
     public function deleteUser(User $user);
+    
+    public function findAllUsers();
+    
+    public function findUserByFacebookUserId($facebookUserId);
+    
+    public function findUserById($id);
 
 } 
