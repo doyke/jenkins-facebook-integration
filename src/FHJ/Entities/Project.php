@@ -78,10 +78,10 @@ class Project extends BaseEntity {
     
     public function setFacebookGroupId($facebookGroupId) {
         if (empty($facebookGroupId)) {
-            throw new InvalidArgumentException('The facebookGroupId cannot be empty');
+            throw new \InvalidArgumentException('The facebookGroupId cannot be empty');
         }
         
-        $this->facebookUserId = $facebookGroupId;
+        $this->facebookGroupId = $facebookGroupId;
     }
     
     public function getFacebookGroupId() {

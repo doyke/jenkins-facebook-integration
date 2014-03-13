@@ -8,7 +8,7 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
  * User
  * @package FHJ\Entities
  */
-class User implements AdvancedUserInterface {
+class User extends BaseEntity implements AdvancedUserInterface {
     
     /**
      * @var int
@@ -96,10 +96,12 @@ class User implements AdvancedUserInterface {
     public function getFacebookAccessToken() {
         return $this->facebookAccessToken;
     }
-    
-    /**
-     * @param $facebookAccessExpiration \DateTime|null
-     */
+
+	/**
+	 * @param $facebookAccessExpiration \DateTime|null
+	 *
+	 * @throws \InvalidArgumentException
+	 */
     public function setFacebookAccessExpiration($facebookAccessExpiration) {
         if (!is_null($facebookAccessExpiration) && !$facebookAccessExpiration instanceof \DateTime) {
             throw new \InvalidArgumentException(
