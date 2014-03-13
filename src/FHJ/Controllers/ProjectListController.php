@@ -12,11 +12,18 @@ use Symfony\Component\HttpFoundation\Response;
 class ProjectListController extends BaseController {
 
     public function listOwnAction(Request $request) {
+        $user = $this->getSecurity()->getUser();
+        $projects = $this->getProjectRepository()->findProjectsByUser($user);
         
+        return $this->getTemplateEngine()->render('projects.html.twig', array(
+            'projects'  => $projects
+        ));
     }
     
     public function listAllAction(Request $request) {
-        
+        return $this->getTemplateEngine()->render('projectsAll.html.twig', array(
+            'projects'  => $this->getProjectRepository()->findAllProjects()
+        ));
     }
     
 }

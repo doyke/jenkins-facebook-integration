@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 class UserDeleteController extends BaseController {
 
     public function deleteAction(Request $request, $userId) {
-        
+        // prevent deletion of currently logged-in user
     }
     
 }

@@ -47,5 +47,9 @@ class BaseController {
 	protected function getSecurity() {
 	    return $this->application['security'];
 	}
+	
+	protected function getTemplateEngine() {
+	    return $this->application['twig'];
+	}
 
 }

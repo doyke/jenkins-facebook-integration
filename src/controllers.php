@@ -15,22 +15,30 @@ $app->match('/', function() use ($app) {
 })->bind('homepage');
 
 $app->match('/projects',                    'controller.projectList:listOwnAction')
-    ->bind('projects');
+    ->bind('projects')
+    ->secure('ROLE_USER');
 $app->match('/projects/all',                'controller.projectList:listAllAction')
-    ->bind('projectsAll');
+    ->bind('projectsAll')
+    ->secure('ROLE_ADMIN');
 $app->match('/projects/{projectId}/delete', 'controller.projectDelete:deleteAction')
-    ->bind('projectDelete');
+    ->bind('projectDelete')
+    ->secure('ROLE_USER');
 $app->match('/projects/{projectId}/edit',   'controller.projectEdit:editAction')
-    ->bind('projectEdit');
+    ->bind('projectEdit')
+    ->secure('ROLE_USER');
 $app->match('/projects/new',                'controller.projectEdit:newAction')
-    ->bind('projectNew');
+    ->bind('projectNew')
+    ->secure('ROLE_USER');
 
 $app->match('/users',                       'controller.userList:listAllAction')
-    ->bind('users');
+    ->bind('users')
+    ->secure('ROLE_ADMIN');
 $app->match('/users/{userId}/delete',       'controller.userDelete:deleteAction')
-    ->bind('userDelete');
+    ->bind('userDelete')
+    ->secure('ROLE_ADMIN');
 $app->match('/users/{userId}/edit',         'controller.userEdit:editAction')
-    ->bind('userEdit');
+    ->bind('userEdit')
+    ->secure('ROLE_ADMIN');
 
 $app->match('/login', function(Request $request) use ($app) {
     $form = $app['form.factory']->createBuilder('form')

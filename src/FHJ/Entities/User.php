@@ -249,4 +249,12 @@ class User implements AdvancedUserInterface {
          return $this->loginAllowed;
     }
     
+    public function equals($other) {
+        if (!$other instanceof User) {
+            return false;
+        }
+        
+        return $this->getId() === $other->getId();
+    }
+    
 }
