@@ -22,7 +22,15 @@ class User implements AdvancedUserInterface {
     
     private $email;
     
-    private $realname;
+    /**
+     * @var string
+     */ 
+    private $facebookAccessToken;
+    
+    /**
+     * @var \DateTime|null
+     */ 
+    private $facebookAccessExpiration;
     
     /**
      * @var bool
@@ -34,12 +42,13 @@ class User implements AdvancedUserInterface {
      */ 
     private $admin;
     
-    public function __construct($id, $facebookUserId, $email = '', $realname = '', $loginAllowed = false,
-                                $admin = false) {
+    public function __construct($id, $facebookUserId, $email = '', $facebookAccessToken = '',
+                                \DateTime $facebookAccessExpiration = null, $loginAllowed = false, $admin = false) {
         $this->setId($id);
         $this->setFacebookUserId($facebookUserId);
         $this->setEmail($email);
-        $this->setRealname($realname);
+        $this->setFacebookAccessToken($facebookAccessToken);
+        $this->setFacebookAccessExpiration($facebookAccessExpiration);
         $this->setLoginAllowed($loginAllowed);
         $this->setAdmin($admin);
     }
@@ -80,12 +89,28 @@ class User implements AdvancedUserInterface {
         return $this->email;
     }
     
-    public function setRealname($realname) {
-        $this->realname = $realname;
+    public function setFacebookAccessToken($facebookAccessToken) {
+        $this->facebookAccessToken = $facebookAccessToken;
     }
     
-    public function getRealname() {
-        return $this->realname;
+    public function getFacebookAccessToken() {
+        return $this->facebookAccessToken;
+    }
+    
+    /**
+     * @param $facebookAccessExpiration \DateTime|null
+     */
+    public function setFacebookAccessExpiration($facebookAccessExpiration) {
+        if (!is_null($facebookAccessExpiration) && !$facebookAccessExpiration instanceof \DateTime) {
+            throw new \InvalidArgumentException(
+                'Field "facebookAccessExpiration" must either null or a valid DateTime instance');
+        }
+        
+        $this->facebookAccessExpiration = $facebookAccessExpiration;
+    }
+    
+    public function getFacebookAccessExpiration() {
+        return $this->facebookAccessExpiration;
     }
     
     public function setLoginAllowed($isLoginAllowed) {

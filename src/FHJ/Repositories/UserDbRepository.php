@@ -31,10 +31,8 @@ class UserDbRepository extends BaseRepository implements UserDbRepositoryInterfa
         try {
             $connection->insert($this->table, array(
                 'facebook_id' => $connection->quote($facebookUserId, \PDO::PARAM_STR),
-                'email' => '',
-                'realname' => ''
+                'email' => ''
             ), array(
-                \PDO::PARAM_STR,
                 \PDO::PARAM_STR,
                 \PDO::PARAM_STR
             ));
@@ -93,7 +91,8 @@ class UserDbRepository extends BaseRepository implements UserDbRepositoryInterfa
             $connection->update($this->table, array(
                 'facebook_id' => $connection->quote($user->getFacebookUserId(), \PDO::PARAM_STR),
                 'email' => $connection->quote($user->getEmail(), \PDO::PARAM_STR),
-                'realname' => $connection->quote($user->getRealname(), \PDO::PARAM_STR),
+                'facebook_access_token' => $connection->quote($user->getFacebookAccessToken(), \PDO::PARAM_STR),
+                'facebook_access_expiration' => $user->getFacebookAccessExpiration(),
                 'is_login_allowed' => $user->isLoginAllowed(),
                 'is_admin' => $user->isAdmin(),
             ), array(
@@ -102,6 +101,7 @@ class UserDbRepository extends BaseRepository implements UserDbRepositoryInterfa
                 \PDO::PARAM_STR,
                 \PDO::PARAM_STR,
                 \PDO::PARAM_STR,
+                'datetime',
                 'boolean',
                 'boolean',
                 \PDO::PARAM_INT
@@ -128,8 +128,14 @@ class UserDbRepository extends BaseRepository implements UserDbRepositoryInterfa
      * @return User
      */
     private function fillUserEntity(array $resultSet) {
-        return new User($resultSet['id'], $resultSet['facebook_id'], $resultSet['email'],
-            $resultSet['realname'],
+        $expirationDate = null;
+        if ($resultSet['facebook_access_expiration'] !== null
+                && intval($resultSet['facebook_access_expiration']) > 0) {
+            $expirationDate = \DateTime::createFromFormat('U', $resultSet['facebook_access_expiration']);
+        }
+        
+        return new User(intval($resultSet['id']), $resultSet['facebook_id'], $resultSet['email'],
+            $resultSet['facebook_access_token'], $expirationDate
 	        // The values in the database are integers, the User class only accepts booleans
 	        $resultSet['is_login_allowed'] ? true : false,
 	        $resultSet['is_admin'] ? true : false
