@@ -6,7 +6,7 @@ namespace FHJ\Entities;
  * Project
  * @package FHJ\Entities
  */
-class Project {
+class Project extends BaseEntity {
     
     /**
      * @var int
@@ -42,20 +42,29 @@ class Project {
     
     private $description;
 
-    public function __construct() {
-        
+    public function __construct($id, $userId, $facebookGroupId, $enabled = false, $secretKey = '',
+                                $svnplotDbPath = '', $title = '', $description = '') {
+        $this->setId($id);
+        $this->setUserId($userId);
+        $this->setFacebookGroupId($facebookGroupId);
+        $this->setEnabled($enabled);
+        $this->setSecretKey($secretKey);
+        $this->setSvnplotDbPath($svnplotDbPath);
+        $this->setTitle($title);
+        $this->setDescription($description);
     }
     
     public function getId() {
-        
+        return $this->id;
     }
     
     public function setUserId($userId) {
-        
+        $this->checkInt($userId, 'userId');
+        $this->userId = $userId;
     }
     
     public function getUserId() {
-        
+        return $this->userId;
     }
     
     public function setEnabled($isEnabled) {
@@ -109,13 +118,6 @@ class Project {
     
     public function getDescription() {
         return $this->description;
-    }
-    
-    private function checkBoolean($value, $fieldName) {
-        if (!is_bool($value)) {
-            throw new InvalidArgumentException(sprintf('The field "%s" must be of type bool',
-                $fieldName));
-        }
     }
 
 }

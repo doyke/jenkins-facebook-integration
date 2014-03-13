@@ -131,12 +131,6 @@ class User implements AdvancedUserInterface {
         return $this->admin;
     }
     
-    private function checkBoolean($value, $fieldName) {
-        if (!is_bool($value)) {
-            throw new \InvalidArgumentException(sprintf('The field "%s" must be of type bool', $fieldName));
-        }
-    }
-    
     /**
      * Returns the roles granted to the user.
      *
