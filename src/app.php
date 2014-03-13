@@ -73,6 +73,10 @@ $app->register(new SecurityServiceProvider(), array(
     ),
 ));
 
+$app['security.role_hierarchy'] = array(
+	'ROLE_ADMIN' => array('ROLE_USER'),
+);
+
 $app->register(new TranslationServiceProvider());
 $app['translator'] = $app->share($app->extend('translator', function($translator, $app) {
     $translator->addLoader('yaml', new YamlFileLoader());
