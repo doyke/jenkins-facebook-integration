@@ -143,7 +143,9 @@ $app->match('/logout', function() use ($app) {
 })->bind('logout');
 
 $app->error(function (\Exception $e, $code) use ($app) {
-    if ($app['debug']) {
+	$app['monolog']->addError(sprintf('An exception occured: %s', $e->getMessage()), array('exception' => $e));
+
+	if ($app['debug']) {
         return;
     }
 

@@ -26,6 +26,8 @@ use FHJ\Controllers\ProjectListController;
 use FHJ\Controllers\ProjectDeleteController;
 use FHJ\Controllers\ProjectEditController;
 
+$app['route_class'] = 'FHJ\Framework\SecuredRoute';
+
 $app->register(new SessionServiceProvider());
 $app->register(new ValidatorServiceProvider());
 $app->register(new FormServiceProvider());
