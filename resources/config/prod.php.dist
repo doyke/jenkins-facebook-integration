@@ -1,6 +1,23 @@
 <?php
 
-// Local
+// Doctrine (db)
+$dbDriver = 'pdo_mysql';
+$dbHost = '';
+$dbName = '';
+$dbUser = '';
+$dbPassword = '';
+
+// Facebook app settings
+$app['facebook.appId'] = '';
+$app['facebook.appName'] = '';
+$app['facebook.secret'] = '';
+
+//
+// NO EDITING NEEDED BELOW THIS LINE
+// ---------------------------------
+//
+
+// Locale
 $app['locale'] = 'en';
 $app['session.default_locale'] = $app['locale'];
 $app['translator.messages'] = array(
@@ -30,19 +47,3 @@ $app['assetic.input.path_to_js']        = array(
     $app['assetic.input.path_to_assets'] . '/js/script.js',
 );
 $app['assetic.output.path_to_js']       = 'js/scripts.js';
-
-// Doctrine (db)
-$dbDriver = 'pdo_mysql';
-$dbHost = '';
-$dbName = '';
-$dbUser = '';
-$dbPassword = '';
-
-// Full path to the SVNPlot sqlite database
-$app['svnplot.db'] = '';
-
-$app['facebook.appId'] = '';
-$app['facebook.appName'] = '';
-$app['facebook.secret'] = '';
-
-
