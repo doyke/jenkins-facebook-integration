@@ -4,6 +4,7 @@ namespace FHJ\Controllers;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use FHJ\Entities\Project;
 
 /**
  * ProjectEditController
@@ -11,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ProjectEditController extends BaseController {
 
-    public function editAction(Request $request, $projectId) {
+    public function editAction(Request $request, Project $project) {
         
     }
     

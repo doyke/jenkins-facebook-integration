@@ -2,16 +2,13 @@
 
 namespace FHJ\Controllers;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-
 /**
  * ProjectListController
  * @package FHJ\Controllers
  */
 class ProjectListController extends BaseController {
 
-    public function listOwnAction(Request $request) {
+    public function listOwnAction() {
         $user = $this->getSecurity()->getUser();
         $projects = $this->getProjectRepository()->findProjectsByUser($user);
         
@@ -20,7 +17,7 @@ class ProjectListController extends BaseController {
         ));
     }
     
-    public function listAllAction(Request $request) {
+    public function listAllAction() {
         return $this->getTemplateEngine()->render('projectsAll.html.twig', array(
             'projects'  => $this->getProjectRepository()->findAllProjects()
         ));

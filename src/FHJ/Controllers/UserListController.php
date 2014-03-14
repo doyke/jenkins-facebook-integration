@@ -2,16 +2,13 @@
 
 namespace FHJ\Controllers;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-
 /**
  * UserListController
  * @package FHJ\Controllers
  */
 class UserListController extends BaseController {
 
-    public function listAllAction(Request $request) {
+    public function listAllAction() {
         $currentUser = $this->getSecurity()->getUser();
         $users = $this->getUserRepository()->findAllUsers();
         

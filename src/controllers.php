@@ -14,11 +14,15 @@ $app->match('/projects',                    'controller.projectList:listOwnActio
 $app->match('/projects/all',                'controller.projectList:listAllAction')
     ->bind('projectsAll')
     ->secure('ROLE_ADMIN');
-$app->match('/projects/{projectId}/delete', 'controller.projectDelete:deleteAction')
-    ->bind('projectDelete')
+$app->match('/projects/{project}/delete',   'controller.projectDelete:deleteAction')
+	->assert('project', '\d+')
+	->convert('project', 'converter.project:convert')
+	->bind('projectDelete')
     ->secure('ROLE_USER');
-$app->match('/projects/{projectId}/edit',   'controller.projectEdit:editAction')
-    ->bind('projectEdit')
+$app->match('/projects/{project}/edit',     'controller.projectEdit:editAction')
+	->assert('project', '\d+')
+	->convert('project', 'converter.project:convert')
+	->bind('projectEdit')
     ->secure('ROLE_USER');
 $app->match('/projects/new',                'controller.projectEdit:newAction')
     ->bind('projectNew')
@@ -27,11 +31,15 @@ $app->match('/projects/new',                'controller.projectEdit:newAction')
 $app->match('/users',                       'controller.userList:listAllAction')
     ->bind('users')
     ->secure('ROLE_ADMIN');
-$app->match('/users/{userId}/delete',       'controller.userDelete:deleteAction')
-    ->bind('userDelete')
+$app->match('/users/{user}/delete',         'controller.userDelete:deleteAction')
+	->assert('user', '\d+')
+	->convert('user', 'converter.user:convert')
+	->bind('userDelete')
     ->secure('ROLE_ADMIN');
-$app->match('/users/{userId}/edit',         'controller.userEdit:editAction')
-    ->bind('userEdit')
+$app->match('/users/{user}/edit',           'controller.userEdit:editAction')
+	->assert('user', '\d+')
+	->convert('user', 'converter.user:convert')
+	->bind('userEdit')
     ->secure('ROLE_ADMIN');
 
 $app->match('/login', function(Request $request) use ($app) {

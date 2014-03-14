@@ -4,6 +4,7 @@ namespace FHJ\Controllers;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use FHJ\Entities\Project;
 
 /**
  * ProjectDeleteController
@@ -11,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ProjectDeleteController extends BaseController {
 
-    public function deleteAction(Request $request, $projectId) {
+    public function deleteAction(Request $request, Project $project) {
         
     }
     

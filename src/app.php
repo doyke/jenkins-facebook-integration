@@ -18,6 +18,8 @@ use Silex\Provider\FacebookServiceProvider;
 use FHJ\Providers\FacebookUserProvider;
 use FHJ\Repositories\UserDbRepository;
 use FHJ\Repositories\ProjectDbRepository;
+use FHJ\Converters\ProjectConverter;
+use FHJ\Converters\UserConverter;
 use FHJ\Controllers\HomepageController;
 use FHJ\Controllers\UserListController;
 use FHJ\Controllers\UserDeleteController;
@@ -26,6 +28,7 @@ use FHJ\Controllers\ProjectListController;
 use FHJ\Controllers\ProjectDeleteController;
 use FHJ\Controllers\ProjectEditController;
 
+// this is needed
 $app['route_class'] = 'FHJ\Framework\SecuredRoute';
 
 $app->register(new SessionServiceProvider());
@@ -166,9 +169,20 @@ $app->register(new DoctrineServiceProvider(), array(
 
 unset($dbDriver, $dbHost, $dbName, $dbUser, $dbPassword);
 
+// Repositories
 $app['repository.users'] = new UserDbRepository($app['dbs']['db'], $app['monolog']);
 $app['repository.projects'] = new ProjectDbRepository($app['dbs']['db'], $app['monolog']);
 
+// Converters
+$app['converter.user'] = $app->share(function () use($app) {
+	return new UserConverter($app['repository.users'], $app['monolog']);
+});
+
+$app['converter.project'] = $app->share(function () use($app) {
+	return new ProjectConverter($app['repository.projects'], $app['monolog']);
+});
+
+// Controllers
 $app['controller.homepage'] = $app->share(function(Application $app) {
 	return new HomepageController($app);
 });

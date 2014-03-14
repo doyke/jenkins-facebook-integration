@@ -12,6 +12,7 @@ use Silex\Route\SecurityTrait;
  */
 class SecuredRoute extends Route {
 
+	// this provides us the secure() method for restricting a controller method to certain user roles
 	use SecurityTrait;
 
 } 

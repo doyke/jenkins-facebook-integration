@@ -4,6 +4,7 @@ namespace FHJ\Controllers;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use FHJ\Entities\User;
 
 /**
  * UserEditController
@@ -11,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class UserEditController extends BaseController {
 
-    public function editAction(Request $request, $userId) {
+    public function editAction(Request $request, User $user) {
         
     }
     
