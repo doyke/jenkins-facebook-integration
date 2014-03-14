@@ -78,7 +78,7 @@ class User extends BaseEntity implements AdvancedUserInterface {
     }
     
     public function setEmail($email) {
-        if (!empty($email) && !filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
+        if (!empty($email) && filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
             throw new \InvalidArgumentException('Field "email" must contain a valid email or an empty string');
         }
         

@@ -26,9 +26,9 @@ class ProjectDbRepository extends BaseRepository implements ProjectDbRepositoryI
             $connection->insert($this->table, array(
                 'user_id' => intval($user->getId()),
                 'is_enabled' => false,
-                'facebook_group_id' => $connection->quote($facebookGroupId, \PDO::PARAM_STR),
-                'title' => $connection->quote($title, \PDO::PARAM_STR),
-                'description' => $connection->quote($description, \PDO::PARAM_STR),
+                'facebook_group_id' => $facebookGroupId,
+                'title' => $title,
+                'description' => $description,
             ), array(
                 \PDO::PARAM_INT,
                 'boolean',
@@ -58,11 +58,11 @@ class ProjectDbRepository extends BaseRepository implements ProjectDbRepositoryI
             $connection->update($this->table, array(
                 'user_id' => intval($project->getUserId()),
                 'is_enabled' => $project->isEnabled(),
-                'facebook_group_id' => $connection->quote($project->getFacebookGroupId(), \PDO::PARAM_STR),
-                'secret_key' => $connection->quote($project->getSecretKey(), \PDO::PARAM_STR),
-                'svnplot_db_path' => $connection->quote($project->getSvnplotDbPath(), \PDO::PARAM_STR),
-                'title' => $connection->quote($project->getTitle(), \PDO::PARAM_STR),
-                'description' => $connection->quote($project->getDescription(), \PDO::PARAM_STR),
+                'facebook_group_id' => $project->getFacebookGroupId(),
+                'secret_key' => $project->getSecretKey(),
+                'svnplot_db_path' => $project->getSvnplotDbPath(),
+                'title' => $project->getTitle(),
+                'description' => $project->getDescription(),
             ), array(
                 'id' => intval($project->getId())
             ), array(

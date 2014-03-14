@@ -39,6 +39,12 @@ $app->match('/users/{user}/edit',           'controller.userEdit:editAction')
 	->bind('userEdit')
     ->secure('ROLE_ADMIN');
 
+$app->match('/login_check', function() use ($app) {
+	$user = $app['facebook']->api('/me');
+
+	return 'Welcome ' . $user['name'];
+});
+
 $app->error(function (\Exception $e, $code) use ($app) {
 	$app['monolog']->addError(sprintf('An exception occured: %s', $e->getMessage()), array('exception' => $e));
 

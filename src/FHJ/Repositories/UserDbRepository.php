@@ -15,11 +15,13 @@ class UserDbRepository extends BaseRepository implements UserDbRepositoryInterfa
 
 	/**
 	 * @param $facebookUserId string Facebook user id
+	 * @param $email string Email address of user
+	 * @param $accessToken string The facebook access token
 	 *
 	 * @throws \Exception
 	 * @return UserInterface The created user
 	 */
-    public function createUser($facebookUserId) {
+    public function createUser($facebookUserId, $email, $accessToken) {
         $this->getLogger()->addInfo('creating new user from facebook id',
             array('facebook_id' => $facebookUserId));
         $this->checkNotEmpty($facebookUserId, 'facebookUserId');
@@ -28,17 +30,22 @@ class UserDbRepository extends BaseRepository implements UserDbRepositoryInterfa
         $connection->beginTransaction();
         
         $user = null;
+	    $loginAllowed = true;
         try {
             $connection->insert($this->table, array(
-                'facebook_id' => $connection->quote($facebookUserId, \PDO::PARAM_STR),
-                'email' => ''
+                'facebook_id' => $facebookUserId,
+                'email' => $email,
+	            'facebook_access_token' => $accessToken,
+	            'is_login_allowed' => $loginAllowed
             ), array(
                 \PDO::PARAM_STR,
-                \PDO::PARAM_STR
+                \PDO::PARAM_STR,
+	            'boolean'
             ));
 
             $insertId = $connection->lastInsertId();
-            $user = new User(intval($insertId), $facebookUserId);
+            $user = new User(intval($insertId), $facebookUserId, $email, $accessToken);
+	        $user->setLoginAllowed($loginAllowed);
         
             $connection->commit();
         }  catch (\Exception $e) {
@@ -56,9 +63,9 @@ class UserDbRepository extends BaseRepository implements UserDbRepositoryInterfa
         $connection->beginTransaction();
         try {
             $connection->update($this->table, array(
-                'facebook_id' => $connection->quote($user->getFacebookUserId(), \PDO::PARAM_STR),
-                'email' => $connection->quote($user->getEmail(), \PDO::PARAM_STR),
-                'facebook_access_token' => $connection->quote($user->getFacebookAccessToken(), \PDO::PARAM_STR),
+                'facebook_id' => $user->getFacebookUserId(),
+                'email' => $user->getEmail(),
+                'facebook_access_token' => $user->getFacebookAccessToken(),
                 'facebook_access_expiration' => $user->getFacebookAccessExpiration(),
                 'is_login_allowed' => $user->isLoginAllowed(),
                 'is_admin' => $user->isAdmin(),
@@ -102,8 +109,7 @@ class UserDbRepository extends BaseRepository implements UserDbRepositoryInterfa
 
         $connection = $this->getConnection();
         $sql = sprintf('SELECT * FROM %s WHERE facebook_id = ?', $this->table);
-        $statement = $connection->executeQuery($sql, array(
-            $connection->quote($facebookUserId, \PDO::PARAM_STR)), array(\PDO::PARAM_STR));
+        $statement = $connection->executeQuery($sql, array($facebookUserId), array(\PDO::PARAM_STR));
             
         $result = $this->fetchEntityBySql($statement);
         if ($result === null) {

@@ -72,7 +72,7 @@ $app->register(new SecurityServiceProvider(), array(
 	        ),
             'logout' => true,
 	        'users' => $app->share(function () use ($app) {
-				return new FacebookUserProvider($app['repository.users']);
+				return new FacebookUserProvider($app['repository.users'], $app['facebook']);
 	        }),
         ),
     ),
@@ -93,7 +93,7 @@ $app['translator'] = $app->share($app->extend('translator', function($translator
 $app->register(new MonologServiceProvider(), array(
     'monolog.logfile' => __DIR__.'/../resources/log/app.log',
     'monolog.name'    => 'app',
-    'monolog.level'   => 300 // = Logger::WARNING
+    'monolog.level'   => 100 // = Logger::WARNING
 ));
 
 $app->register(new TwigServiceProvider(), array(

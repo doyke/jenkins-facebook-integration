@@ -20,8 +20,14 @@ class FacebookUserProvider implements UserManagerInterface {
 	 */
 	private $dbRepository;
 
-	public function __construct(UserDbRepositoryInterface $dbRepository) {
+	/**
+	 * @var \BaseFacebook
+	 */
+	private $facebook;
+
+	public function __construct(UserDbRepositoryInterface $dbRepository, \BaseFacebook $facebook) {
 		$this->dbRepository = $dbRepository;
+		$this->facebook = $facebook;
 	}
 
     /**
@@ -32,7 +38,10 @@ class FacebookUserProvider implements UserManagerInterface {
      * @return UserInterface
      */ 
 	public function createUserFromUid($uid) {
-		return $this->dbRepository->createUser($uid);
+		$facebookUser = $this->facebook->api('/me');
+		$accessToken = $this->facebook->getAccessToken();
+
+		return $this->dbRepository->createUser($uid, $facebookUser['email'], $accessToken);
 	}
 
 	/**
@@ -47,9 +56,12 @@ class FacebookUserProvider implements UserManagerInterface {
 	 * @throws UsernameNotFoundException if the user is not found
 	 */
 	public function loadUserByUsername($uid) {
-		$user = $this->dbRepository->findUserByFacebookUserId(uid);
+		$user = $this->dbRepository->findUserByFacebookUserId($uid);
 		if ($user === null) {
-		    throw new UsernameNotFoundException();
+			$exception = new UsernameNotFoundException();
+			$exception->setUsername($uid);
+
+			throw $exception;
 		}
 		
 		return $user;

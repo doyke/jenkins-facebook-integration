@@ -9,10 +9,12 @@ interface UserDbRepositoryInterface {
 
 	/**
 	 * @param $facebookUserId string Facebook user id
+	 * @param $email string Email address of user
+	 * @param $accessToken string The facebook access token
 	 *
 	 * @return UserInterface The created user
 	 */
-    public function createUser($facebookUserId);
+    public function createUser($facebookUserId, $email, $accessToken);
     
     public function updateUser(User $user);
     

@@ -6,7 +6,7 @@
     <h1>Hello</h1>
     {% if is_granted('ROLE_USER') %}
         Hello "{{ app.security.token.username }}".<br />
-        Change your <a href="{{ path('settings') }}">{{ 'settings'|trans }}</a> or <a href="{{ path('logout') }}">{{ 'Logout'|trans }}</a>
+        Configure your <a href="{{ path('projects') }}">{{ 'Projects'|trans }}</a> or <a href="{{ path('logout') }}">{{ 'Logout'|trans }}</a>
     {% else %}
         You are not logged in. Please <a href="{{ path('login') }}">{{ 'connect with Facebook'|trans }}</a>.
     {% endif %}
