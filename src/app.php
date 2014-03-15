@@ -15,6 +15,7 @@ use Silex\Provider\WebProfilerServiceProvider;
 use SilexAssetic\AsseticServiceProvider;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
 use Silex\Provider\FacebookServiceProvider;
+use CHH\Silex\CacheServiceProvider;
 use FHJ\Providers\FacebookUserProvider;
 use FHJ\Repositories\UserDbRepository;
 use FHJ\Repositories\ProjectDbRepository;
@@ -65,10 +66,10 @@ $app->register(new SecurityServiceProvider(), array(
 //		    'pattern' => '^/',
 //		    'anonymous' => false,
 //	    ),
-        'secured_area' => array(
+        'secured_area'  => array(
 	        'anonymous' => false,
-            'pattern' => '^/',
-	        'facebook' => array(
+            'pattern'   => '^/',
+	        'facebook'  => array(
 		        'check_path' => '/login_check'
 	        ),
             'logout' => true,
@@ -98,12 +99,22 @@ $app->register(new MonologServiceProvider(), array(
 ));
 
 $app->register(new TwigServiceProvider(), array(
-    'twig.options'        => array(
+    'twig.options'         => array(
         'cache'            => isset($app['twig.options.cache']) ? $app['twig.options.cache'] : false,
         'strict_variables' => true
     ),
-    'twig.form.templates' => array('form_div_layout.html.twig', 'common/form_div_layout.html.twig'),
-    'twig.path'           => array(__DIR__ . '/../resources/views')
+    'twig.form.templates'  => array('form_div_layout.html.twig', 'common/form_div_layout.html.twig'),
+    'twig.path'            => array(__DIR__ . '/../resources/views')
+));
+
+$app->register(new CacheServiceProvider(), array(
+	'cache.options' => array(
+		'default' => array(
+			'driver'    => 'filesystem',
+			'directory' => $app['data.cache'],
+			'lifetime'  => 86400
+		)
+	)
 ));
 
 if ($app['debug'] && isset($app['cache.path'])) {
@@ -114,7 +125,7 @@ if ($app['debug'] && isset($app['cache.path'])) {
 
 if (isset($app['assetic.enabled']) && $app['assetic.enabled']) {
     $app->register(new AsseticServiceProvider(), array(
-        'assetic.options' => array(
+        'assetic.options'      => array(
             'debug'            => $app['debug'],
             'auto_dump_assets' => $app['debug'],
         )
@@ -160,11 +171,7 @@ $app->register(new DoctrineServiceProvider(), array(
 			'user'      => $dbUser,
 			'password'  => $dbPassword,
 			'charset'   => 'utf8',
-		),
-		'svnplot' => array(
-			'driver'    => 'pdo_sqlite',
-			'path'      => ''
-		),
+		)
 	),
 ));
 
