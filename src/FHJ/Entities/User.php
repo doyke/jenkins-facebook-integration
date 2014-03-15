@@ -33,23 +33,30 @@ class User extends BaseEntity implements AdvancedUserInterface {
     private $facebookAccessExpiration;
     
     /**
-     * @var bool
+     * @var boolean
      */ 
     private $loginAllowed;
+
+	/**
+	 * @var boolean
+	 */
+	private $projectCreationAllowed;
     
     /**
-     * @var bool
+     * @var boolean
      */ 
     private $admin;
     
     public function __construct($id, $facebookUserId, $email = '', $facebookAccessToken = '',
-                                \DateTime $facebookAccessExpiration = null, $loginAllowed = false, $admin = false) {
+                                \DateTime $facebookAccessExpiration = null, $loginAllowed = true,
+                                $projectCreationAllowed = false, $admin = false) {
         $this->setId($id);
         $this->setFacebookUserId($facebookUserId);
         $this->setEmail($email);
         $this->setFacebookAccessToken($facebookAccessToken);
         $this->setFacebookAccessExpiration($facebookAccessExpiration);
         $this->setLoginAllowed($loginAllowed);
+	    $this->setProjectCreationAllowed($projectCreationAllowed);
         $this->setAdmin($admin);
     }
     
@@ -123,7 +130,16 @@ class User extends BaseEntity implements AdvancedUserInterface {
     public function isLoginAllowed() {
         return $this->loginAllowed;
     }
-    
+
+	public function setProjectCreationAllowed($projectCreationAllowed) {
+		$this->checkBoolean($projectCreationAllowed, 'projectCreationAllowed');
+		$this->projectCreationAllowed = $projectCreationAllowed;
+	}
+
+	public function isProjectCreationAllowed() {
+		return $this->projectCreationAllowed;
+	}
+
     public function setAdmin($isAdmin) {
         $this->checkBoolean($isAdmin, 'isAdmin');
         $this->admin = $isAdmin;
@@ -258,5 +274,5 @@ class User extends BaseEntity implements AdvancedUserInterface {
         
         return $this->getId() === $other->getId();
     }
-    
+
 }

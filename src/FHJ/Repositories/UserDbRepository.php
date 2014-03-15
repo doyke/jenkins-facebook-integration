@@ -68,6 +68,7 @@ class UserDbRepository extends BaseRepository implements UserDbRepositoryInterfa
                 'facebook_access_token' => $user->getFacebookAccessToken(),
                 'facebook_access_expiration' => $user->getFacebookAccessExpiration(),
                 'is_login_allowed' => $user->isLoginAllowed(),
+	            'is_project_creation_allowed' => $user->isProjectCreationAllowed(),
                 'is_admin' => $user->isAdmin(),
             ), array(
                 'id' => intval($user->getId())
@@ -78,6 +79,7 @@ class UserDbRepository extends BaseRepository implements UserDbRepositoryInterfa
                 'datetime',
                 'boolean',
                 'boolean',
+	            'boolean',
                 \PDO::PARAM_INT
             ));
         
@@ -149,6 +151,7 @@ class UserDbRepository extends BaseRepository implements UserDbRepositoryInterfa
             $resultSet['facebook_access_token'], $expirationDate,
 	        // The values in the database are integers, the User class only accepts booleans
 	        $resultSet['is_login_allowed'] ? true : false,
+	        $resultSet['is_project_creation_allowed'] ? true : false,
 	        $resultSet['is_admin'] ? true : false
         );
     }

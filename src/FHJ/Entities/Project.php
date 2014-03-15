@@ -19,7 +19,7 @@ class Project extends BaseEntity {
     private $userId;
     
     /**
-     * @var bool
+     * @var boolean
      */ 
     private $enabled;
     
