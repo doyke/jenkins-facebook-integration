@@ -20,6 +20,10 @@ class BaseController {
 		$this->application = $application;
 	}
 
+	protected function isDebug() {
+		return $this->application['debug'];
+	}
+
 	/**
 	 * @return Logger
 	 */

@@ -1,7 +1,5 @@
 <?php
 
-use Symfony\Component\HttpFoundation\Response;
-
 $app->match('/',                            'controller.homepage:indexAction')
 	->bind('homepage');
 
@@ -39,28 +37,12 @@ $app->match('/users/{user}/edit',           'controller.userEdit:editAction')
 	->bind('userEdit')
     ->secure('ROLE_ADMIN');
 
+// May be hit after successful facebook authentication. The framework throws an error
+// if this route is not defined.
 $app->match('/login_check', function() use ($app) {
-	$user = $app['facebook']->api('/me');
-
-	return 'Welcome ' . $user['name'];
+	return $app->redirect($app['url_generator']->generate('homepage'));
 });
 
-$app->error(function (\Exception $e, $code) use ($app) {
-	$app['monolog']->addError(sprintf('An exception occured: %s', $e->getMessage()), array('exception' => $e));
-
-	if ($app['debug']) {
-        return;
-    }
-
-    switch ($code) {
-        case 404:
-            $message = 'The requested page could not be found.';
-            break;
-        default:
-            $message = 'We are sorry, but something went terribly wrong.';
-    }
-
-    return new Response($message, $code);
-});
+$app->error('controller.errorHandler:handleErrorAction');
 
 return $app;
