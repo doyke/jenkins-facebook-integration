@@ -11,3 +11,4 @@ Installation instructions
 	* Optionally copy the the file `dev.php.dist` to `dev.php` to enable the development front-controller
 * In a console, execute `php ./console doctrine:schema:load` to insert the needed schema into the database. The database may be created using `php ./console doctrine:database:create` commmand previously.
 * In your webserver configuration, set the web root directory to the `web` subdirectory.
+	* To call the application using the development front-controller explicitly, append the filename of the dev-controller to the URL. Example: `http://localhost/jenkins-facebook-integration/index_dev.php/`
