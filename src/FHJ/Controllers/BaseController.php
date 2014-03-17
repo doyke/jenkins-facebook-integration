@@ -52,8 +52,19 @@ class BaseController {
 	    return $this->application['security'];
 	}
 	
+	/**
+	 * @return Cache
+	 */
+	protected function getCache() {
+	    return $this->application['cache'];
+	}
+	
 	protected function getTemplateEngine() {
 	    return $this->application['twig'];
+	}
+	
+	protected function getFacebookObject() {
+	    return $this->application['facebook'];
 	}
 
 }
