@@ -25,7 +25,7 @@
             <tr>
                 <td>{{ project.id }}</td>
                 <td>
-                    <strong>{{ project.title|escape }}</strong><br />
+                    <a href="{{ path('projectEdit', {project: project.id}) }}"><strong>{{ project.title|escape }}</strong></a><br />
                     <small class="muted">{{ project.description|escape }}</small>
                 </td>
                 <td><i class="{% if project.enabled %}icon-ok{% else %}icon-remove{% endif %}"></i></td>

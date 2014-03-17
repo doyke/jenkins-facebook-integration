@@ -120,6 +120,16 @@ class ProjectDbRepository extends BaseRepository implements ProjectDbRepositoryI
         return $this->fillProjectEntity($result);
     }
 	
+	public function findProjectCountByUser(User $user) {
+	    $this->getLogger()->addInfo('looking up project count by user id', array('user_id' => $user->getId()));
+
+        $sql = sprintf('SELECT COUNT(Id) FROM %s WHERE user_id = ?', $this->table);
+        $statement = $this->getConnection()->executeQuery($sql, array(intval($user->getId())),
+            array(\PDO::PARAM_INT));
+
+        return intval($statement->fetchColumn(0));
+	}
+	
 	/**
      * Fills a new Project entity by using a result set. 
      *
