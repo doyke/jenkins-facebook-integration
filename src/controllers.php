@@ -15,13 +15,15 @@ $app->match('/projects/{project}/delete',   'controller.projectDelete:deleteActi
 	->convert('project', 'converter.project:convert')
 	->bind('projectDelete')
     ->secure('ROLE_USER')
-    ->onlyIfProjectsAllowed();
+    ->onlyIfProjectsAllowed()
+    ->onlyProjectAllowAccessIfAdminOrOwner();
 $app->match('/projects/{project}/edit',     'controller.projectEdit:editAction')
 	->assert('project', '\d+')
 	->convert('project', 'converter.project:convert')
 	->bind('projectEdit')
     ->secure('ROLE_USER')
-    ->onlyIfProjectsAllowed();
+    ->onlyIfProjectsAllowed()
+    ->onlyProjectAllowAccessIfAdminOrOwner();
 $app->match('/projects/new',                'controller.projectEdit:newAction')
     ->bind('projectNew')
     ->secure('ROLE_USER')

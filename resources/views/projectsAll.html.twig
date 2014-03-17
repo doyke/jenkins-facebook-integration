@@ -1,0 +1,12 @@
+{% extends 'projects.html.twig' %}
+
+{% block projectsTitle %}All projects{% endblock %}
+
+{* Do not display a create button *}
+{% block createButton %}{% endblock %}
+
+{% block projectTableHead %}<th>User</th>{% endblock %}
+
+{% block projectTableRow %}<td></td>{% endblock %}
+
+{% block projectTableEmptyRow %}<td colspan="5">There are no projects at the moment.</td>{% endblock %}
