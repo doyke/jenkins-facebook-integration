@@ -24,13 +24,6 @@ $app['web.dir'] = 'web';
 // Loglevel
 $app['logging.loglevel'] = 300; // WARNING. see Monolog\Logger constants
 
-// Locale
-$app['locale'] = 'en';
-$app['session.default_locale'] = $app['locale'];
-$app['translator.messages'] = array(
-    'en' => __DIR__.'/../resources/locales/en.yml',
-);
-
 // Cache
 $app['cache.path'] = __DIR__ . '/../cache';
 

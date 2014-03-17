@@ -7,13 +7,11 @@ use Silex\Provider\MonologServiceProvider;
 use Silex\Provider\SecurityServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\SessionServiceProvider;
-use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use Silex\Provider\WebProfilerServiceProvider;
 use SilexAssetic\AsseticServiceProvider;
-use Symfony\Component\Translation\Loader\YamlFileLoader;
 use Silex\Provider\FacebookServiceProvider;
 use CHH\Silex\CacheServiceProvider;
 use FHJ\Providers\FacebookUserProvider;
@@ -83,14 +81,6 @@ $app->register(new SecurityServiceProvider(), array(
 $app['security.role_hierarchy'] = array(
 	'ROLE_ADMIN' => array('ROLE_USER'),
 );
-
-$app->register(new TranslationServiceProvider());
-$app['translator'] = $app->share($app->extend('translator', function($translator, $app) {
-    $translator->addLoader('yaml', new YamlFileLoader());
-    $translator->addResource('yaml', __DIR__.'/../resources/locales/en.yml', 'en');
-
-    return $translator;
-}));
 
 $app->register(new MonologServiceProvider(), array(
     'monolog.logfile' => __DIR__.'/../resources/log/app.log',
