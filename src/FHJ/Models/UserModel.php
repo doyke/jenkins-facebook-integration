@@ -19,8 +19,8 @@ class UserModel extends User {
     
     public function __construct(User $user) {
         parent::__construct($user->getId(), $user->getFacebookUserId(), $user->getEmail(), $user->getFacebookAccessToken(),
-            $user->getFacebookAccessExpiration(), $user->getLoginAllowed(), $user->getProjectCreationAllowed(),
-            $user->getAdmin());
+            $user->getFacebookAccessExpiration(), $user->isLoginAllowed(), $user->isProjectCreationAllowed(),
+            $user->isAdmin());
     }
 
     public function setDeletable($deletable) {

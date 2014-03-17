@@ -19,8 +19,9 @@ abstract class AbstractConverter {
 	 * @param $value
 	 * @param callable $conversionCallback
 	 *
-	 * @return mixed
+	 * @throws \Symfony\Component\HttpKernel\Exception\HttpException
 	 * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+	 * @return mixed
 	 */
 	protected function handleConversion($value, Callable $conversionCallback) {
 		$returnedObject = null;

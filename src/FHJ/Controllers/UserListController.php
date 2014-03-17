@@ -19,8 +19,7 @@ class UserListController extends BaseController {
         foreach ($rawUsers as $rawUser) {
             $currentUserModel = new UserModel($rawUser);
             $currentUserModel->setDeletable(!$currentUser->equals($rawUser));
-            $currentUserModel->setProjectCount($this->getProjectRepository()
-                ->findProjectCountByUser($rawUser));
+            $currentUserModel->setProjectCount($this->getProjectRepository()->findProjectCountByUser($rawUser));
             
             $users[] = $currentUserModel;
         }

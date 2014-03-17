@@ -5,6 +5,7 @@ namespace FHJ\Controllers;
 use Silex\Application;
 use Monolog\Logger;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Doctrine\Common\Cache\Cache;
 use FHJ\Repositories\UserDbRepositoryInterface;
 use FHJ\Repositories\ProjectDbRepositoryInterface;
 
@@ -62,7 +63,10 @@ class BaseController {
 	protected function getTemplateEngine() {
 	    return $this->application['twig'];
 	}
-	
+
+	/**
+	 * @return \BaseFacebook
+	 */
 	protected function getFacebookObject() {
 	    return $this->application['facebook'];
 	}
