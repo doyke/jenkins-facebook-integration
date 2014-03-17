@@ -4,7 +4,7 @@
 namespace FHJ\Framework;
 
 use Silex\Route;
-use Silex\Route\SecurityTrait;
+use FHJ\Entities\User;
 
 /**
  * SecuredRoute
@@ -22,6 +22,19 @@ class SecuredRoute extends Route {
                 throw new AccessDeniedException();
             }
         });
+    }
+    
+    public function onlyIfProjectsAllowed() {
+        $user = $app['security']->getUser();
+        
+        // If we don't have any user or any user of our entity type, fail
+        if ($user === null || !$user instanceof User) {
+            throw new AccessDeniedException();
+        }
+        
+        if (!$user->isProjectCreationAllowed()) {
+            throw new AccessDeniedException();
+        }
     }
 
 } 

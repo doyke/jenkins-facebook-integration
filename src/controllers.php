@@ -5,7 +5,8 @@ $app->match('/',                            'controller.homepage:indexAction')
 
 $app->match('/projects',                    'controller.projectList:listOwnAction')
     ->bind('projects')
-    ->secure('ROLE_USER');
+    ->secure('ROLE_USER')
+    ->onlyIfProjectsAllowed();
 $app->match('/projects/all',                'controller.projectList:listAllAction')
     ->bind('projectsAll')
     ->secure('ROLE_ADMIN');
@@ -13,15 +14,18 @@ $app->match('/projects/{project}/delete',   'controller.projectDelete:deleteActi
 	->assert('project', '\d+')
 	->convert('project', 'converter.project:convert')
 	->bind('projectDelete')
-    ->secure('ROLE_USER');
+    ->secure('ROLE_USER')
+    ->onlyIfProjectsAllowed();
 $app->match('/projects/{project}/edit',     'controller.projectEdit:editAction')
 	->assert('project', '\d+')
 	->convert('project', 'converter.project:convert')
 	->bind('projectEdit')
-    ->secure('ROLE_USER');
+    ->secure('ROLE_USER')
+    ->onlyIfProjectsAllowed();
 $app->match('/projects/new',                'controller.projectEdit:newAction')
     ->bind('projectNew')
-    ->secure('ROLE_USER');
+    ->secure('ROLE_USER')
+    ->onlyIfProjectsAllowed();
 
 $app->match('/users',                       'controller.userList:listAllAction')
     ->bind('users')
