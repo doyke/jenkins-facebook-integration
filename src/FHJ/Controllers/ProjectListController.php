@@ -2,6 +2,8 @@
 
 namespace FHJ\Controllers;
 
+use FHJ\Models\ProjectWithUserModel;
+
 /**
  * ProjectListController
  * @package FHJ\Controllers
@@ -18,8 +20,29 @@ class ProjectListController extends BaseController {
     }
     
     public function listAllAction() {
+        $rawProjects = $this->getProjectRepository()->findAllProjects();
+        $users = $this->getUserRepository()->findAllUsers();
+        
+        $models = array();
+        foreach ($rawProjects as $project) {
+            $currentProjectUser = null;
+            foreach ($users as $user) {
+                if ($project->getUserId() === $user->getId()) {
+                    $currentProjectUser = $user;
+                    break;
+                }
+            }
+            
+            if ($currentProjectUser === null) {
+                throw new \Exception(sprintf('no valid user found for user id "%d" of project "%d"',
+                    $project->getUserId(), $project->getId()));
+            }
+            
+            $models[] = new ProjectWithUserModel($project, $currentProjectUser);
+        }
+        
         return $this->getTemplateEngine()->render('projectsAll.html.twig', array(
-            'projects'  => $this->getProjectRepository()->findAllProjects()
+            'projects'  => $models
         ));
     }
     
