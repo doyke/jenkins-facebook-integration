@@ -173,11 +173,11 @@ $app['repository.projects'] = new ProjectDbRepository($app['dbs']['db'], $app['m
 
 // Converters
 $app['converter.user'] = $app->share(function () use($app) {
-	return new UserConverter($app['repository.users'], $app['monolog']);
+	return new UserConverter($app['repository.users']);
 });
 
 $app['converter.project'] = $app->share(function () use($app) {
-	return new ProjectConverter($app['repository.projects'], $app['monolog']);
+	return new ProjectConverter($app['repository.projects']);
 });
 
 // Controllers

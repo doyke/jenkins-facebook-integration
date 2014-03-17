@@ -3,7 +3,6 @@
 namespace FHJ\Converters;
 
 use FHJ\Repositories\ProjectDbRepositoryInterface;
-use Monolog\Logger;
 
 /**
  * ProjectConverter
@@ -16,9 +15,7 @@ class ProjectConverter extends AbstractConverter {
 	 */
 	private $repository;
 
-	public function __construct(ProjectDbRepositoryInterface $userRepository, Logger $logger) {
-		parent::__construct($logger);
-
+	public function __construct(ProjectDbRepositoryInterface $userRepository) {
 		$this->repository = $userRepository;
 	}
 

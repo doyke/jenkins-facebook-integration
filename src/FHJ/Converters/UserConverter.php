@@ -3,7 +3,6 @@
 namespace FHJ\Converters;
 
 use FHJ\Repositories\UserDbRepositoryInterface;
-use Monolog\Logger;
 
 /**
  * UserConverter
@@ -16,9 +15,7 @@ class UserConverter extends AbstractConverter {
 	 */
 	private $repository;
 
-	public function __construct(UserDbRepositoryInterface $userRepository, Logger $logger) {
-		parent::__construct($logger);
-
+	public function __construct(UserDbRepositoryInterface $userRepository) {
 		$this->repository = $userRepository;
 	}
 

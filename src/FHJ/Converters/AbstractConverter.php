@@ -2,6 +2,7 @@
 
 namespace FHJ\Converters;
 
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Monolog\Logger;
 
@@ -10,15 +11,6 @@ use Monolog\Logger;
  * @package FHJ\Converters
  */
 abstract class AbstractConverter {
-
-	/**
-	 * @var Logger
-	 */
-	private $logger;
-
-	public function __construct(Logger $logger) {
-		$this->logger = $logger;
-	}
 
 	/**
 	 * Calls a converter method with value for conversion. Does all the error handling if something goes wrong. The
@@ -36,10 +28,8 @@ abstract class AbstractConverter {
 		try {
 			$returnedObject = $conversionCallback($value);
 		} catch (\Exception $e) {
-			$this->logger->addError('user conversion failed with exception', array('exception' => $e));
-
-			throw new NotFoundHttpException(sprintf('Conversion of value "%s" to class "%s" failed', $value,
-				get_class($this)));
+			throw new HttpException(500, sprintf('Conversion of value "%s" to class "%s" failed', $value,
+				get_class($this)), $e);
 		}
 
 		if ($returnedObject === null) {
