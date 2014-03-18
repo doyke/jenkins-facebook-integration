@@ -23,7 +23,7 @@ class ProjectConverter extends AbstractConverter {
 		$repository = $this->repository;
 
 		return $this->handleConversion($value, function($theProjectId) use ($repository) {
-			return $repository->findProjectById($theProjectId);
+			return $repository->findProjectById(intval($theProjectId));
 		});
 	}
 

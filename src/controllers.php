@@ -1,4 +1,6 @@
 <?php
+
+
 use FHJ\Controllers\HomepageController;
 use FHJ\Controllers\UserListController;
 use FHJ\Controllers\UserDeleteController;
@@ -20,14 +22,14 @@ $app->match('/projects/all',                'controller.projectList:listAllActio
     ->secure('ROLE_ADMIN');
 $app->match('/projects/{project}/delete',   'controller.projectDelete:deleteAction')
 	->assert('project', '\d+')
-	->convert('project', 'converter.project:convert')
+	->convert('project', $app['converter.project'])
 	->bind(ProjectDeleteController::ROUTE_PROJECT_DELETE)
     ->secure('ROLE_USER')
     ->onlyIfProjectsAllowed()
     ->onlyProjectAllowAccessIfAdminOrOwner();
 $app->match('/projects/{project}/edit',     'controller.projectEdit:editAction')
 	->assert('project', '\d+')
-	->convert('project', 'converter.project:convert')
+	->convert('project', $app['converter.project'])
 	->bind(ProjectEditController::ROUTE_PROJECT_EDIT)
     ->secure('ROLE_USER')
     ->onlyIfProjectsAllowed()
@@ -42,12 +44,12 @@ $app->match('/users',                       'controller.userList:listAllAction')
     ->secure('ROLE_ADMIN');
 $app->match('/users/{user}/delete',         'controller.userDelete:deleteAction')
 	->assert('user', '\d+')
-	->convert('user', 'converter.user:convert')
+	->convert('user', $app['converter.user'])
 	->bind(UserDeleteController::ROUTE_USER_DELETE)
     ->secure('ROLE_ADMIN');
 $app->match('/users/{user}/edit',           'controller.userEdit:editAction')
 	->assert('user', '\d+')
-	->convert('user', 'converter.user:convert')
+	->convert('user', $app['converter.user'])
 	->bind(UserEditController::ROUTE_USER_EDIT)
     ->secure('ROLE_ADMIN');
 

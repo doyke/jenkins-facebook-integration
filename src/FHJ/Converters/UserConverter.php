@@ -23,7 +23,7 @@ class UserConverter extends AbstractConverter {
 		$repository = $this->repository;
 
 		return $this->handleConversion($value, function($theUserId) use ($repository) {
-			return $repository->findUserById($theUserId);
+			return $repository->findUserById(intval($theUserId));
 		});
 	}
 
