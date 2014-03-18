@@ -95,8 +95,14 @@ class ProjectDbRepository extends BaseRepository implements ProjectDbRepositoryI
 
         $sql = sprintf('SELECT * FROM %s', $this->table);
         $statement = $this->getConnection()->executeQuery($sql);
-        
-        return $this->fetchManyEntitiesBySql($statement);
+
+	    $rawResults = $this->fetchManyEntitiesBySql($statement);
+	    $results = array();
+	    foreach ($rawResults as $rawResult) {
+		    $results[] = $this->fillProjectEntity($rawResult);
+	    }
+
+	    return $results;
     }
     
     public function findProjectsByUser(User $user) {
@@ -105,8 +111,14 @@ class ProjectDbRepository extends BaseRepository implements ProjectDbRepositoryI
         $sql = sprintf('SELECT * FROM %s WHERE user_id = ?', $this->table);
         $statement = $this->getConnection()->executeQuery($sql, array(intval($user->getId())),
             array(\PDO::PARAM_INT));
-        
-        return $this->fetchManyEntitiesBySql($statement);
+
+	    $rawResults = $this->fetchManyEntitiesBySql($statement);
+	    $results = array();
+	    foreach ($rawResults as $rawResult) {
+		    $results[] = $this->fillProjectEntity($rawResult);
+	    }
+
+	    return $results;
     }
     
     public function findProjectById($id) {

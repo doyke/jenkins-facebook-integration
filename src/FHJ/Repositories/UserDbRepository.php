@@ -112,7 +112,13 @@ class UserDbRepository extends BaseRepository implements UserDbRepositoryInterfa
         $sql = sprintf('SELECT * FROM %s', $this->table);
         $statement = $this->getConnection()->executeQuery($sql);
         
-        return $this->fetchManyEntitiesBySql($statement);
+        $rawResults = $this->fetchManyEntitiesBySql($statement);
+	    $results = array();
+	    foreach ($rawResults as $rawResult) {
+		    $results[] = $this->fillUserEntity($rawResult);
+	    }
+
+	    return $results;
     }
     
     public function findUserByFacebookUserId($facebookUserId) {
