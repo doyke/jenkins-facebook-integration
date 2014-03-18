@@ -38,7 +38,7 @@ class UserDbRepository extends BaseRepository implements UserDbRepositoryInterfa
 	            'facebook_access_token' => $accessToken,
 	            'is_login_allowed' => $loginAllowed
             ), array(
-                \PDO::PARMA_STR,
+                \PDO::PARAM_STR,
                 \PDO::PARAM_STR,
 	            'boolean'
             ));
@@ -94,7 +94,7 @@ class UserDbRepository extends BaseRepository implements UserDbRepositoryInterfa
         $this->getLogger()->addInfo('deleting user', array('id' => $user->getId()));
 
         $that = $this;
-        $this->getConnection->transactional(function() use ($that, $user) {
+        $this->getConnection()->transactional(function() use ($that, $user) {
             $projectRepo = $that->getProjectRepository();
             $projects = $projectRepo->findProjectsByUser($user);
             
