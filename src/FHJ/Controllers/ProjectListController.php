@@ -15,7 +15,7 @@ class ProjectListController extends BaseController {
     const ROUTE_PROJECT_LIST_ALL = 'projectsAll';
 
     public function listOwnAction() {
-        $user = $this->getSecurity()->getUser();
+        $user = $this->getSecurity()->getToken()->getUser();
         $projects = $this->getProjectRepository()->findProjectsByUser($user);
         
         return $this->getTemplateEngine()->render('projects.html.twig', array(

@@ -16,7 +16,7 @@ class UserDeleteController extends BaseController {
     
     public function deleteAction(Request $request, User $user) {
         // prevent deletion of currently logged-in user
-        $currentLoggedUser = $this->getSecurity()->getUser();
+        $currentLoggedUser = $this->getSecurity()->getToken()->getUser();
         if ($user->equals($currentLoggedUser)) {
             $this->getSession()->getFlashBag()->add('error', 'You cannot delete your own user!');
             return $this->doRedirect(ProjectListController::ROUTE_PROJECT_LIST_OWN);

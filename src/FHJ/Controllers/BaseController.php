@@ -6,7 +6,7 @@ use Silex\Application;
 use Monolog\Logger;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Doctrine\Common\Cache\Cache;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 use FHJ\Repositories\UserDbRepositoryInterface;
 use FHJ\Repositories\ProjectDbRepositoryInterface;
 
@@ -60,7 +60,10 @@ class BaseController {
 	protected function getCache() {
 	    return $this->application['cache'];
 	}
-	
+
+	/**
+	 * @return \Twig_Environment
+	 */
 	protected function getTemplateEngine() {
 	    return $this->application['twig'];
 	}
@@ -73,7 +76,7 @@ class BaseController {
 	}
 	
 	/**
-	 * @return SessionInterface
+	 * @return Session
 	 */ 
 	protected function getSession() {
 	    return $this->application['session'];
@@ -82,15 +85,17 @@ class BaseController {
 	protected function generateRoute($destination, array $parameters = array()) {
 	    return $this->application['url_generator']->generate($destination, $parameters);
 	}
-	
+
 	/**
 	 * Redirects an user to $destination. $destination must be the route name.
-	 * 
+	 *
 	 * @param string $destination The route name for redirection
 	 * @param array $parameters Additional route parameters like e.g. an id
-	 */ 
+	 *
+	 * @return \Symfony\Component\HttpFoundation\RedirectResponse
+	 */
 	protected function doRedirect($destination, array $parameters = array()) {
-	    $this->application->redirect($this->generateRoute($destination, $parameters));
+	    return $this->application->redirect($this->generateRoute($destination, $parameters));
 	}
 
 }

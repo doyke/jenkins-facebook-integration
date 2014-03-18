@@ -16,7 +16,10 @@ class HomepageController extends BaseController {
 	    $facebookData = new CachingFacebookDataRetriever($this->getFacebookObject(), $this->getCache(),
 	        $this->getLogger());
 	    $realname = $facebookData->getRealname();
-	    $isProjectCreationAllowed = $this->getSecurity()->getUser()->isProjectCreationAllowed();
+	    $isProjectCreationAllowed = false;
+		if ($this->getSecurity()->getToken() !== null) {
+			$isProjectCreationAllowed= $this->getSecurity()->getToken()->getUser()->isProjectCreationAllowed();
+		}
 	    
 		return $this->getTemplateEngine()->render('index.html.twig', array(
 		    'realname' => $realname,

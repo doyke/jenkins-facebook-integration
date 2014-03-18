@@ -13,7 +13,7 @@ class UserListController extends BaseController {
     const ROUTE_USER_LIST = 'users';
 
     public function listAllAction() {
-        $currentUser = $this->getSecurity()->getUser();
+        $currentUser = $this->getSecurity()->getToken()->getUser();
         $rawUsers = $this->getUserRepository()->findAllUsers();
         
         // The current user may not delete his own user to prevent strange errors

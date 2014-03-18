@@ -16,7 +16,7 @@ class UserEditController extends BaseController {
     const ROUTE_USER_EDIT = 'userEdit';
 
     public function editAction(Request $request, User $user) {
-        $form = $this->defineForm();
+        $form = $this->defineForm($user);
         $form->handleRequest($request);
         
         if ($form->isValid()) {
@@ -39,15 +39,15 @@ class UserEditController extends BaseController {
             
             
             $this->getSession()->getFlashBag()->add('success', sprintf('The user "%s" has been successfully edited!',
-                $user->getEmail()));
+                $originalUser->getEmail()));
             return $this->doRedirect(UserListController::ROUTE_USER_LIST);
         } catch (\Exception $e) {
-            $this->getLogger()->addError(sprintf('error when saving edited user with id "%d"', $user->getId()),
+            $this->getLogger()->addError(sprintf('error when saving edited user with id "%d"', $originalUser->getId()),
                 array('exception' => $e));
             
             $this->getSession()->getFlashBag()->add('error', sprintf(
-                'The edited user "%s" could not be saved to the database!', $user->getEmail()));
-            $this->doRedirect(UserListController::ROUTE_USER_LIST);
+                'The edited user "%s" could not be saved to the database!', $originalUser->getEmail()));
+            return $this->doRedirect(UserListController::ROUTE_USER_LIST);
         }
     }
 }
