@@ -10,6 +10,8 @@ use FHJ\Facebook\CachingFacebookDataRetriever;
  */
 class HomepageController extends BaseController {
 
+    const ROUTE_HOMEPAGE = 'homepage';
+
 	public function indexAction() {
 	    $facebookData = new CachingFacebookDataRetriever($this->getFacebookObject(), $this->getCache(),
 	        $this->getLogger());

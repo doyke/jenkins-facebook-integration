@@ -12,6 +12,8 @@ use FHJ\Entities\User;
  */
 class UserEditController extends BaseController {
 
+    const ROUTE_USER_EDIT = 'userEdit';
+
     public function editAction(Request $request, User $user) {
         
     }

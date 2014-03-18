@@ -10,6 +10,8 @@ use FHJ\Models\UserModel;
  */
 class UserListController extends BaseController {
 
+    const ROUTE_USER_LIST = 'users';
+
     public function listAllAction() {
         $currentUser = $this->getSecurity()->getUser();
         $rawUsers = $this->getUserRepository()->findAllUsers();

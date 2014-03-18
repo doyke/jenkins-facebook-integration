@@ -12,6 +12,10 @@ use FHJ\Entities\Project;
  */
 class ProjectEditController extends BaseController {
 
+    const ROUTE_PROJECT_EDIT = 'projectEdit';
+    
+    const ROUTE_PROJECT_NEW = 'projectNew';
+
     public function editAction(Request $request, Project $project) {
         
     }

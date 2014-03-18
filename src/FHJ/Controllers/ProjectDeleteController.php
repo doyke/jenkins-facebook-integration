@@ -12,6 +12,8 @@ use FHJ\Entities\Project;
  */
 class ProjectDeleteController extends BaseController {
 
+    const ROUTE_PROJECT_DELETE = 'projectDelete';
+
     public function deleteAction(Request $request, Project $project) {
         
     }

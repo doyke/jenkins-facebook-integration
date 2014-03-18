@@ -10,6 +10,10 @@ use FHJ\Models\ProjectWithUserModel;
  */
 class ProjectListController extends BaseController {
 
+    const ROUTE_PROJECT_LIST_OWN = 'projects';
+    
+    const ROUTE_PROJECT_LIST_ALL = 'projectsAll';
+
     public function listOwnAction() {
         $user = $this->getSecurity()->getUser();
         $projects = $this->getProjectRepository()->findProjectsByUser($user);
