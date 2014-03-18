@@ -1,0 +1,32 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+
+    <div class="page-header">
+    {% if mode is 'deleteCancel' %}
+        <h1>Confirmation</h1>
+    {% else %}
+        <h1>Message</h1>
+    {% endif %}
+    </div>
+    
+    <div class="row">
+        <div class="span12 text-center">{{ message }}</div>
+    </div>
+    
+    <div class="row">
+        <div class="span12 text-center">
+        {% if mode is 'deleteCancel' %}
+            <form action="{{ deletePath }}" method="POST">
+                <button class="btn btn-large btn-danger" type="submit"><i class="icon-trash"></i> Delete</button>
+            </form>
+            &nbsp;
+            &nbsp;
+            <a href="{{ cancelPath }}" class="btn btn-large">Cancel</a>
+        {% else %}
+            
+        {% endif %}
+            
+        </div>
+    </div>
+{% endblock %}

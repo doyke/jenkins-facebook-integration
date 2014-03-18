@@ -30,7 +30,7 @@
                 <td><i class="{% if user.loginAllowed %}icon-ok{% else %}icon-remove{% endif %}"></i></td>
                 <td><i class="{% if user.projectCreationAllowed %}icon-ok{% else %}icon-remove{% endif %}"></i>{% if user.projectCount > 0 %} ({{ user.projectCount }} Projects){% endif %}</td>
                 <td>
-                    <a class="btn btn-mini btn-primary" href="{{ path('userEdit', {user: user.id}) }}"><i class="icon-pencil"></i> Edit</a>
+                    <a class="btn btn-mini" href="{{ path('userEdit', {user: user.id}) }}"><i class="icon-pencil"></i> Edit</a>
                     <a class="btn btn-mini btn-danger" href="{{ path('userDelete', {user: user.id}) }}"><i class="icon-trash"></i> Delete</a>
                 </td>
             </tr>

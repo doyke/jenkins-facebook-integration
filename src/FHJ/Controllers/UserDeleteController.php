@@ -26,6 +26,7 @@ class UserDeleteController extends BaseController {
             $this->doDelete($user);
         } else {
             return $this->getTemplateEngine()->render('message.html.twig', array(
+                'active' => 'users',
                 'message'  => sprintf('Do you really want to delete the user "%s" and all of his projects?',
                     $user->getEmail()),
                 'mode' => 'deleteCancel',
