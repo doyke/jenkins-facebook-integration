@@ -31,7 +31,7 @@ class UserDeleteController extends BaseController {
                     $user->getEmail()),
                 'mode' => 'deleteCancel',
                 'deletePath' => $this->generateRoute(self::ROUTE_USER_DELETE, array('user' => $user->getId())),
-                'cancelPath' => $this->generateRoute(ProjectListController::ROUTE_PROJECT_LIST_OWN)
+                'cancelPath' => $this->generateRoute(UserListController::ROUTE_USER_LIST)
             )); 
         }
     }
@@ -49,7 +49,7 @@ class UserDeleteController extends BaseController {
             
             $this->getSession()->getFlashBag()->add('error', sprintf(
                 'The deletion of user "%s" and all of his projects failed!', $user->getEmail()));
-            $this->doRedirect(ProjectListController::ROUTE_PROJECT_LIST_OWN);
+            $this->doRedirect(UserListController::ROUTE_USER_LIST);
         }
     }
 }
