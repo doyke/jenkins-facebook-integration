@@ -31,19 +31,24 @@ class Project extends BaseEntity {
     /**
      * @var string
      */ 
-    private $secretKey;
+    private $secretKey = '';
     
     /**
      * @var string
      */ 
-    private $svnplotDbPath;
+    private $svnplotDbPath = '';
     
     private $title;
     
     private $description;
+    
+    /**
+     * @var string
+     */ 
+    private $lastBuildState = '';
 
     public function __construct($id, $userId, $facebookGroupId, $enabled = false, $secretKey = '',
-                                $svnplotDbPath = '', $title = '', $description = '') {
+                                $svnplotDbPath = '', $title = '', $description = '', $lastBuildState = '') {
         $this->setId($id);
         $this->setUserId($userId);
         $this->setFacebookGroupId($facebookGroupId);
@@ -52,6 +57,7 @@ class Project extends BaseEntity {
         $this->setSvnplotDbPath($svnplotDbPath);
         $this->setTitle($title);
         $this->setDescription($description);
+        $this->setLastBuildState($lastBuildState);
     }
     
     public function getId() {
@@ -118,6 +124,14 @@ class Project extends BaseEntity {
     
     public function getDescription() {
         return $this->description;
+    }
+    
+    public function setLastBuildState($lastBuildState) {
+        $this->lastBuildState = $lastBuildState;
+    }
+    
+    public function getDescription() {
+        return $this->lastBuildState;
     }
 
 }

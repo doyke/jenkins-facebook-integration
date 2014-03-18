@@ -63,6 +63,7 @@ class ProjectDbRepository extends BaseRepository implements ProjectDbRepositoryI
                 'svnplot_db_path' => $project->getSvnplotDbPath(),
                 'title' => $project->getTitle(),
                 'description' => $project->getDescription(),
+                'last_build_state' => $project->getLastBuildState(),
             ), array(
                 'id' => intval($project->getId())
             ), array(
@@ -144,7 +145,7 @@ class ProjectDbRepository extends BaseRepository implements ProjectDbRepositoryI
             // The values in the database are integers, the User class only accepts booleans
 	        $resultSet['is_enabled'] ? true : false,
 	        $resultSet['secret_key'], $resultSet['svnplot_db_path'], $resultSet['title'],
-	        $resultSet['description']
+	        $resultSet['description'], $resultSet['last_build_state']
         );
     }
 	
