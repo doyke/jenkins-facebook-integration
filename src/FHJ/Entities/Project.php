@@ -130,7 +130,7 @@ class Project extends BaseEntity {
         $this->lastBuildState = $lastBuildState;
     }
     
-    public function getDescription() {
+    public function getLastBuildState() {
         return $this->lastBuildState;
     }
 
