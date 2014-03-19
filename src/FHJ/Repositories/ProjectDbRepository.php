@@ -19,6 +19,9 @@ class ProjectDbRepository extends BaseRepository implements ProjectDbRepositoryI
 	    $this->checkNotEmpty($title, 'title');
 	    $this->checkNotEmpty($facebookGroupId, 'facebookGroupId');
         
+        $secretKey = md5(uniqid($title)) . sha1(time());
+        $secretKey = substr($secretKey, 0, 60);
+        
         $connection = $this->getConnection();
         $connection->beginTransaction();
 
@@ -29,6 +32,7 @@ class ProjectDbRepository extends BaseRepository implements ProjectDbRepositoryI
                 'facebook_group_id' => $facebookGroupId,
                 'title' => $title,
                 'description' => $description,
+                'secret_key' => $secretKey
             ), array(
                 \PDO::PARAM_INT,
                 'boolean',

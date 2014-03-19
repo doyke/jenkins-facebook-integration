@@ -56,12 +56,12 @@ class UserEditController extends BaseController {
     }
     
     private function processEdit(Form $form, User $originalUser) {
+        // fetches the supplied User object which already has been modified
+        $editedUser = $form->getData();
+        
         try {
-            // fetches the supplied User object which already has been modified
-            $editedUser = $form->getData();
-            
             if (!$originalUser->equals($editedUser)) {
-                throw new \RuntimeException(sprintf('objects do not match: edited "%d" and original "%d"',
+                throw new \RuntimeException(sprintf('user objects do not match: edited "%d" and original "%d"',
                     $editedUser->getId(), $originalUser->getId()));
             }
             
@@ -76,7 +76,7 @@ class UserEditController extends BaseController {
         }
         
         $this->getSession()->getFlashBag()->add('success', sprintf('The user "%s" has been successfully edited!',
-                $originalUser->getEmail()));
+                $editedUser->getEmail()));
         return $this->doRedirect(UserListController::ROUTE_USER_LIST);
     }
 }

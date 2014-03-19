@@ -1,0 +1,10 @@
+{% extends 'layout.html.twig' %}
+{% set active = 'users' %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>Edit user &quot;{{ user.email }}&quot;</h1>
+    </div>
+    
+    {{ form(form, {action: path('userEdit', {user: user.id})}) }}
+{% endblock %}

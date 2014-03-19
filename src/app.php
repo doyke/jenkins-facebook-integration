@@ -26,7 +26,6 @@ use FHJ\Controllers\UserEditController;
 use FHJ\Controllers\ProjectListController;
 use FHJ\Controllers\ProjectDeleteController;
 use FHJ\Controllers\ProjectEditController;
-use FHJ\Controllers\ErrorHandlingController;
 
 // this is needed for the secure() method to work. see controllers.php.
 $app['route_class'] = 'FHJ\Framework\SecuredRoute';
@@ -208,10 +207,5 @@ $app['controller.projectDelete'] = $app->share(function(Application $app) {
 $app['controller.projectEdit'] = $app->share(function(Application $app) {
     return new ProjectEditController($app);
 });
-
-$app['controller.errorHandler'] = $app->share(function(Application $app) {
-	return new ErrorHandlingController($app);
-});
-
 
 return $app;
