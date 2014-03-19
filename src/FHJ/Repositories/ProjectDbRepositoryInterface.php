@@ -19,6 +19,8 @@ interface ProjectDbRepositoryInterface {
     
     public function findProjectById($id);
     
+    public function findProjectBySecretKey($secretKey);
+    
     public function findProjectCountByUser(User $user);
 
 } 

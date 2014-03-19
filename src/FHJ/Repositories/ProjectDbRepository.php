@@ -20,7 +20,7 @@ class ProjectDbRepository extends BaseRepository implements ProjectDbRepositoryI
 	    $this->checkNotEmpty($facebookGroupId, 'facebookGroupId');
         
         $secretKey = md5(uniqid($title)) . sha1(time());
-        $secretKey = substr($secretKey, 0, 60);
+        $secretKey = strtolower(substr($secretKey, 0, 60));
         
         $connection = $this->getConnection();
         $connection->beginTransaction();
@@ -130,6 +130,20 @@ class ProjectDbRepository extends BaseRepository implements ProjectDbRepositoryI
         $this->checkInt($id, 'id');
 
         $result = $this->fetchEntityById($this->table, $id);
+        if ($result === null) {
+            return null;
+        }
+        
+        return $this->fillProjectEntity($result);
+    }
+    
+    public function findProjectBySecretKey($secretKey) {
+        $this->getLogger()->addInfo('looking up project by secret key', array('secret_key' => $secretKey));
+
+        $sql = sprintf('SELECT * FROM %s WHERE secret_key = ?', $table);
+        $statement = $this->connection->executeQuery($sql, array($secretKey), array(\PDO::PARAM_STR));
+
+        $result = $this->fetchEntityBySql($statement);
         if ($result === null) {
             return null;
         }
