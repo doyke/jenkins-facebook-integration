@@ -9,6 +9,7 @@ use Doctrine\Common\Cache\Cache;
 use Symfony\Component\HttpFoundation\Session\Session;
 use FHJ\Repositories\UserDbRepositoryInterface;
 use FHJ\Repositories\ProjectDbRepositoryInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 
 /**
  * BaseController
@@ -80,6 +81,13 @@ class BaseController {
 	 */ 
 	protected function getSession() {
 	    return $this->application['session'];
+	}
+	
+	/**
+	 * @var FormFactoryInterface
+	 */ 
+	protected function getFormFactory() {
+	    return $this->application['form.factory'];
 	}
 	
 	protected function generateRoute($destination, array $parameters = array()) {
