@@ -9,6 +9,7 @@ use FHJ\Controllers\ProjectListController;
 use FHJ\Controllers\ProjectDeleteController;
 use FHJ\Controllers\ProjectEditController;
 use FHJ\Controllers\ErrorHandlingController;
+use FHJ\Controllers\BuildStatusUpdateController;
 use Symfony\Component\HttpFoundation\Response;
 
 $app->match('/',                            'controller.homepage:indexAction')
@@ -53,6 +54,14 @@ $app->match('/users/{user}/edit',           'controller.userEdit:editAction')
 	->convert('user', $app['converter.user'])
 	->bind(UserEditController::ROUTE_USER_EDIT)
     ->secure('ROLE_ADMIN');
+    
+$app[''] = $app->share(function(Application $app) {
+    return new BuildStatusUpdateController($app);
+});
+
+$app->match('/updateStatus/{secretKey}',    'controller.buildStatusUpdate:updateLastBuildStatusAction')
+    ->bind(BuildStatusUpdateController::ROUTE_UPDATE_STATUS)
+    ->assert('secretKey', '[0-9a-z]+');
 
 // May be hit after successful facebook authentication. The framework throws an error
 // if this route is not defined.
