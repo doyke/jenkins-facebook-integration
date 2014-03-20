@@ -13,6 +13,7 @@ use Silex\Provider\ValidatorServiceProvider;
 use Silex\Provider\WebProfilerServiceProvider;
 use SilexAssetic\AsseticServiceProvider;
 use Silex\Provider\FacebookServiceProvider;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use CHH\Silex\CacheServiceProvider;
 use FHJ\Providers\FacebookUserProvider;
 use FHJ\Repositories\UserDbRepository;
@@ -166,6 +167,9 @@ $app->register(new DoctrineServiceProvider(), array(
 ));
 
 unset($dbDriver, $dbHost, $dbName, $dbUser, $dbPassword);
+
+// Event dispatcher
+$app['socialEventDispatcher'] = new EventDispatcher();
 
 // Repositories
 $app['repository.users'] = new UserDbRepository($app['dbs']['db'], $app['monolog']);

@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use FHJ\Repositories\UserDbRepositoryInterface;
 use FHJ\Repositories\ProjectDbRepositoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * BaseController
@@ -88,6 +89,13 @@ class BaseController {
 	 */ 
 	protected function getFormFactory() {
 	    return $this->application['form.factory'];
+	}
+	
+	/**
+	 * @var EventDispatcher
+	 */ 
+	protected function getEventDispatcher() {
+	    return $this->application['socialEventDispatcher'];
 	}
 	
 	protected function generateRoute($destination, array $parameters = array()) {

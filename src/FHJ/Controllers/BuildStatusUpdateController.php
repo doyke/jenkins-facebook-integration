@@ -6,6 +6,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use FHJ\Entities\Project;
+use FHJ\Events\EventIdentifiers;
+use FHJ\Events\BuildStatusUpdateEvent;
 
 /**
  * BuildStatusUpdateController
@@ -67,6 +69,8 @@ class BuildStatusUpdateController extends BaseController {
         
         try {
             // send an event
+            $event = new BuildStatusUpdateEvent($project, $currentStatus);
+            $this->getEventDispatcher(EventIdentifiers::EVENT_BUILD_STATUS_UPDATE, $event);
             
             $project->setLastBuildState($currentStatus);
             $this->getProjectRepository()->updateProject($project);
