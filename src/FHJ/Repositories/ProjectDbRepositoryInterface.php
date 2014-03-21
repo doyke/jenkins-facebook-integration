@@ -16,10 +16,20 @@ interface ProjectDbRepositoryInterface {
     public function findAllProjects();
     
     public function findProjectsByUser(User $user);
-    
+
+	/**
+	 * @param $id
+	 *
+	 * @return Project|null
+	 */
     public function findProjectById($id);
-    
-    public function findProjectBySecretKey($secretKey);
+
+	/**
+	 * @param $secretKey
+	 *
+	 * @return Project|null
+	 */
+	public function findProjectBySecretKey($secretKey);
     
     public function findProjectCountByUser(User $user);
 

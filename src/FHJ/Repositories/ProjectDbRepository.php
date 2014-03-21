@@ -124,8 +124,11 @@ class ProjectDbRepository extends BaseRepository implements ProjectDbRepositoryI
 
 	    return $results;
     }
-    
-    public function findProjectById($id) {
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function findProjectById($id) {
         $this->getLogger()->addInfo('looking up project by id', array('id' => $id));
         $this->checkInt($id, 'id');
 
@@ -136,12 +139,15 @@ class ProjectDbRepository extends BaseRepository implements ProjectDbRepositoryI
         
         return $this->fillProjectEntity($result);
     }
-    
-    public function findProjectBySecretKey($secretKey) {
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function findProjectBySecretKey($secretKey) {
         $this->getLogger()->addInfo('looking up project by secret key', array('secret_key' => $secretKey));
 
-        $sql = sprintf('SELECT * FROM %s WHERE secret_key = ?', $table);
-        $statement = $this->connection->executeQuery($sql, array($secretKey), array(\PDO::PARAM_STR));
+        $sql = sprintf('SELECT * FROM %s WHERE secret_key = ?', $this->table);
+        $statement = $this->getConnection()->executeQuery($sql, array($secretKey), array(\PDO::PARAM_STR));
 
         $result = $this->fetchEntityBySql($statement);
         if ($result === null) {

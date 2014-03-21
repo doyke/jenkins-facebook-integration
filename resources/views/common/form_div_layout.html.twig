@@ -138,7 +138,7 @@
         <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
             {{ widget|raw }}
             <span>
-                {{ label|trans({}, translation_domain) }}
+                {{ label }}
             </span>
         </label>
     {% else %}

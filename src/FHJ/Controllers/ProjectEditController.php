@@ -3,7 +3,8 @@
 namespace FHJ\Controllers;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Validator\Constraints as Assert;
 use FHJ\Entities\Project;
 use FHJ\Facebook\FacebookDataRetriever;
 
@@ -18,7 +19,7 @@ class ProjectEditController extends BaseController {
     const ROUTE_PROJECT_NEW = 'projectNew';
 
     public function editAction(Request $request, Project $project) {
-        $form = $this->defineEditForm();
+        $form = $this->defineEditForm($project);
         $form->handleRequest($request);
         
         if ($form->isValid()) {
@@ -88,8 +89,8 @@ class ProjectEditController extends BaseController {
     }
     
     private function defineCreateForm() {
-        $form = $this->getFormFactory()->createBuilder($user);
-        $facebookData = new FacebookDataRetriever($this->getFacebookObject());
+        $form = $this->getFormFactory()->createBuilder('form', new Project(0, 0, '-'));
+        $facebookData = new FacebookDataRetriever($this->getFacebookObject(), $this->getLogger());
 
         /*if ($this->getSecurity()->isGranted('ROLE_ADMIN')) {
             $form->add('userId', 'entity', array(
@@ -113,9 +114,9 @@ class ProjectEditController extends BaseController {
         return $form->getForm();
     }
     
-    private function defineEditForm() {
-        $form = $this->getFormFactory()->createBuilder($user);
-        $facebookData = new FacebookDataRetriever($this->getFacebookObject());
+    private function defineEditForm(Project $project) {
+        $form = $this->getFormFactory()->createBuilder('form', $project);
+        $facebookData = new FacebookDataRetriever($this->getFacebookObject(), $this->getLogger());
 
         $form->add('title', 'text', array(
                 'label' => 'Project title',

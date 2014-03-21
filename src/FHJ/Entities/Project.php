@@ -59,7 +59,15 @@ class Project extends BaseEntity {
         $this->setDescription($description);
         $this->setLastBuildState($lastBuildState);
     }
-    
+
+	private function setId($id) {
+		if (!is_int($id)) {
+			throw new \InvalidArgumentException('The id must be an integer');
+		}
+
+		$this->id = $id;
+	}
+
     public function getId() {
         return $this->id;
     }

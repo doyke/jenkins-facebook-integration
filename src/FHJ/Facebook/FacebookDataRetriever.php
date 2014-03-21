@@ -2,6 +2,8 @@
 
 namespace FHJ\Facebook;
 
+use Monolog\Logger;
+
 /**
  * FacebookDataRetriever
  * @package FHJ\Facebook
@@ -12,6 +14,11 @@ class FacebookDataRetriever {
 	 * @var \BaseFacebook
 	 */
 	private $facebook;
+
+	/**
+	 * @var Logger
+	 */
+	private $logger;
 
 	/**
 	 * @var array|null
@@ -25,9 +32,11 @@ class FacebookDataRetriever {
 
 	/**
 	 * @param \BaseFacebook $facebook
+	 * @param Logger $logger
 	 */
-	public function __construct(\BaseFacebook $facebook) {
+	public function __construct(\BaseFacebook $facebook, Logger $logger) {
 		$this->facebook = $facebook;
+		$this->logger = $logger;
 	}
 
 	public function getUserId() {
@@ -56,6 +65,9 @@ class FacebookDataRetriever {
 	public function getGroups() {
 		if ($this->groups === null) {
 			$groups = $this->callFacebookApi('/me/groups');
+
+			$this->logger->addDebug(sprintf('FacebookDataRetriever.getGroups for uid "%s"', $this->getUserId()),
+				array($groups));
 
 			$this->groups = array();
 			foreach ($groups as $group) {
