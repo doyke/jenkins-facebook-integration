@@ -54,15 +54,7 @@ class ProjectEditController extends BaseController {
         try {
             if ($originalProject === null) {
                 $user = $this->getSecurity()->getToken()->getUser();
-                /*if ($this->getSecurity()->isGranted('ROLE_ADMIN')) {
-                    $userId = $form->get('userId')->getData();
-                    $user = $this->getUserRepository()->findUserById(intval($userId));
-                    
-                    if ($user === null) {
-                        throw new \Exception(sprintf('no user found for id "%d"', $userId));
-                    }
-                }*/
-                
+
                 $this->getProjectRepository()->createProject($user, $editedProject->getTitle(),
                     $editedProject->getDescription(), $editedProject->getFacebookGroupId());
             } else {
@@ -91,12 +83,6 @@ class ProjectEditController extends BaseController {
     private function defineCreateForm() {
         $form = $this->getFormFactory()->createBuilder('form', new Project(0, 0, '-'));
         $facebookData = new FacebookDataRetriever($this->getFacebookObject(), $this->getLogger());
-
-        /*if ($this->getSecurity()->isGranted('ROLE_ADMIN')) {
-            $form->add('userId', 'entity', array(
-                
-                ));
-        }*/
 
         $form->add('title', 'text', array(
                 'label' => 'Project title',

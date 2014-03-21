@@ -22,7 +22,7 @@ class CachingFacebookDataRetriever extends FacebookDataRetriever {
 	private $logger;
 
 	public function __construct(\BaseFacebook $facebook, Cache $cache, Logger $logger) {
-		parent::__construct($facebook);
+		parent::__construct($facebook, $logger);
 
 		$this->cache = $cache;
 		$this->logger = $logger;

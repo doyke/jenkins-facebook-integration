@@ -66,12 +66,12 @@ class FacebookDataRetriever {
 		if ($this->groups === null) {
 			$groups = $this->callFacebookApi('/me/groups');
 
-			$this->logger->addDebug(sprintf('FacebookDataRetriever.getGroups for uid "%s"', $this->getUserId()),
+			$this->logger->addInfo(sprintf('FacebookDataRetriever.getGroups for uid "%s"', $this->getUserId()),
 				array($groups));
 
 			$this->groups = array();
 			foreach ($groups as $group) {
-				$this->groups[$group['id']] = $group['name'];
+				//$this->groups[$group['id']] = $group['name'];
 			}
 		}
 
