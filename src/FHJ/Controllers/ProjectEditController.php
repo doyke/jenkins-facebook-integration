@@ -99,7 +99,9 @@ class ProjectEditController extends BaseController {
 		        'constraints' => new Assert\Choice(array_keys($validGroups)),
             ))->add('save', 'submit', array(
                 'label' => 'Create project'    
-            ));
+            ))->add('cancel', 'button', array(
+		        'label' => 'Cancel'
+	        ));
             
         return $form->getForm();
     }
