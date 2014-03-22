@@ -14,6 +14,8 @@ use Silex\Provider\WebProfilerServiceProvider;
 use SilexAssetic\AsseticServiceProvider;
 use Silex\Provider\FacebookServiceProvider;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Silex\Provider\TranslationServiceProvider;
+use Symfony\Component\Translation\Loader\YamlFileLoader;
 use CHH\Silex\CacheServiceProvider;
 use FHJ\Providers\FacebookUserProvider;
 use FHJ\Repositories\UserDbRepository;
@@ -82,6 +84,17 @@ $app->register(new SecurityServiceProvider(), array(
 $app['security.role_hierarchy'] = array(
 	'ROLE_ADMIN' => array('ROLE_USER'),
 );
+
+// Do not remove this component, as forms are not going to work anymore then
+// (The trans function is then missing)
+$app->register(new TranslationServiceProvider());
+$app['translator'] = $app->share($app->extend('translator', function($translator, $app) {
+	$translator->addLoader('yaml', new YamlFileLoader());
+	$translator->addResource('yaml', __DIR__.'/../resources/locales/en.yml', 'en');
+
+	return $translator;
+}));
+
 
 $app->register(new MonologServiceProvider(), array(
     'monolog.logfile' => __DIR__.'/../resources/log/app.log',
