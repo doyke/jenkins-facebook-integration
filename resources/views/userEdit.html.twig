@@ -1,6 +1,8 @@
 {% extends 'layout.html.twig' %}
 {% set active = 'users' %}
 
+{% block title %}Edit user &quot;{{ user.email|escape }}&quot;{% endblock %}
+
 {% block content %}
     <div class="page-header">
         <h1>Edit user &quot;{{ user.email|escape }}&quot;</h1>

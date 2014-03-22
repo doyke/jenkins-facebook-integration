@@ -1,5 +1,13 @@
 {% extends 'layout.html.twig' %}
 
+{% block title %}
+    {% if mode is 'deleteCancel' %}
+        Confirmation
+    {% else %}
+        Message
+    {% endif %}
+{% endblock %}
+
 {% block content %}
 
     <div class="page-header">
