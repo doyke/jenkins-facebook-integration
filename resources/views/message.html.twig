@@ -1,8 +1,8 @@
 {% extends 'layout.html.twig' %}
 
 {% block title %}
-    {% if mode is 'deleteCancel' %}
-        Confirmation
+    {% if mode == 'deleteCancel' %}
+        Confirm deletion
     {% else %}
         Message
     {% endif %}
@@ -11,7 +11,7 @@
 {% block content %}
 
     <div class="page-header">
-    {% if mode is 'deleteCancel' %}
+    {% if mode == 'deleteCancel' %}
         <h1>Confirmation</h1>
     {% else %}
         <h1>Message</h1>
@@ -19,22 +19,26 @@
     </div>
     
     <div class="row">
-        <div class="span12 text-center">{{ message }}</div>
+        <div class="span12">{{ message }}</div>
     </div>
-    
-    <div class="row">
-        <div class="span12 text-center">
-        {% if mode is 'deleteCancel' %}
-            <form action="{{ deletePath }}" method="POST">
-                <button class="btn btn-large btn-danger" type="submit"><i class="icon-trash"></i> Delete</button>
-            </form>
-            &nbsp;
-            &nbsp;
-            <a href="{{ cancelPath }}" class="btn btn-large">Cancel</a>
-        {% else %}
-            
-        {% endif %}
-            
+
+    {% if mode == 'deleteCancel' %}
+        <form action="{{ deletePath }}" method="POST">
+    {% else %}
+        <form action="{{ path }}" method="POST">
+    {% endif %}
+    <form action="{{ deletePath }}" method="POST">
+        <div id="form">
+            <div class="form-actions">
+                {% if mode == 'deleteCancel' %}
+                    <button class="btn btn-danger" type="submit"><i class="icon-trash"></i> Delete</button>
+                    &nbsp;
+                    &nbsp;
+                    <a href="{{ cancelPath }}" class="btn">Cancel</a>
+                {% else %}
+
+                {% endif %}
+            </div>
         </div>
-    </div>
+    </form>
 {% endblock %}
