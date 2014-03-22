@@ -27,7 +27,7 @@
                     <a href="{{ path('userEdit', {user: user.id}) }}"><strong>{{ user.email|escape }}</strong></a>{% if user.admin %} <span class="label label-info">Admin</span>{% endif %}
                 </td>
                 <td><i class="{% if user.loginAllowed %}icon-ok{% else %}icon-remove{% endif %}"></i></td>
-                <td><i class="{% if user.projectCreationAllowed %}icon-ok{% else %}icon-remove{% endif %}"></i>{% if user.projectCount > 0 %} ({{ user.projectCount }} Projects){% endif %}</td>
+                <td><i class="{% if user.projectCreationAllowed %}icon-ok{% else %}icon-remove{% endif %}"></i>{% if user.projectCount > 0 %} ({{ user.projectCount }} Project{% if user.projectCount > 1 %}s{% endif %}){% endif %}</td>
                 <td>
                     <a class="btn btn-mini" href="{{ path('userEdit', {user: user.id}) }}"><i class="icon-pencil"></i> Edit</a>
                     {% if user.deletable %}<a class="btn btn-mini btn-danger" href="{{ path('userDelete', {user: user.id}) }}"><i class="icon-trash"></i> Delete</a>{% endif %}

@@ -3,13 +3,13 @@
 
 {% block content %}
 
-    <h1>Hello</h1>
-    {% if is_granted('ROLE_USER') %}
-        Hello, {{ realname|escape }}.<br />
-        {% if mayCreateProjects %}
-            Configure your <a href="{{ path('projects') }}">Projects</a>.
-        {% endif %}
-    {% else %}
-        You are not logged in. Please <a href="{{ path('login') }}">connect with Facebook</a>.
+{% if is_granted('ROLE_USER') %}
+    <h1>Hello, {{ realname|escape }}!</h1>
+    {% if mayCreateProjects %}
+        Configure your <a href="{{ path('projects') }}">projects</a>.
     {% endif %}
+{% else %}
+    <h1>Hello!</h1>
+    You are not logged in. Please <a href="{{ path('login') }}">connect using Facebook</a>.
+{% endif %}
 {% endblock %}
