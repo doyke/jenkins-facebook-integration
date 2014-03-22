@@ -84,6 +84,9 @@ class ProjectEditController extends BaseController {
         $form = $this->getFormFactory()->createBuilder('form', new Project(0, 0, '-'));
         $facebookData = new FacebookDataRetriever($this->getFacebookObject(), $this->getLogger());
 
+	    $validGroups = $facebookData->getGroups();
+	    $groups = array('-' => 'No group selected') + $validGroups;
+
         $form->add('title', 'text', array(
                 'label' => 'Project title',
                 'constraints' => array(new Assert\NotBlank(), new Assert\Length(array('min' => 5, 'max' => 100))),
@@ -92,7 +95,8 @@ class ProjectEditController extends BaseController {
                 'constraints' => new Assert\Length(array('max' => 600)),
             ))->add('facebookGroupId', 'choice', array(
                 'label' => 'Post messages to following facebook group',
-                'choices' => $facebookData->getGroups()
+                'choices' => $groups,
+		        'constraints' => new Assert\Choice(array_keys($validGroups)),
             ))->add('save', 'submit', array(
                 'label' => 'Create project'    
             ));
@@ -104,7 +108,10 @@ class ProjectEditController extends BaseController {
         $form = $this->getFormFactory()->createBuilder('form', $project);
         $facebookData = new FacebookDataRetriever($this->getFacebookObject(), $this->getLogger());
 
-        $form->add('title', 'text', array(
+	    $validGroups = $facebookData->getGroups();
+	    $groups = array('-' => 'No group selected') + $validGroups;
+
+	    $form->add('title', 'text', array(
                 'label' => 'Project title',
                 'constraints' => array(new Assert\NotBlank(), new Assert\Length(array('min' => 5, 'max' => 100))),
             ))->add('description', 'textarea', array(
@@ -112,7 +119,8 @@ class ProjectEditController extends BaseController {
                 'constraints' => new Assert\Length(array('max' => 600)),
             ))->add('facebookGroupId', 'choice', array(
                 'label' => 'Post messages to following facebook group',
-                'choices' => $facebookData->getGroups()
+                'choices' => $groups,
+			    'constraints' => new Assert\Choice(array_keys($validGroups)),
             ))->add('enabled', 'checkbox', array(
                 'label' => 'Posting of messages enabled?'
             ))->add('secretKey', 'text', array(

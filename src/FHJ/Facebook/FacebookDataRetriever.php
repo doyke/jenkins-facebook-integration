@@ -63,16 +63,25 @@ class FacebookDataRetriever {
 	}
 
 	public function getGroups() {
+		$this->logger->addInfo(sprintf('facebook data retriever: getGroups for uid "%s"', $this->getUserId()));
+
 		if ($this->groups === null) {
 			$groups = $this->callFacebookApi('/me/groups');
 
-			$this->logger->addInfo(sprintf('FacebookDataRetriever.getGroups for uid "%s"', $this->getUserId()),
-				array($groups));
+			$this->logger->addDebug(sprintf('facebook data retriever: getGroups: got groups for uid "%s"',
+					$this->getUserId()), array('groups' => $groups));
 
 			$this->groups = array();
-			foreach ($groups as $group) {
-				//$this->groups[$group['id']] = $group['name'];
+			if (count($groups['data'])) {
+				foreach ($groups['data'] as $group) {
+					$this->logger->addDebug('facebook data retriever: getGroups: iterating over group',
+							array('group' => $group));
+
+					//$thisGroup = $group[0];
+					$this->groups[$group['id']] = $group['name'];
+				}
 			}
+
 		}
 
 		return $this->groups;
