@@ -115,6 +115,16 @@
 {% endspaceless %}
 {% endblock percent_widget %}
 
+{% block link_widget %}
+    {% spaceless %}
+        {% for child in form %}
+            <a href="{{ child.href }}" class="btn">
+                {{ form_label(child) }}
+            </a>
+        {% endfor %}
+    {% endspaceless %}
+{% endblock %}
+
 {# Labels #}
 
 {% block form_label %}
