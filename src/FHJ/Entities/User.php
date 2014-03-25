@@ -28,11 +28,6 @@ class User extends BaseEntity implements AdvancedUserInterface {
     private $facebookAccessToken;
     
     /**
-     * @var \DateTime|null
-     */ 
-    private $facebookAccessExpiration;
-    
-    /**
      * @var boolean
      */ 
     private $loginAllowed;
@@ -47,14 +42,12 @@ class User extends BaseEntity implements AdvancedUserInterface {
      */ 
     private $admin;
     
-    public function __construct($id, $facebookUserId, $email = '', $facebookAccessToken = '',
-                                \DateTime $facebookAccessExpiration = null, $loginAllowed = true,
-                                $projectCreationAllowed = false, $admin = false) {
+    public function __construct($id, $facebookUserId, $email = '', $facebookAccessToken = '', 
+                                $loginAllowed = true, $projectCreationAllowed = false, $admin = false) {
         $this->setId($id);
         $this->setFacebookUserId($facebookUserId);
         $this->setEmail($email);
         $this->setFacebookAccessToken($facebookAccessToken);
-        $this->setFacebookAccessExpiration($facebookAccessExpiration);
         $this->setLoginAllowed($loginAllowed);
 	    $this->setProjectCreationAllowed($projectCreationAllowed);
         $this->setAdmin($admin);
@@ -104,24 +97,6 @@ class User extends BaseEntity implements AdvancedUserInterface {
         return $this->facebookAccessToken;
     }
 
-	/**
-	 * @param $facebookAccessExpiration \DateTime|null
-	 *
-	 * @throws \InvalidArgumentException
-	 */
-    public function setFacebookAccessExpiration($facebookAccessExpiration) {
-        if (!is_null($facebookAccessExpiration) && !$facebookAccessExpiration instanceof \DateTime) {
-            throw new \InvalidArgumentException(
-                'Field "facebookAccessExpiration" must either null or a valid DateTime instance');
-        }
-        
-        $this->facebookAccessExpiration = $facebookAccessExpiration;
-    }
-    
-    public function getFacebookAccessExpiration() {
-        return $this->facebookAccessExpiration;
-    }
-    
     public function setLoginAllowed($isLoginAllowed) {
         $this->checkBoolean($isLoginAllowed, 'isLoginAllowed');
         $this->loginAllowed = $isLoginAllowed;

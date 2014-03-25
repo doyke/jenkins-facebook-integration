@@ -66,7 +66,6 @@ class UserDbRepository extends BaseRepository implements UserDbRepositoryInterfa
                 'facebook_id' => $user->getFacebookUserId(),
                 'email' => $user->getEmail(),
                 'facebook_access_token' => $user->getFacebookAccessToken(),
-                'facebook_access_expiration' => $user->getFacebookAccessExpiration(),
                 'is_login_allowed' => $user->isLoginAllowed(),
 	            'is_project_creation_allowed' => $user->isProjectCreationAllowed(),
                 'is_admin' => $user->isAdmin(),
@@ -76,7 +75,6 @@ class UserDbRepository extends BaseRepository implements UserDbRepositoryInterfa
                 \PDO::PARAM_STR,
                 \PDO::PARAM_STR,
                 \PDO::PARAM_STR,
-                'datetime',
                 'boolean',
                 'boolean',
 	            'boolean',
@@ -157,14 +155,8 @@ class UserDbRepository extends BaseRepository implements UserDbRepositoryInterfa
      * @return User
      */
     private function fillUserEntity(array $resultSet) {
-        $expirationDate = null;
-        if ($resultSet['facebook_access_expiration'] !== null
-                && intval($resultSet['facebook_access_expiration']) > 0) {
-            $expirationDate = \DateTime::createFromFormat('U', $resultSet['facebook_access_expiration']);
-        }
-        
         return new User(intval($resultSet['id']), $resultSet['facebook_id'], $resultSet['email'],
-            $resultSet['facebook_access_token'], $expirationDate,
+            $resultSet['facebook_access_token'],
 	        // The values in the database are integers, the User class only accepts booleans
 	        $resultSet['is_login_allowed'] ? true : false,
 	        $resultSet['is_project_creation_allowed'] ? true : false,

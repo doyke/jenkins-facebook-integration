@@ -6,7 +6,6 @@ $users = $schema->createTable('users');
 $users->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
 $users->addColumn('facebook_id', 'string', array('length' => 30, 'notnull' => true));
 $users->addColumn('facebook_access_token', 'string', array('length' => 100));
-$users->addColumn('facebook_access_expiration', 'datetime');
 $users->addColumn('email', 'string', array('length' => 60));
 $users->addColumn('is_login_allowed', 'boolean', array('default' => 0));
 $users->addColumn('is_project_creation_allowed', 'boolean', array('default' => 0));
