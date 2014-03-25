@@ -78,9 +78,13 @@ class BuildStatusUpdateController extends BaseController {
         try {
             // send an event
             $event = new BuildStatusUpdateEvent($project, $currentStatus);
-            $this->getEventDispatcher(EventIdentifiers::EVENT_BUILD_STATUS_UPDATE, $event);
+            $modifiedEvent = $this->getEventDispatcher()->dispatch(EventIdentifiers::EVENT_BUILD_STATUS_UPDATE,
+                    $event);
             
+            // get the project of the sent $modifiedEvent as some changes may have been made by the listeners
+            $project = $modifiedEvent->getProject();
             $project->setLastBuildState($currentStatus);
+            
             $this->getProjectRepository()->updateProject($project);
         } catch (\Exception $e) {
             $this->getLogger()->addDebug(sprintf(

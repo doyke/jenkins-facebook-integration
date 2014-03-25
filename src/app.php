@@ -18,6 +18,7 @@ use Silex\Provider\TranslationServiceProvider;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
 use CHH\Silex\CacheServiceProvider;
 use FHJ\Providers\FacebookUserProvider;
+use FHJ\Events\EventIdentifier;
 use FHJ\Repositories\UserDbRepository;
 use FHJ\Repositories\ProjectDbRepository;
 use FHJ\Converters\ProjectConverter;
@@ -183,6 +184,9 @@ unset($dbDriver, $dbHost, $dbName, $dbUser, $dbPassword);
 
 // Event dispatcher
 $app['socialEventDispatcher'] = new EventDispatcher();
+
+$$app['socialEventDispatcher']->addListener(EventIdentifier::EVENT_BUILD_STATUS_UPDATE,
+    array($listener, 'onProjectBuildStatusUpdate'));
 
 // Repositories
 $app['repository.users'] = new UserDbRepository($app['dbs']['db'], $app['monolog']);
