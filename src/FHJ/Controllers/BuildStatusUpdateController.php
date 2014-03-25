@@ -5,6 +5,7 @@ namespace FHJ\Controllers;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\PreconditionFailedHttpException;
 use FHJ\Entities\Project;
 use FHJ\Events\EventIdentifiers;
 use FHJ\Events\BuildStatusUpdateEvent;
@@ -23,6 +24,13 @@ class BuildStatusUpdateController extends BaseController {
             $this->getLogger()->addInfo(sprintf('no project found for secret key "%s"', $secretKey));
             
             throw new NotFoundHttpException('invalid secret key');
+        }
+        
+        if (!$project->isEnabled()) {
+            $this->getLogger()->addWarning(sprintf('project with id "%d" got update but is not enabled',
+                $project->getId()));
+            
+            throw new PreconditionFailedHttpException('project is not enabled');
         }
         
         $requestContent = $request->getContent();
