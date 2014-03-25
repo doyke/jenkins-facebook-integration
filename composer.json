@@ -25,7 +25,8 @@
         "silex/web-profiler"    : "~1.0.1",
         "twitter/bootstrap"     : "~2.3.0",
         "grom/facebook-service-provider": "dev-master",
-        "chh/cache-service-provider": "~1.0"
+        "chh/cache-service-provider": "~1.0",
+        "genemu/form-bundle"    : "2.2.*"
     },
     "require-dev": {
         "symfony/browser-kit"   : "~2.3",
