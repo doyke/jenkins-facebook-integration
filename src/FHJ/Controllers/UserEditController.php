@@ -25,8 +25,7 @@ class UserEditController extends BaseController {
         
         return $this->getTemplateEngine()->render('userEdit.html.twig', array(
             'form' => $form->createView(),
-            'user' => $user,
-            'cancelPath' => $this->generateRoute(UserListController::ROUTE_USER_LIST)
+            'user' => $user
         )); 
     }
     
@@ -49,7 +48,10 @@ class UserEditController extends BaseController {
                 'label' => 'Is administrator?'
             ))->add('save', 'submit', array(
                 'label' => 'Save changes'    
-            ));
+            ))->add('cancel', 'linkbutton', array(
+		        'label' => 'Cancel',
+		        'href' => $this->generateRoute(UserListController::ROUTE_USER_LIST)
+	        ));
             
         return $form->getForm();
     }

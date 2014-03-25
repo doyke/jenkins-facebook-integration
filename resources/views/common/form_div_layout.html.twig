@@ -115,14 +115,18 @@
 {% endspaceless %}
 {% endblock percent_widget %}
 
-{% block link_widget %}
+{% block linkbutton_widget %}
     {% spaceless %}
-        {% for child in form %}
-            <a href="{{ child.href }}" class="btn">
-                {{ form_label(child) }}
+            <a {{ block('container_attributes') }} href="{{ href }}">
+                {{ label|escape }}
             </a>
-        {% endfor %}
     {% endspaceless %}
+{% endblock %}
+
+{% block genemu_plain_widget %}
+    <div {{ block('container_attributes') }}>
+        <p {{ block('widget_attributes') }}>{{ value|escape }}</p>
+    </div>
 {% endblock %}
 
 {# Labels #}

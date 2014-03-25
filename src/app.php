@@ -18,7 +18,7 @@ use Silex\Provider\TranslationServiceProvider;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
 use CHH\Silex\CacheServiceProvider;
 use FHJ\Providers\FacebookUserProvider;
-use FHJ\Events\EventIdentifier;
+use FHJ\Events\EventIdentifiers;
 use FHJ\Repositories\UserDbRepository;
 use FHJ\Repositories\ProjectDbRepository;
 use FHJ\Converters\ProjectConverter;
@@ -31,15 +31,25 @@ use FHJ\Controllers\ProjectListController;
 use FHJ\Controllers\ProjectDeleteController;
 use FHJ\Controllers\ProjectEditController;
 use FHJ\Controllers\BuildStatusUpdateController;
+use FHJ\Facebook\SocialEventListener;
+use Genemu\Bundle\FormBundle\Form\Core\Type\PlainType;
+use FHJ\Framework\SimpleLinkButtonType;
 
 // this is needed for the secure() method to work. see controllers.php.
 $app['route_class'] = 'FHJ\Framework\SecuredRoute';
 
 $app->register(new SessionServiceProvider());
 $app->register(new ValidatorServiceProvider());
-$app->register(new FormServiceProvider());
 $app->register(new UrlGeneratorServiceProvider());
 $app->register(new ServiceControllerServiceProvider());
+
+$app->register(new FormServiceProvider());
+$app['form.type.extensions'] = $app->share($app->extend('form.type.extensions', function ($extensions) use ($app) {
+	$extensions[] = new PlainType();
+	$extensions[] = new SimpleLinkButtonType();
+
+	return $extensions;
+}));
 
 $app->register(new FacebookServiceProvider(), array(
 	'facebook.config' => array(
@@ -182,11 +192,13 @@ $app->register(new DoctrineServiceProvider(), array(
 
 unset($dbDriver, $dbHost, $dbName, $dbUser, $dbPassword);
 
+// Social posting service
+$app['postingService'] = new SocialEventListener($app['monolog']);
+
 // Event dispatcher
 $app['socialEventDispatcher'] = new EventDispatcher();
-
-$$app['socialEventDispatcher']->addListener(EventIdentifier::EVENT_BUILD_STATUS_UPDATE,
-    array($listener, 'onProjectBuildStatusUpdate'));
+$app['socialEventDispatcher']->addListener(EventIdentifiers::EVENT_BUILD_STATUS_UPDATE,
+    array($app['postingService'], 'onProjectBuildStatusUpdate'));
 
 // Repositories
 $app['repository.users'] = new UserDbRepository($app['dbs']['db'], $app['monolog']);

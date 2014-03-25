@@ -28,8 +28,7 @@ class ProjectEditController extends BaseController {
         
         return $this->getTemplateEngine()->render('projectEdit.html.twig', array(
             'form' => $form->createView(),
-            'project' => $project,
-            'cancelPath' => $this->generateRoute(ProjectListController::ROUTE_PROJECT_LIST_OWN)
+            'project' => $project
         )); 
     }
     
@@ -42,8 +41,7 @@ class ProjectEditController extends BaseController {
         }
         
         return $this->getTemplateEngine()->render('projectNew.html.twig', array(
-            'form' => $form->createView(),
-            'cancelPath' => $this->generateRoute(ProjectListController::ROUTE_PROJECT_LIST_OWN)
+            'form' => $form->createView()
         )); 
     }
     
@@ -99,8 +97,9 @@ class ProjectEditController extends BaseController {
 		        'constraints' => new Assert\Choice(array_keys($validGroups)),
             ))->add('save', 'submit', array(
                 'label' => 'Create project'    
-            ))->add('cancel', 'button', array(
-		        'label' => 'Cancel'
+            ))->add('cancel', 'linkbutton', array(
+		        'label' => 'Cancel',
+		        'href' => $this->generateRoute(ProjectListController::ROUTE_PROJECT_LIST_OWN)
 	        ));
             
         return $form->getForm();
@@ -125,7 +124,7 @@ class ProjectEditController extends BaseController {
 			    'constraints' => new Assert\Choice(array_keys($validGroups)),
             ))->add('enabled', 'checkbox', array(
                 'label' => 'Posting of messages enabled?'
-            ))->add('secretKey', 'text', array(
+            ))->add('secretKey', 'genemu_plain', array(
                 'label' => 'Secret key',
                 'disabled' => true,
             ))->add('svnplotDbPath', 'text', array(
@@ -135,7 +134,10 @@ class ProjectEditController extends BaseController {
                 'disabled' => true
             ))->add('save', 'submit', array(
                 'label' => 'Save changes'    
-            ));
+            ))->add('cancel', 'linkbutton', array(
+			    'label' => 'Cancel',
+			    'href' => $this->generateRoute(ProjectListController::ROUTE_PROJECT_LIST_OWN)
+		    ));
             
         return $form->getForm();
     }
