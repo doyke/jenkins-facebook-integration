@@ -1,12 +1,15 @@
 <?php
 
-namespace FHJ\Facebook;
+namespace FHJ\Facebook\Api;
 
 /**
- * SimpleFacebook. A Facebook class that does not use any sessions.
- * @package FHJ\Facebook
+ * SimpleFacebook
+ *
+ * A Facebook API class that does not use any sessions.
+ *
+ * @package FHJ\Facebook\Api
  */
-class SimpleFacebook extends \BaseFacebook {
+class SimpleFacebookEndpoint extends \BaseFacebook {
 
 	/**
 	 * Stores the given ($key, $value) pair, so that future calls to
@@ -18,7 +21,7 @@ class SimpleFacebook extends \BaseFacebook {
 	 * @return void
 	 */
 	protected function setPersistentData($key, $value) {
-		// TODO: Implement setPersistentData() method.
+
 	}
 
 	/**

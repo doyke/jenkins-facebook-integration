@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Validator\Constraints as Assert;
 use FHJ\Entities\Project;
-use FHJ\Facebook\FacebookDataRetriever;
+use FHJ\Facebook\Data\FacebookDataRetriever;
 
 /**
  * ProjectEditController

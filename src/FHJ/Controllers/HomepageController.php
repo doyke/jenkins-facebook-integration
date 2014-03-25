@@ -2,7 +2,7 @@
 
 namespace FHJ\Controllers;
 
-use FHJ\Facebook\CachingFacebookDataRetriever;
+use FHJ\Facebook\Data\CachingFacebookDataRetriever;
 
 /**
  * HomepageController

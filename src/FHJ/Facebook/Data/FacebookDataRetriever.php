@@ -1,12 +1,12 @@
 <?php
 
-namespace FHJ\Facebook;
+namespace FHJ\Facebook\Data;
 
 use Monolog\Logger;
 
 /**
  * FacebookDataRetriever
- * @package FHJ\Facebook
+ * @package FHJ\Facebook\Data
  */
 class FacebookDataRetriever {
 
@@ -74,10 +74,6 @@ class FacebookDataRetriever {
 			$this->groups = array();
 			if (count($groups['data'])) {
 				foreach ($groups['data'] as $group) {
-					$this->logger->addDebug('facebook data retriever: getGroups: iterating over group',
-							array('group' => $group));
-
-					//$thisGroup = $group[0];
 					$this->groups[$group['id']] = $group['name'];
 				}
 			}

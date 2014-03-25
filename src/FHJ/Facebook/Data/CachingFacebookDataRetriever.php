@@ -1,13 +1,13 @@
 <?php
 
-namespace FHJ\Facebook;
+namespace FHJ\Facebook\Data;
 
 use Doctrine\Common\Cache\Cache;
 use Monolog\Logger;
 
 /**
  * CachingFacebookDataRetriever
- * @package FHJ\Facebook
+ * @package FHJ\Facebook\Data
  */
 class CachingFacebookDataRetriever extends FacebookDataRetriever {
 
