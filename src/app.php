@@ -32,6 +32,7 @@ use FHJ\Controllers\ProjectDeleteController;
 use FHJ\Controllers\ProjectEditController;
 use FHJ\Controllers\BuildStatusUpdateController;
 use FHJ\Facebook\SocialEventListener;
+use FHJ\Facebook\FacebookConfig;
 use Genemu\Bundle\FormBundle\Form\Core\Type\PlainType;
 use FHJ\Framework\SimpleLinkButtonType;
 
@@ -197,7 +198,8 @@ $app['repository.users'] = new UserDbRepository($app['dbs']['db'], $app['monolog
 $app['repository.projects'] = new ProjectDbRepository($app['dbs']['db'], $app['monolog']);
 
 // Social posting service
-$app['postingService'] = new SocialEventListener($app['repository.users'], $app['monolog']);
+$app['postingService'] = new SocialEventListener($app['repository.users'], new FacebookConfig($app['facebook.appId'],
+		$app['facebook.appNamespace'], $app['facebook.secret']), $app['monolog']);
 
 // Event dispatcher
 $app['socialEventDispatcher'] = new EventDispatcher();

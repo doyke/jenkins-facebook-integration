@@ -3,6 +3,7 @@
 namespace FHJ\Facebook\Api;
 
 use FHJ\Entities\User;
+use FHJ\Facebook\FacebookConfig;
 
 /**
  * EndpointFactory
@@ -14,6 +15,15 @@ use FHJ\Entities\User;
 class EndpointFactory {
 
 	/**
+	 * @var FacebookConfig
+	 */
+	private $facebookConfig;
+
+	public function __construct(FacebookConfig $facebookConfig) {
+		$this->facebookConfig = $facebookConfig;
+	}
+
+	/**
 	 * Create a API endpoint for the given User object
 	 *
 	 * @param User $user The user
@@ -22,18 +32,24 @@ class EndpointFactory {
 	 * @return \BaseFacebook
 	 */
 	public function getFacebookApi(User $user) {
-		$facebookUserId = $user->getFacebookUserId();
 		$accessToken = $user->getFacebookAccessToken();
-
-		if (empty($facebookUserId)) {
-			throw new \LogicException('Facebook user id is empty');
-		}
 
 		if (empty($accessToken)) {
 			throw new \LogicException('Facebook access token is empty');
 		}
 
-		// TODO: Implement me
+		$facebook = new SimpleFacebookEndpoint($this->generateFacebookConfigArray($this->facebookConfig));
+		$facebook->setAccessToken($user->getFacebookAccessToken());
+
+		return $facebook;
+	}
+
+	private function generateFacebookConfigArray(FacebookConfig $config) {
+		return array(
+			'appId'   => $config->getAppId(),
+			'secret'  => $config->getSecret(),
+			'appName' => 'https://apps.facebook.com/' . $config->getNamespace() . '/',
+		);
 	}
 
 }

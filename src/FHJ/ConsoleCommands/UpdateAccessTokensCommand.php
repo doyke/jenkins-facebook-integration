@@ -10,6 +10,7 @@ use FHJ\Repositories\UserDbRepositoryInterface;
 use FHJ\Entities\User;
 use FHJ\Facebook\Api\EndpointFactory;
 use FHJ\Facebook\Data\FacebookDataRetriever;
+use FHJ\Facebook\FacebookConfig;
 
 /**
  * UpdateAccessTokensCommand
@@ -32,11 +33,11 @@ class UpdateAccessTokensCommand extends Command {
      */
     private $endpointFactory;
     
-    public function __construct(UserDbRepositoryInterface $userRepository, Logger $logger) {
+    public function __construct(UserDbRepositoryInterface $userRepository, FacebookConfig $fbConfig, Logger $logger) {
         $this->userRepository = $userRepository;
         $this->logger = $logger;
         
-        $this->endpointFactory = new EndpointFactory();
+        $this->endpointFactory = new EndpointFactory($fbConfig);
     }
 
 	protected function configure() {

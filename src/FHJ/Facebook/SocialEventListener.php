@@ -25,9 +25,12 @@ class SocialEventListener {
 	 * @var UserDbRepositoryInterface
 	 */
 	private $userRepository;
+
+	private $fbConfig;
     
-    public function __construct(UserDbRepositoryInterface $userRepository, Logger $logger) {
+    public function __construct(UserDbRepositoryInterface $userRepository, FacebookConfig $fbConfig, Logger $logger) {
         $this->userRepository = $userRepository;
+	    $this->fbConfig = $fbConfig;
 	    $this->logger = $logger;
     }
     
@@ -45,7 +48,7 @@ class SocialEventListener {
     }
 
 	private function handleStatusUpdate(User $user, Project $project, $newBuildState, $jobUrl) {
-		$endpointFactory = new EndpointFactory();
+		$endpointFactory = new EndpointFactory($this->fbConfig);
 		$facebook = $endpointFactory->getFacebookApi($user);
 
 		$message = sprintf('New build state: %s', $newBuildState);
