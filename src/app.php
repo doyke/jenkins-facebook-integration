@@ -208,11 +208,13 @@ $app['socialEventDispatcher']->addListener(EventIdentifiers::EVENT_BUILD_STATUS_
 
 // Converters
 $app['converter.user'] = $app->protect(function ($value) use ($app) {
-	return (new UserConverter($app['repository.users']))->convert($value);
+	$converter = new UserConverter($app['repository.users']);
+	return $converter->convert($value);
 });
 
 $app['converter.project'] = $app->protect(function ($value) use ($app) {
-	return (new ProjectConverter($app['repository.projects']))->convert($value);
+	$converter = new ProjectConverter($app['repository.projects']);
+	return $converter->convert($value);
 });
 
 // Controllers
