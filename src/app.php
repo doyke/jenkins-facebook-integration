@@ -192,17 +192,17 @@ $app->register(new DoctrineServiceProvider(), array(
 
 unset($dbDriver, $dbHost, $dbName, $dbUser, $dbPassword);
 
+// Repositories
+$app['repository.users'] = new UserDbRepository($app['dbs']['db'], $app['monolog']);
+$app['repository.projects'] = new ProjectDbRepository($app['dbs']['db'], $app['monolog']);
+
 // Social posting service
-$app['postingService'] = new SocialEventListener($app['monolog']);
+$app['postingService'] = new SocialEventListener($app['repository.users'], $app['monolog']);
 
 // Event dispatcher
 $app['socialEventDispatcher'] = new EventDispatcher();
 $app['socialEventDispatcher']->addListener(EventIdentifiers::EVENT_BUILD_STATUS_UPDATE,
     array($app['postingService'], 'onProjectBuildStatusUpdate'));
-
-// Repositories
-$app['repository.users'] = new UserDbRepository($app['dbs']['db'], $app['monolog']);
-$app['repository.projects'] = new ProjectDbRepository($app['dbs']['db'], $app['monolog']);
 
 // Converters
 $app['converter.user'] = $app->protect(function ($value) use ($app) {
