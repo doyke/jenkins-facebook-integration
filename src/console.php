@@ -1,10 +1,6 @@
 <?php
 
-use Doctrine\DBAL\DriverManager;
 use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
 use FHJ\ConsoleCommands\UpdateAccessTokensCommand;
 use FHJ\ConsoleCommands\AsseticDumpCommand;
 use FHJ\ConsoleCommands\ClearCacheCommand;
@@ -25,7 +21,7 @@ if (isset($app['cache.path'])) {
     $console->add(new ClearCacheCommand($app['cache.path']));
 }
 
-$console->add(new ShowDatabaseSchemaCommand(schemaFilepath, $app['db']));
-$console->add(new LoadDatabaseSchemaCommand(schemaFilepath, $app['db']));
+$console->add(new ShowDatabaseSchemaCommand($schemaFilepath, $app['db']));
+$console->add(new LoadDatabaseSchemaCommand($schemaFilepath, $app['db']));
 
 return $console;

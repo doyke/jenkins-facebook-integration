@@ -5,12 +5,9 @@ require_once __DIR__.'/vendor/autoload.php';
 
 $app = new Silex\Application();
 
-if (file_exists(__DIR__.'/resources/config/dev.php'))
-{
+if (file_exists(__DIR__.'/resources/config/dev.php')) {
 	require __DIR__.'/resources/config/dev.php';
-}
-else
-{
+} else {
 	require __DIR__.'/resources/config/prod.php';
 }
 

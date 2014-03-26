@@ -46,13 +46,11 @@ final class BuildStatusUpdateEvent extends Event {
         return $this->newBuildState;
     }
 
-	public function getJobName()
-	{
+	public function getJobName() {
 		return $this->jobName;
 	}
 
-	public function getJobUrl()
-	{
+	public function getJobUrl() {
 		return $this->jobUrl;
 	}
 

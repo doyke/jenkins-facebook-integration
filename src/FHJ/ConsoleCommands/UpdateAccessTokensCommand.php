@@ -5,8 +5,6 @@ namespace FHJ\ConsoleCommands;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
 use Monolog\Logger;
 use FHJ\Repositories\UserDbRepositoryInterface;
 use FHJ\Entities\User;
@@ -67,9 +65,9 @@ class UpdateAccessTokensCommand extends Command {
 	    
 	    if ($user->getEmail() !== $foundEmail) {
 	        $this->logger->addError(sprintf('update access tokens: user "%d" had email mismatch ("%s" <> "%s")',
-	            $user->getId(), $user->getEmail(), $foundEmail);
+	            $user->getId(), $user->getEmail(), $foundEmail));
 	        
-	        $output->writeln(sprintf('Email mismatch for user: "%s" <> "%s"'$user->getEmail(), $foundEmail);
+	        $output->writeln(sprintf('Email mismatch for user: "%s" <> "%s"', $user->getEmail(), $foundEmail));
 	        
 	        return;
 	    }
