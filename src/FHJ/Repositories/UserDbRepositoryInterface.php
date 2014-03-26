@@ -25,5 +25,7 @@ interface UserDbRepositoryInterface {
     public function findUserByFacebookUserId($facebookUserId);
     
     public function findUserById($id);
+    
+    public function findAllUsersCount();
 
 } 

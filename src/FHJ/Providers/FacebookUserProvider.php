@@ -41,7 +41,13 @@ class FacebookUserProvider implements UserManagerInterface {
 		$facebookUser = $this->facebook->api('/me');
 		$accessToken = $this->facebook->getAccessToken();
 
-		return $this->dbRepository->createUser($uid, $facebookUser['email'], $accessToken);
+		$user = $this->dbRepository->createUser($uid, $facebookUser['email'], $accessToken);
+		if (!$this->dbRepository->findAllUsersCount()) {
+		    $user->setAdmin(true);
+		    $this->dbRepository->updateUser($user);
+		}
+		
+		return $user;
 	}
 
 	/**

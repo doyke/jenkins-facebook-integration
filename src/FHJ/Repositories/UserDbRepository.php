@@ -147,6 +147,15 @@ class UserDbRepository extends BaseRepository implements UserDbRepositoryInterfa
         return $this->fillUserEntity($result);
     }
     
+    public function findAllUsersCount() {
+        $this->getLogger()->addInfo('looking up user count');
+
+        $sql = sprintf('SELECT COUNT(Id) FROM %s', $this->table);
+        $statement = $this->getConnection()->executeQuery($sql);
+
+        return intval($statement->fetchColumn(0));
+    }
+    
     /**
      * Fills a new User entity by using a result set. 
      *
