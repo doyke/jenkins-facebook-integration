@@ -7,10 +7,13 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use FHJ\ConsoleCommands\UpdateAccessTokensCommand;
 
 $console = new Application('Jenkins Facebook Integration', '1.0');
 
 $app->boot();
+
+$console->add(new UpdateAccessTokensCommand($app['repository.users'], $app['monolog']));
 
 $console
     ->register('assetic:dump')
