@@ -9,7 +9,7 @@ $dbPassword = '';
 
 // Facebook app settings
 $app['facebook.appId'] = '';
-$app['facebook.appName'] = '';
+$app['facebook.appNamespace'] = '';
 $app['facebook.secret'] = '';
 
 // Name of public web directory. Defaults to web, but may be "public_html" for example
