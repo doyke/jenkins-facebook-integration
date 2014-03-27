@@ -43,9 +43,12 @@ class FacebookUserProvider implements UserManagerInterface {
 		$this->facebook->setExtendedAccessToken();
 		$accessToken = $this->facebook->getAccessToken();
 
+		// count the number of users before inserting one ;)
+		$userCount = $this->dbRepository->findAllUsersCount();
 		$user = $this->dbRepository->createUser($uid, $facebookUser['email'], $accessToken);
-		if (!$this->dbRepository->findAllUsersCount()) {
+		if (!$userCount) {
 		    $user->setAdmin(true);
+			$user->setProjectCreationAllowed(true);
 		    $this->dbRepository->updateUser($user);
 		}
 		

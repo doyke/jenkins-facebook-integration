@@ -31,7 +31,7 @@ use FHJ\Controllers\ProjectListController;
 use FHJ\Controllers\ProjectDeleteController;
 use FHJ\Controllers\ProjectEditController;
 use FHJ\Controllers\BuildStatusUpdateController;
-use FHJ\Facebook\SocialEventListener;
+use FHJ\Listeners\SocialEventListener;
 use FHJ\Facebook\FacebookConfig;
 use FHJ\Framework\AppFormExtensionLoader;
 

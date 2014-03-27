@@ -1,10 +1,11 @@
 <?php
 
-namespace FHJ\Facebook;
+namespace FHJ\Listeners;
 
 use Monolog\Logger;
 use FHJ\Facebook\Api\EndpointFactory;
 use FHJ\Facebook\Api\FacebookPostingHelper;
+use FHJ\Facebook\FacebookConfig;
 use FHJ\Repositories\UserDbRepositoryInterface;
 use FHJ\Events\BuildStatusUpdateEvent;
 use FHJ\Entities\User;
@@ -12,7 +13,7 @@ use FHJ\Entities\Project;
 
 /**
  * SocialEventListener
- * @package FHJ\Facebook
+ * @package FHJ\Listeners
  */
 class SocialEventListener {
     
