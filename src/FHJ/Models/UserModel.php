@@ -18,8 +18,8 @@ class UserModel extends User {
     private $projectCount;
     
     public function __construct(User $user) {
-        parent::__construct($user->getId(), $user->getFacebookUserId(), $user->getEmail(), $user->getFacebookAccessToken(),
-            $user->getFacebookAccessExpiration(), $user->isLoginAllowed(), $user->isProjectCreationAllowed(),
+        parent::__construct($user->getId(), $user->getFacebookUserId(), $user->getEmail(),
+	        $user->getFacebookAccessToken(), $user->isLoginAllowed(), $user->isProjectCreationAllowed(),
             $user->isAdmin());
     }
 

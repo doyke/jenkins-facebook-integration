@@ -33,8 +33,7 @@ use FHJ\Controllers\ProjectEditController;
 use FHJ\Controllers\BuildStatusUpdateController;
 use FHJ\Facebook\SocialEventListener;
 use FHJ\Facebook\FacebookConfig;
-use Genemu\Bundle\FormBundle\Form\Core\Type\PlainType;
-use FHJ\Framework\SimpleLinkButtonType;
+use FHJ\Framework\AppFormExtensionLoader;
 
 // this is needed for the secure() method to work. see controllers.php.
 $app['route_class'] = 'FHJ\Framework\SecuredRoute';
@@ -45,9 +44,8 @@ $app->register(new UrlGeneratorServiceProvider());
 $app->register(new ServiceControllerServiceProvider());
 
 $app->register(new FormServiceProvider());
-$app['form.type.extensions'] = $app->share($app->extend('form.type.extensions', function ($extensions) use ($app) {
-	$extensions[] = new PlainType();
-	$extensions[] = new SimpleLinkButtonType();
+$app['form.extensions'] = $app->share($app->extend('form.extensions', function ($extensions) use ($app) {
+	$extensions[] = new AppFormExtensionLoader();
 
 	return $extensions;
 }));

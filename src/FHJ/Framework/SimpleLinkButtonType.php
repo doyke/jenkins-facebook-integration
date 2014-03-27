@@ -23,7 +23,7 @@ class SimpleLinkButtonType extends AbstractType {
 			'href' => '#',
 			'attr' => array(
 				'class' => 'btn'
-			)
+			),
 		));
 	}
 
