@@ -2,6 +2,7 @@
 
 namespace FHJ\Controllers;
 
+use FHJ\Entities\User;
 use FHJ\Facebook\Data\CachingFacebookDataRetriever;
 
 /**
@@ -13,12 +14,14 @@ class HomepageController extends BaseController {
     const ROUTE_HOMEPAGE = 'homepage';
 
 	public function indexAction() {
-	    $facebookData = new CachingFacebookDataRetriever($this->getFacebookObject(), $this->getCache(),
-	        $this->getLogger());
-	    $realname = $facebookData->getRealname();
-	    $isProjectCreationAllowed = false;
-		if ($this->getSecurity()->getToken() !== null) {
-			$isProjectCreationAllowed= $this->getSecurity()->getToken()->getUser()->isProjectCreationAllowed();
+		$realname = '';
+		$isProjectCreationAllowed = false;
+
+		if ($this->getSecurity()->getToken() !== null && $this->getSecurity()->getToken()->getUser() instanceof User) {
+	        $facebookData = new CachingFacebookDataRetriever($this->getFacebookObject(), $this->getCache(),
+	                $this->getLogger());
+	        $realname = $facebookData->getRealname();
+			$isProjectCreationAllowed = $this->getSecurity()->getToken()->getUser()->isProjectCreationAllowed();
 		}
 	    
 		return $this->getTemplateEngine()->render('index.html.twig', array(

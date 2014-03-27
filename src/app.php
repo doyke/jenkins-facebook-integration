@@ -73,13 +73,13 @@ $app->register(new FacebookServiceProvider(), array(
 
 $app->register(new SecurityServiceProvider(), array(
     'security.firewalls' => array(
-//	    'public' => array(
-//		    'pattern' => '^/',
-//		    'anonymous' => false,
-//	    ),
+	    'public' => array(
+		    'pattern' => '^/$',
+		    'anonymous' => true,
+	    ),
         'secured_area'  => array(
 	        'anonymous' => false,
-            'pattern'   => '^/',
+            'pattern'   => '^/(login_check|projects|users)',
 	        'facebook'  => array(
 		        'check_path' => '/login_check'
 	        ),
