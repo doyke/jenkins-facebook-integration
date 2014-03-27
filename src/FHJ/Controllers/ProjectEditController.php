@@ -97,7 +97,7 @@ class ProjectEditController extends BaseController {
 		        'constraints' => new Assert\Choice(array_keys($validGroups)),
             ))->add('save', 'submit_cancel_combo', array(
                 'label' => 'Create project',
-		        'label' => 'Cancel',
+		        'label_cancel' => 'Cancel',
 		        'href_cancel' => $this->generateRoute(ProjectListController::ROUTE_PROJECT_LIST_OWN)
 	        ));
             
