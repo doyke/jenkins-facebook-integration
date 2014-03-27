@@ -71,7 +71,7 @@ $app->match('/login_check', function() use ($app) {
 
 $app->error(function(\Exception $e, $code) use ($app) {
     $handler = new ErrorHandlingController($app);
-    return $handler->handleErrorAction($e, $code);
+    return $handler->handleErrorAction($e, $code, $app['request']);
 });
 
 return $app;

@@ -1,0 +1,14 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+    {% if pageTitle is defined %}{{ pageTitle }}{% else %}{{ messageTitle }}{% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="hero-unit">
+        <h1>{{ messageTitle }}</h1>
+    {% if messageContent is defined %}
+        <p>{{ messageContent }}</p>
+    {% endif %}
+    </div>
+{% endblock %}
