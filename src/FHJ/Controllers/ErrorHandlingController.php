@@ -6,21 +6,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
  * ErrorHandlingController
  * @package FHJ\Controllers
  */
 class ErrorHandlingController extends BaseController {
-
-    /**
-     * @var \Twig_Environment
-     */
-    private $templateEngine;
-    
-    public function __construct(\Twig_Environment $templateEngine) {
-        $this->templateEngine = $templateEngine;
-    }
 
 	public function handleErrorAction(\Exception $e, $code, Request $request) {
 		$this->getLogger()->addError(sprintf('An exception occured: %s', $e->getMessage()), array('exception' => $e));
@@ -50,7 +42,7 @@ class ErrorHandlingController extends BaseController {
 				$httpStatusCode = Response::HTTP_NOT_FOUND;
 				break;
 				
-			case $e instanceof NotFoundHttpException: // internal server error
+			case ($e instanceof HttpException && $e->getStatusCode() == Response::HTTP_INTERNAL_SERVER_ERROR): // internal server error
 				$messageTitle = 'Internal error';
 				$messageContent = 'The application encountered an internal error. Please try again later.';
 				$pageTitle = 'Internal error';
@@ -86,7 +78,7 @@ class ErrorHandlingController extends BaseController {
 	        $data['pageTitle'] = $pageTitle;
 	    }
 	    
-	    $pageHtmlCode = $this->templateEngine->render('messageSpecial.html.twig', $data);
+	    $pageHtmlCode = $this->getTemplateEngine()->render('messageSpecial.html.twig', $data);
 	    return new Response($pageHtmlCode, $httpStatusCode);
 	}
 
