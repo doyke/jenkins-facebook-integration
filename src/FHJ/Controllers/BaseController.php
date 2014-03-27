@@ -11,6 +11,7 @@ use FHJ\Repositories\UserDbRepositoryInterface;
 use FHJ\Repositories\ProjectDbRepositoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * BaseController
@@ -100,6 +101,11 @@ class BaseController {
 	
 	protected function generateRoute($destination, array $parameters = array()) {
 	    return $this->application['url_generator']->generate($destination, $parameters);
+	}
+
+	protected function generateUrl($destination, array $parameters = array()) {
+		return $this->application['url_generator']->generate($destination, $parameters,
+			UrlGeneratorInterface::ABSOLUTE_URL);
 	}
 
 	/**

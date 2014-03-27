@@ -2,8 +2,7 @@
 
 namespace FHJ\Framework;
 
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -12,34 +11,51 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  * SimpleLinkButtonType
  * @package FHJ\Framework
  */
-class SimpleLinkButtonType extends AbstractType {
+class SubmitCancelButtonComboType extends SubmitType {
 
 	public function setDefaultOptions(OptionsResolverInterface $resolver) {
 		parent::setDefaultOptions($resolver);
 
 		$resolver->setDefaults(array(
 			'widget'  => 'field',
-			'read_only' => true,
-			'href' => '#',
+			'mapped' => false,
+
+			'label' => '',
 			'attr' => array(
+				'class' => 'btn btn-primary'
+			),
+
+
+			'label_cancel' => '',
+			'href_cancel' => '#',
+			'attr_cancel' => array(
 				'class' => 'btn'
 			),
 		));
 	}
 
 	public function getParent() {
-		return 'button';
+		return 'submit';
 	}
 
 	public function buildView(FormView $view, FormInterface $form, array $options) {
-		$value = $form->getViewData();
-
-		$view->vars['href'] = (string) $value;
+		parent::buildView($view, $form, $options);
 
 		$view->vars = array_replace($view->vars, array(
 			'label' => $options['label'],
-			'attr'  => $options['attr'],
-			'href'  => $options['href'],
+			'value' => $options['label'],
+			'type' => 'submit',
+
+			'attr_cancel'  => $options['attr_cancel'],
+			'href_cancel'  => $options['href_cancel'],
+			'label_cancel'  => $options['label_cancel'],
+
+			// stub variables needed to get block('form_widget_simple') in template to work
+			'read_only' => false,
+			'disabled' => false,
+			'required' => false,
+			'max_length' => 0,
+			'pattern' => ''
 		));
 	}
 
@@ -48,6 +64,6 @@ class SimpleLinkButtonType extends AbstractType {
 	 * @return string The name of this type
 	 */
 	public function getName() {
-		return 'linkbutton';
+		return 'submit_cancel_combo';
 	}
 }

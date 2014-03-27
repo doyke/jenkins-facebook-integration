@@ -95,11 +95,10 @@ class ProjectEditController extends BaseController {
                 'label' => 'Post messages to following facebook group',
                 'choices' => $groups,
 		        'constraints' => new Assert\Choice(array_keys($validGroups)),
-            ))->add('save', 'submit', array(
-                'label' => 'Create project'    
-            ))->add('cancel', 'linkbutton', array(
+            ))->add('save', 'submit_cancel_combo', array(
+                'label' => 'Create project',
 		        'label' => 'Cancel',
-		        'href' => $this->generateRoute(ProjectListController::ROUTE_PROJECT_LIST_OWN)
+		        'href_cancel' => $this->generateRoute(ProjectListController::ROUTE_PROJECT_LIST_OWN)
 	        ));
             
         return $form->getForm();
@@ -124,21 +123,24 @@ class ProjectEditController extends BaseController {
 			    'constraints' => new Assert\Choice(array_keys($validGroups)),
             ))->add('enabled', 'checkbox', array(
                 'label' => 'Posting of messages enabled?'
-            ))->add('secretKey', 'genemu_plain', array(
-                'label' => 'Secret key',
-                'disabled' => true,
-            ))->add('svnplotDbPath', 'text', array(
+            ))->add('notificationUrl', 'genemu_plain', array(
+			    'label' => 'Jenkins notification url',
+			    'mapped' => false,
+		    ))->add('svnplotDbPath', 'text', array(
                 'label' => 'Absolute path to SVNPlot database file'
             ))->add('lastBuildState', 'text', array(
                 'label' => 'Last known Jenkins build state',
                 'disabled' => true
-            ))->add('save', 'submit', array(
-                'label' => 'Save changes'    
-            ))->add('cancel', 'linkbutton', array(
-			    'label' => 'Cancel',
-			    'href' => $this->generateRoute(ProjectListController::ROUTE_PROJECT_LIST_OWN)
+            ))->add('save', 'submit_cancel_combo', array(
+                'label' => 'Save changes',
+			    'label_cancel' => 'Cancel',
+			    'href_cancel' => $this->generateRoute(ProjectListController::ROUTE_PROJECT_LIST_OWN)
 		    ));
-            
+
+	    $notificationUrl = $this->generateUrl(BuildStatusUpdateController::ROUTE_UPDATE_STATUS,
+		    array('secretKey' => $project->getSecretKey()));
+	    $form->get('notificationUrl')->setData($notificationUrl);
+
         return $form->getForm();
     }
     

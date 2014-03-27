@@ -32,25 +32,18 @@ class UserEditController extends BaseController {
     private function defineForm(User $user) {
         $form = $this->getFormFactory()->createBuilder('form', $user);
 
-        $form->add('email', 'text', array(
-                'label' => 'Email address',
-                'constraints' => new Assert\Email(),
-                'disabled' => true
+        $form->add('email', 'genemu_plain', array(
+                'label' => 'Email address'
             ))->add('loginAllowed', 'checkbox', array(
-                // TODO: validation constraints needed?
                 'label' => 'Login allowed?'
             ))->add('projectCreationAllowed', 'checkbox', array(
-                // TODO: validation constraints needed?
                 'label' => 'Project creation allowed?'
-            ))
-            ->add('admin', 'checkbox', array(
-                // TODO: validation constraints needed?
+            ))->add('admin', 'checkbox', array(
                 'label' => 'Is administrator?'
-            ))->add('save', 'submit', array(
-                'label' => 'Save changes'    
-            ))->add('cancel', 'linkbutton', array(
-		        'label' => 'Cancel',
-		        'href' => $this->generateRoute(UserListController::ROUTE_USER_LIST)
+            ))->add('save', 'submit_cancel_combo', array(
+		        'label' => 'Save changes',
+		        'label_cancel' => 'Cancel',
+		        'href_cancel' => $this->generateRoute(UserListController::ROUTE_USER_LIST)
 	        ));
             
         return $form->getForm();

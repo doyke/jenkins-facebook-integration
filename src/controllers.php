@@ -54,10 +54,6 @@ $app->match('/users/{user}/edit',           'controller.userEdit:editAction')
 	->convert('user', $app['converter.user'])
 	->bind(UserEditController::ROUTE_USER_EDIT)
     ->secure('ROLE_ADMIN');
-    
-$app[''] = $app->share(function(Application $app) {
-    return new BuildStatusUpdateController($app);
-});
 
 $app->match('/updateStatus/{secretKey}',    'controller.buildStatusUpdate:updateLastBuildStatusAction')
     ->bind(BuildStatusUpdateController::ROUTE_UPDATE_STATUS)

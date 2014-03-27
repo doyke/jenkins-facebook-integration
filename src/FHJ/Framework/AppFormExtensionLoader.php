@@ -14,7 +14,7 @@ class AppFormExtensionLoader extends AbstractExtension {
 	protected function loadTypes() {
 		return array(
 			new PlainType(),
-			new SimpleLinkButtonType()
+			new SubmitCancelButtonComboType()
 		);
 	}
 

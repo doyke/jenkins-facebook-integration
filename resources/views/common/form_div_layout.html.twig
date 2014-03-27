@@ -115,11 +115,25 @@
 {% endspaceless %}
 {% endblock percent_widget %}
 
-{% block linkbutton_widget %}
+{% block submit_cancel_combo_widget %}
     {% spaceless %}
-            <a {{ block('container_attributes') }} href="{{ href }}">
-                {{ label|escape }}
-            </a>
+        {{ block('form_widget_simple') }}
+        &nbsp;&nbsp;&nbsp;
+        <a
+        {%- for attrname, attrvalue in attr_cancel -%}
+            {{- " " -}}
+            {%- if attrname in ['placeholder', 'title'] -%}
+                {{- attrname }}="{{ attrvalue|trans({}, translation_domain) }}"
+            {%- elseif attrvalue is sameas(true) -%}
+                {{- attrname }}="{{ attrname }}"
+            {%- elseif attrvalue is not sameas(false) -%}
+                {{- attrname }}="{{ attrvalue }}"
+            {%- endif -%}
+        {%- endfor -%}
+
+           href="{{ href_cancel }}">
+            {{ label_cancel|escape }}
+        </a>
     {% endspaceless %}
 {% endblock %}
 
