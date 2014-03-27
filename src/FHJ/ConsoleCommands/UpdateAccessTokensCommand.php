@@ -63,6 +63,9 @@ class UpdateAccessTokensCommand extends Command {
 		// get some "dummy data" from Facebook to ensure that the token is refreshed
 	    $dataRetriever = new FacebookDataRetriever($facebook, $this->logger);
 	    $foundEmail = $dataRetriever->getEmail();
+
+		// We need the extended access token!
+		$facebook->setExtendedAccessToken();
 	    
 	    if ($user->getEmail() !== $foundEmail) {
 	        $this->logger->addError(sprintf('update access tokens: user "%d" had email mismatch ("%s" <> "%s")',

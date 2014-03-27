@@ -1,6 +1,6 @@
 <?php
 
-namespace FHJ\Providers;
+namespace FHJ\Facebook;
 
 use FOS\FacebookBundle\Security\User\UserManagerInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -11,7 +11,7 @@ use FHJ\Repositories\UserDbRepositoryInterface;
 
 /**
  * FacebookUserProvider
- * @package FHJ\Providers
+ * @package FHJ\Facebook
  */
 class FacebookUserProvider implements UserManagerInterface {
     
@@ -39,6 +39,8 @@ class FacebookUserProvider implements UserManagerInterface {
      */ 
 	public function createUserFromUid($uid) {
 		$facebookUser = $this->facebook->api('/me');
+		// we need the extended access token for long-ish access permissions (~60 days)
+		$this->facebook->setExtendedAccessToken();
 		$accessToken = $this->facebook->getAccessToken();
 
 		$user = $this->dbRepository->createUser($uid, $facebookUser['email'], $accessToken);

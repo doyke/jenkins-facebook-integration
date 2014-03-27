@@ -31,7 +31,7 @@ class BuildStatusUpdateController extends BaseController {
         	  "phase":"STARTED",
         	  "status":"FAILED",
                   "url":"job/project/5",
-                  "full_url":"http://ci.jenkins.org/job/project/5"
+                  "full_url":"http://ci.jenkins.org/job/project/5",
                   "parameters":{"branch":"master"}
         	 }
         }
@@ -106,7 +106,7 @@ class BuildStatusUpdateController extends BaseController {
 
 		$jsonContent = json_decode($requestContent);
 		if ($jsonContent === null) {
-			throw new \Exception(sprintf('json decode error. last error: "%s"', json_last_error_msg()));
+			throw new \Exception(sprintf('json decode error. last error: "%s"', json_last_error()));
 		}
 
 		return $jsonContent;
@@ -135,7 +135,7 @@ class BuildStatusUpdateController extends BaseController {
 		} catch (\Exception $e) {
 			$this->getLogger()->addDebug(sprintf(
 				'status update: error at updating build status to "%s" for project id "%d"',
-				$jsonContent->build->status, $project->getId()));
+				$jsonContent->build->status, $project->getId()), array('exception' => $e));
 
 			return new Response('', Response::HTTP_INTERNAL_SERVER_ERROR);
 		}

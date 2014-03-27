@@ -12,6 +12,11 @@ namespace FHJ\Facebook\Api;
 class SimpleFacebookEndpoint extends \BaseFacebook {
 
 	/**
+	 * @var array
+	 */
+	private $store = array();
+
+	/**
 	 * Stores the given ($key, $value) pair, so that future calls to
 	 * getPersistentData($key) return $value. This call may be in another request.
 	 *
@@ -21,7 +26,7 @@ class SimpleFacebookEndpoint extends \BaseFacebook {
 	 * @return void
 	 */
 	protected function setPersistentData($key, $value) {
-
+		$this->store[$key] = $value;
 	}
 
 	/**
@@ -33,6 +38,10 @@ class SimpleFacebookEndpoint extends \BaseFacebook {
 	 * @return mixed
 	 */
 	protected function getPersistentData($key, $default = false) {
+		if (isset($this->store[$key])) {
+			return $this->store[$key];
+		}
+
 		return $default;
 	}
 
@@ -44,7 +53,7 @@ class SimpleFacebookEndpoint extends \BaseFacebook {
 	 * @return void
 	 */
 	protected function clearPersistentData($key) {
-
+		unset($this->store[$key]);
 	}
 
 	/**
@@ -52,6 +61,6 @@ class SimpleFacebookEndpoint extends \BaseFacebook {
 	 * @return void
 	 */
 	protected function clearAllPersistentData() {
-
+		$this->store = array();
 	}
 }

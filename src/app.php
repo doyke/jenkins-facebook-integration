@@ -17,7 +17,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Silex\Provider\TranslationServiceProvider;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
 use CHH\Silex\CacheServiceProvider;
-use FHJ\Providers\FacebookUserProvider;
+use FHJ\Facebook\FacebookUserProvider;
 use FHJ\Events\EventIdentifiers;
 use FHJ\Repositories\UserDbRepository;
 use FHJ\Repositories\ProjectDbRepository;

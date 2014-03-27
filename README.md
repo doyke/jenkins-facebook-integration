@@ -20,5 +20,11 @@ Usage instructions
 * Open this web application and login using Facebook with the account that should be used for status postings
     * Pay attention: The first user that logs into the web application automatically gets admin permissions 
 * Create a project (you need to be member of a Facebook group for this to succeed)
-* After creating the project you are able to see a secret key in the project properties
-    * Using this key you are able to submit build status changes to the application
+* After creating the project you are able to see a notification url in the project properties
+* Using this url you are able to submit build status changes to the application using the [Jenkins notification plugin](https://wiki.jenkins-ci.org/display/JENKINS/Notification+Plugin) via HTTP
+
+Todo
+----
+
+* Facebook access tokens are not refreshed upon login automatically at the moment. Run the `php ./console social:accesstokens:update` task periodically to resolve this issue. Not doing this prevents the access to the Facebook API after about 60 days.
+* Bug: The front page is always assuming that you are logged out.
