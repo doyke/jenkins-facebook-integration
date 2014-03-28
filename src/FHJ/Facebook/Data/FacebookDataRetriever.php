@@ -49,6 +49,7 @@ class FacebookDataRetriever {
 	}
 
 	public function getAccessToken() {
+		$this->facebook->setExtendedAccessToken();
 		return $this->facebook->getAccessToken();
 	}
 

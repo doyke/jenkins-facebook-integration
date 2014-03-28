@@ -3,12 +3,12 @@
 namespace FHJ\Listeners;
 
 use Monolog\Logger;
-use FHJ\Entities\User;
 use FHJ\Repositories\UserDbRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
+use Symfony\Component\Security\Http\Authentication\DefaultAuthenticationSuccessHandler;
 
 /**
  * UserAuthenticationListener
@@ -17,12 +17,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerI
  *
  * @package FHJ\Listeners
  */
-class UserAuthenticationListener implements AuthenticationSuccessHandlerInterface {
-
-	/**
-	 * @var AuthenticationSuccessHandlerInterface
-	 */
-	private $successHandler;
+class UserAuthenticationListener extends DefaultAuthenticationSuccessHandler {
 
 	/**
 	 * @var \BaseFacebook
@@ -39,9 +34,8 @@ class UserAuthenticationListener implements AuthenticationSuccessHandlerInterfac
 	 */
 	private $logger;
 
-	public function __construct(AuthenticationSuccessHandlerInterface $successHandler, \BaseFacebook $facebook,
-	                            UserDbRepositoryInterface $userRepository, Logger $logger) {
-		$this->successHandler = $successHandler;
+	public function setDependencies(\BaseFacebook $facebook, UserDbRepositoryInterface $userRepository,
+	                                Logger $logger) {
 		$this->facebook = $facebook;
 		$this->userRepository = $userRepository;
 		$this->logger = $logger;
@@ -69,7 +63,7 @@ class UserAuthenticationListener implements AuthenticationSuccessHandlerInterfac
 		$this->userRepository->updateUser($user);
 		$this->logger->addInfo(sprintf('retrieved and saved extended auth token for user id "%d"', $user->getId()));
 
-		return $this->successHandler->onAuthenticationSuccess($request, $token);
+		return parent::onAuthenticationSuccess($request, $token);
 	}
 
 }

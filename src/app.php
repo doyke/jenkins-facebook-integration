@@ -81,7 +81,11 @@ $app->register(new SecurityServiceProvider(), array(
 	        'anonymous' => false,
             'pattern'   => '^/(login_check|projects|users)',
 	        'facebook'  => array(
-		        'check_path' => '/login_check'
+		        'check_path' => '/login_check',
+//		        'success_handler' => 'FHJ\Listeners\UserAuthenticationListener'
+//			        $app->share(function () use ($app) {
+//			        return new ($app['repository.users'], $app['facebook']);
+//		        }),
 	        ),
             'logout' => true,
 	        'users' => $app->share(function () use ($app) {
