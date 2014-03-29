@@ -78,8 +78,8 @@ $app->register(new SecurityServiceProvider(), array(
 		    'pattern' => '^/$',
 		    'anonymous' => true,
 	    ),
-        'secured_area'  => array(
-	        'anonymous' => false,
+        'secured'  => array(
+	        'anonymous' => true,
             'pattern'   => '^/(login_check|projects|users)',
 	        'facebook'  => array(
 		        'check_path' => '/login_check',
@@ -91,13 +91,12 @@ $app->register(new SecurityServiceProvider(), array(
 				return new FacebookUserProvider($app['repository.users'], $app['facebook']);
 	        }),
         ),
+	    // no firewall for updateStatus route
     ),
 ));
 
 $app['security.authentication.success_handler._proto'] = $app->protect(function ($name, $options) use ($app) {
 	return $app->share(function () use ($name, $options, $app) {
-		$app['monolog']->addInfo('success handler closure called');
-
 		$listener = new UserAuthenticationHandler($app['security.http_utils'], $options);
 		$listener->setDependencies($app['facebook'], $app['repository.users'], $app['monolog']);
 		$listener->setProviderKey($name);
