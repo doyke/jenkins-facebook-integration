@@ -33,6 +33,7 @@ use FHJ\Controllers\ProjectEditController;
 use FHJ\Controllers\BuildStatusUpdateController;
 use FHJ\Listeners\SocialEventListener;
 use FHJ\Facebook\FacebookConfig;
+use FHJ\Framework\UserAuthenticationHandler;
 use FHJ\Framework\AppFormExtensionLoader;
 
 // this is needed for the secure() method to work. see controllers.php.
@@ -82,18 +83,28 @@ $app->register(new SecurityServiceProvider(), array(
             'pattern'   => '^/(login_check|projects|users)',
 	        'facebook'  => array(
 		        'check_path' => '/login_check',
-//		        'success_handler' => 'FHJ\Listeners\UserAuthenticationListener'
-//			        $app->share(function () use ($app) {
-//			        return new ($app['repository.users'], $app['facebook']);
-//		        }),
 	        ),
-            'logout' => true,
+	        'logout' => array(
+		        'logout_path' => '/'
+	        ),
 	        'users' => $app->share(function () use ($app) {
 				return new FacebookUserProvider($app['repository.users'], $app['facebook']);
 	        }),
         ),
     ),
 ));
+
+$app['security.authentication.success_handler._proto'] = $app->protect(function ($name, $options) use ($app) {
+	return $app->share(function () use ($name, $options, $app) {
+		$app['monolog']->addInfo('success handler closure called');
+
+		$listener = new UserAuthenticationHandler($app['security.http_utils'], $options);
+		$listener->setDependencies($app['facebook'], $app['repository.users'], $app['monolog']);
+		$listener->setProviderKey($name);
+
+		return $listener;
+	});
+});
 
 $app['security.role_hierarchy'] = array(
 	'ROLE_ADMIN' => array('ROLE_USER'),

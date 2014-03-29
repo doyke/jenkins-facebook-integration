@@ -1,6 +1,6 @@
 <?php
 
-namespace FHJ\Listeners;
+namespace FHJ\Framework;
 
 use Monolog\Logger;
 use FHJ\Repositories\UserDbRepositoryInterface;
@@ -11,13 +11,13 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerI
 use Symfony\Component\Security\Http\Authentication\DefaultAuthenticationSuccessHandler;
 
 /**
- * UserAuthenticationListener
+ * UserAuthenticationHandler
  *
  * Refreshes the extended access token upon user login.
  *
  * @package FHJ\Listeners
  */
-class UserAuthenticationListener extends DefaultAuthenticationSuccessHandler {
+class UserAuthenticationHandler extends DefaultAuthenticationSuccessHandler {
 
 	/**
 	 * @var \BaseFacebook
@@ -54,10 +54,14 @@ class UserAuthenticationListener extends DefaultAuthenticationSuccessHandler {
 	 */
 	public function onAuthenticationSuccess(Request $request, TokenInterface $token) {
 		$user = $token->getUser();
+		$this->logger->addDebug(sprintf('auth success for user id "%d" -> facebook id "%s", extending access token',
+			$user->getId(), $this->facebook->getUser()));
 
-		if (!$this->facebook->setExtendedAccessToken()) {
-			throw new \RuntimeException('retrieval of extended auth token failed');
+		if ($this->facebook->getUser() == 0) {
+			throw new \RuntimeException('facebook user is not valid (not logged in)');
 		}
+
+		$this->facebook->setExtendedAccessToken();
 
 		$user->setFacebookAccessToken($this->facebook->getAccessToken());
 		$this->userRepository->updateUser($user);
