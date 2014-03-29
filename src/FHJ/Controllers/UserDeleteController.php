@@ -23,17 +23,16 @@ class UserDeleteController extends BaseController {
         }
         
         if ($request->getMethod() === 'POST') {
-            $this->doDelete($user);
-        } else {
-            return $this->getTemplateEngine()->render('message.html.twig', array(
-                'active' => 'users',
-                'message'  => sprintf('Do you really want to delete the user "%s" and all of his projects?',
-                    $user->getEmail()),
-                'mode' => 'deleteCancel',
-                'deletePath' => $this->generateRoute(self::ROUTE_USER_DELETE, array('user' => $user->getId())),
-                'cancelPath' => $this->generateRoute(UserListController::ROUTE_USER_LIST)
-            )); 
+            return $this->doDelete($user);
         }
+        return $this->getTemplateEngine()->render('message.html.twig', array(
+            'active' => 'users',
+            'message'  => sprintf('Do you really want to delete the user "%s" and all of his projects?',
+                $user->getEmail()),
+            'mode' => 'deleteCancel',
+            'deletePath' => $this->generateRoute(self::ROUTE_USER_DELETE, array('user' => $user->getId())),
+            'cancelPath' => $this->generateRoute(UserListController::ROUTE_USER_LIST)
+        ));
     }
     
     private function doDelete(User $user) {
@@ -42,14 +41,14 @@ class UserDeleteController extends BaseController {
             
             $this->getSession()->getFlashBag()->add('success', sprintf(
                 'The user "%s" and all of his projects have been successfully deleted!', $user->getEmail()));
-            $this->doRedirect(ProjectListController::ROUTE_PROJECT_LIST_OWN);
+            return $this->doRedirect(ProjectListController::ROUTE_PROJECT_LIST_OWN);
         } catch (\Exception  $e) {
             $this->getLogger()->addError(sprintf('error when deleting user with id "%d"', $user->getId()),
                 array('exception' => $e));
             
             $this->getSession()->getFlashBag()->add('error', sprintf(
                 'The deletion of user "%s" and all of his projects failed!', $user->getEmail()));
-            $this->doRedirect(UserListController::ROUTE_USER_LIST);
+	        return $this->doRedirect(UserListController::ROUTE_USER_LIST);
         }
     }
 }

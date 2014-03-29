@@ -16,17 +16,17 @@ class ProjectDeleteController extends BaseController {
 
     public function deleteAction(Request $request, Project $project) {
         if ($request->getMethod() === 'POST') {
-            $this->doDelete($project);
-        } else {
-            return $this->getTemplateEngine()->render('message.html.twig', array(
-                'active' => 'projects',
-                'message'  => sprintf('Do you really want to delete the project "%s"?',
-                    $project->getTitle()),
-                'mode' => 'deleteCancel',
-                'deletePath' => $this->generateRoute(self::ROUTE_PROJECT_DELETE, array('project' => $project->getId())),
-                'cancelPath' => $this->generateRoute(ProjectListController::ROUTE_PROJECT_LIST_OWN)
-            )); 
+            return $this->doDelete($project);
         }
+
+	    return $this->getTemplateEngine()->render('message.html.twig', array(
+            'active' => 'projects',
+            'message'  => sprintf('Do you really want to delete the project "%s"?',
+                $project->getTitle()),
+            'mode' => 'deleteCancel',
+            'deletePath' => $this->generateRoute(self::ROUTE_PROJECT_DELETE, array('project' => $project->getId())),
+            'cancelPath' => $this->generateRoute(ProjectListController::ROUTE_PROJECT_LIST_OWN)
+        ));
     }
     
     private function doDelete(Project $project) {
@@ -35,14 +35,14 @@ class ProjectDeleteController extends BaseController {
             
             $this->getSession()->getFlashBag()->add('success', sprintf(
                 'The project "%s" has been successfully deleted!', $project->getTitle()));
-            $this->doRedirect(ProjectListController::ROUTE_PROJECT_LIST_OWN);
+            return $this->doRedirect(ProjectListController::ROUTE_PROJECT_LIST_OWN);
         } catch (\Exception  $e) {
             $this->getLogger()->addError(sprintf('error when deleting project with id "%d"', $project->getId()),
                 array('exception' => $e));
             
             $this->getSession()->getFlashBag()->add('error', sprintf( 'The deletion of the project "%s" failed!',
                 $project->getTitle()));
-            $this->doRedirect(ProjectListController::ROUTE_PROJECT_LIST_OWN);
+            return $this->doRedirect(ProjectListController::ROUTE_PROJECT_LIST_OWN);
         }
     }
 }
