@@ -13,6 +13,9 @@ use FHJ\Entities\Project;
 
 /**
  * SocialEventListener
+ *
+ * Posts status updates to Facebook.
+ *
  * @package FHJ\Listeners
  */
 class SocialEventListener {
@@ -41,7 +44,8 @@ class SocialEventListener {
 
 	    $user = $this->userRepository->findUserById($event->getProject()->getUserId());
 	    if ($user === null) {
-		    throw new \RuntimeException(sprintf('user not found for project id "%d"', $event->getProject()->getId()));
+		    throw new \RuntimeException(sprintf('SocialEventListener: user not found for project id "%d"',
+			    $event->getProject()->getId()));
 	    }
 
 	    $this->handleStatusUpdate($user, $event->getProject(), $event->getNewBuildState(), $event->getJobUrl());
@@ -52,7 +56,7 @@ class SocialEventListener {
 		$endpointFactory = new EndpointFactory($this->fbConfig);
 		$facebook = $endpointFactory->getFacebookApi($user);
 
-		$message = sprintf('New build state: %s', $newBuildState);
+		$message = sprintf('New build state of project "%s": %s', $project->getTitle(), $newBuildState);
 
 		$postingHelper = new FacebookPostingHelper($facebook);
 		$postingHelper->postMessageWithLinkToGroup($project->getFacebookGroupId(), $message, $jobUrl);
