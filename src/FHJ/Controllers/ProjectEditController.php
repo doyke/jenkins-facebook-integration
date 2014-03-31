@@ -126,9 +126,7 @@ class ProjectEditController extends BaseController {
             ))->add('notificationUrl', 'genemu_plain', array(
 			    'label' => 'Jenkins notification url',
 			    'mapped' => false,
-		    ))->add('svnplotDbPath', 'text', array(
-                'label' => 'Absolute path to SVNPlot database file'
-            ))->add('lastBuildState', 'text', array(
+		    ))->add('lastBuildState', 'text', array(
                 'label' => 'Last known Jenkins build state',
                 'disabled' => true
             ))->add('save', 'submit_cancel_combo', array(

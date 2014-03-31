@@ -19,7 +19,6 @@ $projects->addColumn('user_id', 'integer', array('unsigned' => true));
 $projects->addColumn('is_enabled', 'boolean');
 $projects->addColumn('facebook_group_id', 'string', array('length' => 30));
 $projects->addColumn('secret_key', 'string', array('length' => 60, 'default' => ''));
-$projects->addColumn('svnplot_db_path', 'string', array('length' => 255, 'default' => ''));
 $projects->addColumn('title', 'string', array('length' => 100));
 $projects->addColumn('description', 'string', array('length' => 600, 'default' => ''));
 $projects->addColumn('last_build_state', 'string', array('length' => 15, 'default' => 'UNKNOWN'));

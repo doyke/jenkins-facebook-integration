@@ -18,8 +18,8 @@ class ProjectWithUserModel extends Project {
     
     public function __construct(Project $project, User $user) {
         parent::__construct($project->getId(), $project->getUserId(), $project->getFacebookGroupId(),
-            $project->isEnabled(), $project->getSecretKey(), $project->getSvnplotDbPath(),
-            $project->getTitle(), $project->getDescription(), $this->getLastBuildState());
+            $project->isEnabled(), $project->getSecretKey(), $project->getTitle(),
+	        $project->getDescription(), $this->getLastBuildState());
         
         $this->user = $user;
     }

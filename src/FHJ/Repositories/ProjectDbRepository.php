@@ -64,7 +64,6 @@ class ProjectDbRepository extends BaseRepository implements ProjectDbRepositoryI
                 'is_enabled' => $project->isEnabled(),
                 'facebook_group_id' => $project->getFacebookGroupId(),
                 'secret_key' => $project->getSecretKey(),
-                'svnplot_db_path' => $project->getSvnplotDbPath(),
                 'title' => $project->getTitle(),
                 'description' => $project->getDescription(),
                 'last_build_state' => $project->getLastBuildState(),
