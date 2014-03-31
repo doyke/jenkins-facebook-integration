@@ -54,7 +54,8 @@ class ProjectEditController extends BaseController {
                 $user = $this->getSecurity()->getToken()->getUser();
 
                 $this->getProjectRepository()->createProject($user, $editedProject->getTitle(),
-                    $editedProject->getDescription(), $editedProject->getFacebookGroupId());
+                    $editedProject->getDescription(), $editedProject->getFacebookGroupId(),
+	                $editedProject->isEnabled());
             } else {
                 if ($originalProject->getId() !== $editedProject->getId()) {
                     throw new \RuntimeException(sprintf(
@@ -95,7 +96,9 @@ class ProjectEditController extends BaseController {
                 'label' => 'Post messages to following facebook group',
                 'choices' => $groups,
 		        'constraints' => new Assert\Choice(array_keys($validGroups)),
-            ))->add('save', 'submit_cancel_combo', array(
+            ))->add('enabled', 'checkbox', array(
+		        'label' => 'Posting of messages enabled?'
+	        ))->add('save', 'submit_cancel_combo', array(
                 'label' => 'Create project',
 		        'label_cancel' => 'Cancel',
 		        'href_cancel' => $this->generateRoute(ProjectListController::ROUTE_PROJECT_LIST_OWN)

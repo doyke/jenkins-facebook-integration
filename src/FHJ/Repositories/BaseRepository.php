@@ -79,6 +79,12 @@ class BaseRepository {
             throw new \InvalidArgumentException(sprintf('Field "%s" must be of type int', $fieldName));
         }
 	}
+
+	protected function checkBool($value, $fieldName) {
+		if (!is_bool($value)) {
+			throw new \InvalidArgumentException(sprintf('Field "%s" must be of type boolean', $fieldName));
+		}
+	}
 	
 	protected function checkNotEmpty($value, $fieldName) {
 	    if (empty($value)) {

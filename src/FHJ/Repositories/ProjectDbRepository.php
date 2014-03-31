@@ -13,9 +13,10 @@ class ProjectDbRepository extends BaseRepository implements ProjectDbRepositoryI
 	
 	private $table = 'projects';
 	
-	public function createProject(User $user, $title, $description, $facebookGroupId) {
+	public function createProject(User $user, $title, $description, $facebookGroupId, $enabled) {
 	    $this->getLogger()->addInfo('creating new project from user id', array('user_id' => $user->getId()));
 	    $this->checkInt($user->getId(), 'user#id');
+		$this->checkBool($enabled, 'enabled');
 	    $this->checkNotEmpty($title, 'title');
 	    $this->checkNotEmpty($facebookGroupId, 'facebookGroupId');
         
@@ -28,7 +29,7 @@ class ProjectDbRepository extends BaseRepository implements ProjectDbRepositoryI
         try {
             $connection->insert($this->table, array(
                 'user_id' => intval($user->getId()),
-                'is_enabled' => false,
+                'is_enabled' => $enabled,
                 'facebook_group_id' => $facebookGroupId,
                 'title' => $title,
                 'description' => $description,
