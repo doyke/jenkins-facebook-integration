@@ -80,7 +80,10 @@ class ProjectEditController extends BaseController {
     }
     
     private function defineCreateForm() {
-        $form = $this->getFormFactory()->createBuilder('form', new Project(0, 0, '-'));
+	    $project = new Project(0, 0, '-');
+	    $project->setLastBuildState('UNKNOWN');
+
+        $form = $this->getFormFactory()->createBuilder('form', $project);
         $facebookData = new FacebookDataRetriever($this->getFacebookObject(), $this->getLogger());
 
 	    $validGroups = $facebookData->getGroups();
@@ -98,6 +101,9 @@ class ProjectEditController extends BaseController {
 		        'constraints' => new Assert\Choice(array_keys($validGroups)),
             ))->add('enabled', 'checkbox', array(
 		        'label' => 'Posting of messages enabled?'
+	        ))->add('lastBuildState', 'text', array(
+		        'label' => 'Last known Jenkins build state',
+		        'disabled' => true
 	        ))->add('save', 'submit_cancel_combo', array(
                 'label' => 'Create project',
 		        'label_cancel' => 'Cancel',
