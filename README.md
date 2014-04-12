@@ -22,4 +22,4 @@ Usage instructions
     * Pay attention: The first user that logs into the web application automatically gets admin permissions 
 * Create a project (you need to be member of a Facebook group for this to succeed)
 * After creating the project you are able to see a notification url in the project properties
-* Using this url you are able to submit build status changes to the application using the [Jenkins notification plugin](https://wiki.jenkins-ci.org/display/JENKINS/Notification+Plugin) via HTTP
+* Using this url you are able to submit build status changes to the application using the [Jenkins notification plugin](https://wiki.jenkins-ci.org/display/JENKINS/Notification+Plugin) via HTTPS (only!)
