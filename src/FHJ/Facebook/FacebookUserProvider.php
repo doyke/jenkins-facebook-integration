@@ -40,9 +40,7 @@ class FacebookUserProvider implements UserManagerInterface {
 	 */
 	public function createUserFromUid($uid) {
 		// we need the extended access token for long-ish access permissions (~60 days)
-		if (!$this->facebook->setExtendedAccessToken()) {
-			throw new \RuntimeException('retrieval of extended auth token failed');
-		}
+		$this->facebook->setExtendedAccessToken();
 
 		$facebookUser = $this->facebook->api('/me');
 		$accessToken = $this->facebook->getAccessToken();
