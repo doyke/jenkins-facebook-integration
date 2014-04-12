@@ -7,7 +7,7 @@ use FHJ\Entities\Project;
 
 interface ProjectDbRepositoryInterface {
 
-    public function createProject(User $user, $name, $description, $facebookGroupId, $enabled);
+    public function createProject(User $user, $title, $description, $facebookGroupId, $enabled);
     
     public function updateProject(Project $project);
     

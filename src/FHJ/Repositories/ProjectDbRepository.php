@@ -39,11 +39,13 @@ class ProjectDbRepository extends BaseRepository implements ProjectDbRepositoryI
                 'boolean',
                 \PDO::PARAM_STR,
                 \PDO::PARAM_STR,
-                \PDO::PARAM_STR
+	            \PDO::PARAM_STR,
+	            \PDO::PARAM_STR
             ));
 
             $insertId = $connection->lastInsertId();
-            $project = new Project(intval($insertId), $user->getId(), $facebookGroupId);
+            $project = new Project(intval($insertId), $user->getId(), $facebookGroupId, $enabled, $secretKey, $title,
+	            $description);
         
             $connection->commit();
         }  catch (\Exception $e) {
@@ -175,13 +177,10 @@ class ProjectDbRepository extends BaseRepository implements ProjectDbRepositoryI
      * @return Project
      */
     private function fillProjectEntity(array $resultSet) {
-
-        return new Project(intval($resultSet['id']), intval($resultSet['user_id']),
-            $resultSet['facebook_group_id'],
+        return new Project(intval($resultSet['id']), intval($resultSet['user_id']), $resultSet['facebook_group_id'],
             // The values in the database are integers, the User class only accepts booleans
 	        $resultSet['is_enabled'] ? true : false,
-	        $resultSet['secret_key'], $resultSet['svnplot_db_path'], $resultSet['title'],
-	        $resultSet['description'], $resultSet['last_build_state']
+	        $resultSet['secret_key'], $resultSet['title'], $resultSet['description'], $resultSet['last_build_state']
         );
     }
 	
